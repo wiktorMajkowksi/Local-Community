@@ -1,6 +1,42 @@
+body {
+    background-image: url(background.jpg);
+    background-size: cover;
+    
+}
+
 #navigation {
-    background-color: blue;
+    background-color: rgb(80, 80, 80);
+    background-size: cover;
+
+    margin: -9px;
+    margin-top: -9px;
 }
-h1 {
-    color: blue;
+#logo{
+    background-color: black;
+    color: white;
+    height: 30px;
+    width: 30px;
+    text-align: center;
 }
+#lr {
+    float: right;
+    padding-top: 15px;
+    padding-right: 5px;
+    font-weight: bold;
+}
+
+td {
+    height: 30px;
+    width: 70px;
+
+    text-align: center;
+    font-weight: bold;
+
+    padding: 7px;
+    border: 1px solid black;
+}
+article {
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
