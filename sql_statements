@@ -15,3 +15,41 @@ SELECT * FROM {TASKS} ORDER BY STATUS DESC
 
 SELECT * FROM {TASKS} ORDER BY DISTANCE ASC
 SELECT * FROM {TASKS} ORDER BY DISTANCE DESC
+
+//it doesnt matter whether 1 is complete or incomplete here
+SELECT * FROM {TASKS} WHERE STATUS = 1
+SELECT * FROM {TASKS} WHERE STATUS = 0
+
+
+Filters involving dates could be added too if necessary, this page is helpful https://www.tutorialspoint.com/sqlite/sqlite_date_time.htm
+
+//select if the date of the task if less than 1 month
+
+//strftime('%s','now') returns the current unix time (seconds since jan 1 1970)
+//DATE means the date that the problem was submitted
+//if the number of seconds from 1970 to now - 2629800 (the number of seconds in a month) - the number of seconds from 1970 to the DATE of the issue is greater than 0 (less than a month difference between them) then display it
+SELECT * FROM {TASKS} WHERE strftime('%s', 'now', '-1 months') - strftime('%s', DATE); > 0
+
+//we could format this string on the server side and then query the database with it instead of having separate strings for each time frame
+//the time frames can be days, months, years
+SELECT * FROM {TASKS} WHERE strftime('%s', 'now', '-{NUMBER OF TIME FRAMES E.G. DAYS} {TIME FRAME}') - strftime('%s', DATE); > 0
+
+so for all tasks from the last 6 months we format the above string to be as such 
+SELECT * FROM {TASKS} WHERE strftime('%s', 'now', '-6 months') - strftime('%s', DATE); > 0
+
+
+base case for filtering (no filtering)
+SELECT * FROM {TASKS}
+
+Each filter needs to add an extra part to the query string e.g
+if filtering is used, format this string
+SELECT * FROM {TASKS} WHERE
+
+e.g.
+SELECT * FROM {TASKS} WHERE strftime('%s', 'now', '-1 months') - strftime('%s', DATE); > 0
+
+and for the number of filters - 1we add an AND to the end e.g. if we want to select all the things solved from the past month we use 
+SELECT * FROM {TASKS} WHERE strftime('%s', 'now', '-1 months') - strftime('%s', DATE); > 0 AND STATUS = 1
+
+
+
