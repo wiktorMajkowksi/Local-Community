@@ -53,7 +53,7 @@ const dbName = 'website.db'
  * @route {GET} /
  * @authentication This route requires cookie-based authentication.
  */
-router.get('/home', async ctx => {
+router.get('/', async ctx => {
 	try {
 		if(ctx.session.authorised !== true) return ctx.redirect('/login?msg=you need to log in')
 		const data = {}
@@ -107,7 +107,7 @@ router.post('/login', async ctx => {
 		const user = await new User(dbName)
 		await user.login(body.user, body.pass)
 		ctx.session.authorised = true
-		return ctx.redirect('/home')
+		return ctx.redirect('/')
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}
@@ -120,10 +120,8 @@ router.get('/logout', async ctx => {
 })
 
 router.get('/contacts', async ctx => {await ctx.render('contacts')})	//routes to Contacts page
-router.get('/home', async ctx => {await ctx.render('home')})	//routes to Home page
+router.get('/', async ctx => {await ctx.render('')})	//routes to Home page
 router.get('/staff', async ctx => {await ctx.render('staff')})		//routes to Staff page
-router.get('/', async ctx => {await ctx.render('home')})
-
 router.get('/issues', async ctx => {
 	try {
 		console.log(testData)
