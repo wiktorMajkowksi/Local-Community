@@ -17,6 +17,19 @@ const session = require('koa-session')
 /* IMPORT CUSTOM MODULES */
 const User = require('./modules/user')
 
+/*EXAMPLE BOOK DATA FOR TESTING BEFORE WE HAVE A DATABASE */
+const testData = [
+	{id: 1, 
+	issueType : "vandalism",
+	raisedBy : "Fred Cook",
+	dateSet : "2019-10-22",
+	location : "Priory Street",
+	status : "Incomplete"
+	}
+]
+
+console.log(testData)
+
 
 
 const app = new Koa()
@@ -109,6 +122,19 @@ router.get('/logout', async ctx => {
 router.get('/contacts', async ctx => {await ctx.render('contacts')})	//routes to Contacts page
 router.get('/home', async ctx => {await ctx.render('home')})	//routes to Home page
 router.get('/staff', async ctx => {await ctx.render('staff')})		//routes to Staff page
+router.get('/', async ctx => {await ctx.render('home')})
+
+router.get('/issues', async ctx => {
+	try {
+		console.log(testData)
+		await ctx.render('issues', {issue : testData})
+	}
+	catch (err) {
+		await ctx.render('error', {message: err.message})
+	}
+})
+
+
 
 app.use(router.routes())
 module.exports = app.listen(port, async() => console.log(`listening on port ${port}`))
