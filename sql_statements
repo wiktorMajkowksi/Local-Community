@@ -1,0 +1,17 @@
+//these are sql statements that once the database is set up can be used to query it
+
+//ID 12
+
+//NOTE - the "{TASKS}" needs to be replaced with the name of the table, i just used TASKS as a placeholder
+
+SELECT * FROM {TASKS} ORDER BY DATE ASC
+SELECT * FROM {TASKS} ORDER BY DATE DESC
+
+SELECT * FROM {TASKS} ORDER BY TYPE ASC
+SELECT * FROM {TASKS} ORDER BY TYPE DESC
+
+SELECT * FROM {TASKS} ORDER BY STATUS ASC
+SELECT * FROM {TASKS} ORDER BY STATUS DESC
+
+SELECT * FROM {TASKS} ORDER BY DISTANCE ASC
+SELECT * FROM {TASKS} ORDER BY DISTANCE DESC
