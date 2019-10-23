@@ -5,35 +5,48 @@
 		<meta charset="utf-8">
 		<title>Issues</title>
 		<meta name="author" content="Fred Cook">
-		<link href="style.css" type="text/css" rel="stylesheet" />
+        <link href="defaultStyle.css" type="text/css" rel="stylesheet" />
         <link href="issues.css" type="text/css" rel="stylesheet" />
 	</head>
 	<body>
+        <nav id = "navigation">
+			<table>
+				<tr> 
+					<td id="logo"> L</td>
+					<td id="button"><a href="/"> Home </a></td>
+				 	<td id="button"><a href="/staff"> Staff </a></td>
+					<td id="button"><a href="/contacts"> Contacts </a></td>
+					<td id="button"><a href="/issues"> Issues </a></td>
+					<a id="lr" href="/register">| Register</a> <a id="lr" href="/login">Login |</a>
+				</tr>
+			</table>
+		</nav>	
         <h1> Issues </h1>
 
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Issue</th>
-                <th>Raised by</th>
-                <th>Date Set</th>
-                <th>Location</th>
-                <th>Status</th>      
-            </tr>
-
-            {{#each issue}}
+        <article>
+            <table id = "table">
                 <tr>
-                    <td>{{this.id}}</td>
-                    <td>{{this.issueType}}</td>
-                    <td>{{this.raisedBy}}</td>
-                    <td>{{this.dateSet}}</td>
-                    <td>{{this.location}}</td>
-                    <td>{{this.status}}</td>
+                    <th id = "th">ID</th>
+                    <th id = "th">Issue</th>
+                    <th id = "th">Raised by</th>
+                    <th id = "th">Date Set</th>
+                    <th id = "th">Location</th>
+                    <th id = "th">Status</th>      
                 </tr>
 
-            {{/each}}
+                {{#each issue}}
+                    <tr>
+                        <td id = "td">{{this.id}}</td>
+                        <td id = "td">{{this.issueType}}</td>
+                        <td id = "td">{{this.raisedBy}}</td>
+                        <td id = "td">{{this.dateSet}}</td>
+                        <td id = "td">{{this.location}}</td>
+                        <td id = "td">{{this.status}}</td>
+                    </tr>
 
-        </table>
+                {{/each}}
+            </table>
+        </article>    
 	</body>
 
 
