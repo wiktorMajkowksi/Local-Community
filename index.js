@@ -107,7 +107,7 @@ router.get('/logout', async ctx => {
 })
 
 router.get('/contacts', async ctx => {await ctx.render('contacts')})	//routes to Contacts page
-router.get('/home', async ctx => {await ctx.render('home')})	//routes to Home page
+router.get('/', async ctx => {await ctx.render('')})	//routes to Home page
 router.get('/staff', async ctx => {await ctx.render('staff')})		//routes to Staff page
 
 app.use(router.routes())
