@@ -21,7 +21,7 @@ body {
     background-color: black;
     color: white;
     height: 30px;
-    width: 30px;
+    width: 40px;
     text-align: center;
 }
 #lr {
@@ -30,8 +30,7 @@ body {
     padding-right: 5px;
     font-weight: bold;
 }
-
-td {
+#button {
     height: 30px;
     width: 70px;
 
@@ -40,7 +39,9 @@ td {
 
     padding: 3px;
     border: 1px solid black;
-    
+}
+button:hover {
+    background-color: rgb(20,20,20);
 }
 article {
     padding: 5px;
@@ -48,20 +49,13 @@ article {
     height: 700px;
     color: white;
 }
-
 a {
     text-decoration: none;
     color: black;
 }
-
-td:hover {
-    background-color: rgb(20,20,20);
-    
-}
 a:hover {
     color: white;
 }
-
 footer {
     background-color: rgba(0, 0, 0, 0.7);
     height: 50px;
