@@ -40,7 +40,7 @@ const dbName = 'website.db'
  * @route {GET} /
  * @authentication This route requires cookie-based authentication.
  */
-router.get('/', async ctx => {
+router.get('/home', async ctx => {
 	try {
 		if(ctx.session.authorised !== true) return ctx.redirect('/login?msg=you need to log in')
 		const data = {}
@@ -94,7 +94,7 @@ router.post('/login', async ctx => {
 		const user = await new User(dbName)
 		await user.login(body.user, body.pass)
 		ctx.session.authorised = true
-		return ctx.redirect('/?msg=you are now logged in...')
+		return ctx.redirect('/home')
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}
@@ -102,8 +102,13 @@ router.post('/login', async ctx => {
 
 router.get('/logout', async ctx => {
 	ctx.session.authorised = null
-	ctx.redirect('/?msg=you are now logged out')
+	ctx.redirect('/login')
+
 })
+
+router.get('/contacts', async ctx => {await ctx.render('contacts')})	//routes to Contacts page
+router.get('/home', async ctx => {await ctx.render('home')})	//routes to Home page
+router.get('/staff', async ctx => {await ctx.render('staff')})		//routes to Staff page
 
 app.use(router.routes())
 module.exports = app.listen(port, async() => console.log(`listening on port ${port}`))
