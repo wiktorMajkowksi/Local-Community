@@ -1,0 +1,68 @@
+body {
+    background-image: url(background.jpg);
+    background-size: cover;
+    font-family: Arial, Helvetica, sans-serif;
+    
+}
+
+#navigation {
+    background-color: rgb(80, 80, 80);
+    background-size: cover;
+
+    margin: -9px;
+    margin-top: -9px;
+}
+#logo{
+    background-color: black;
+    color: white;
+    height: 30px;
+    width: 30px;
+    text-align: center;
+}
+#lr {
+    float: right;
+    padding-top: 12px;
+    padding-right: 5px;
+    font-weight: bold;
+}
+
+td {
+    height: 30px;
+    width: 70px;
+
+    text-align: center;
+    font-weight: bold;
+
+    padding: 3px;
+    border: 1px solid black;
+    
+}
+article {
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.7);
+    height: 700px;
+    color: white;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+td:hover {
+    background-color: rgb(20,20,20);
+    
+}
+a:hover {
+    color: white;
+}
+
+footer {
+    background-color: rgba(0, 0, 0, 0.7);
+    height: 50px;
+    color: white;
+    clear: both;
+}
+
+
+
