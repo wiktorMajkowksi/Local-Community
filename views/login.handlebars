@@ -15,10 +15,11 @@
  			<p class="msg">{{msg}}</p>
 		{{/if}}
 		<form action="/login" method="post">
-			<p>Username:<br /><input type="text" name="user" placeholder="your username" value="{{user}}" autofocus></p>
-			<p>Password:<br /><input type="password" name="pass" placeholder="your password" value=""></p>
+			<p id="user">Username:<br /><input type="text" name="user" placeholder="Username" value="{{user}}" autofocus></p>
+			<p>Password:<br /><input type="password" name="pass" placeholder="Password" value=""></p>
 			<p><input type="submit" value="Log in"></p>
+			<p>_______________________</p>
+			<p><a id="button" href="/register">Register</a></p>
 		</form>
-		<p><a href="/register">register</a></p>
 	</body>
 </html>
