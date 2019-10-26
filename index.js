@@ -3,9 +3,9 @@
 //Routes File
 
 'use strict'
- 
+
 /* MODULE IMPORTS. */
-const Koa = require('koa');
+const Koa = require('koa')
 const Router = require('koa-router')
 const views = require('koa-views')
 const staticDir = require('koa-static')
@@ -19,17 +19,16 @@ const User = require('./modules/user')
 
 /*EXAMPLE BOOK DATA FOR TESTING BEFORE WE HAVE A DATABASE */
 const testData = [
-	{id: 1, 
-	issueType : "vandalism",
-	raisedBy : "Fred Cook",
-	dateSet : "2019-10-22",
-	location : "Priory Street",
-	status : "Incomplete"
+	{id: 1,
+		issueType: 'vandalism',
+		raisedBy: 'Fred Cook',
+		dateSet: '2019-10-22',
+		location: 'Priory Street',
+		status: 'Incomplete'
 	}
 ]
 
 console.log(testData)
-
 
 
 const app = new Koa()
@@ -43,8 +42,8 @@ app.use(session(app))
 app.use(views(`${__dirname}/views`, { extension: 'handlebars' }, {map: { handlebars: 'handlebars' }}))
 
 const defaultPort = 8080
-const port = process.env.PORT || defaultPort 
-const dbName = 'website.db'	
+const port = process.env.PORT || defaultPort
+const dbName = 'website.db'
 
 /**
  * The secure home page.
@@ -119,19 +118,26 @@ router.get('/logout', async ctx => {
 
 })
 
-router.get('/contacts', async ctx => {await ctx.render('contacts')})	//routes to Contacts page
-router.get('/', async ctx => {await ctx.render('')})	//routes to Home page
-router.get('/staff', async ctx => {await ctx.render('staff')})		//routes to Staff page
+router.get('/contacts', async ctx => {
+	await ctx.render('contacts')
+})	//routes to Contacts page
+
+router.get('/', async ctx => {
+	await ctx.render('')
+})	//routes to Home page
+
+router.get('/staff', async ctx => {
+	await ctx.render('staff')
+})		//routes to Staff page
+
 router.get('/issues', async ctx => {
 	try {
 		console.log(testData)
-		await ctx.render('issues', {issue : testData})
-	}
-	catch (err) {
+		await ctx.render('issues', {issue: testData})
+	} catch (err) {
 		await ctx.render('error', {message: err.message})
 	}
 })
-
 
 
 app.use(router.routes())
