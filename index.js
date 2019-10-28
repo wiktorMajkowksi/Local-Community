@@ -5,21 +5,19 @@
 'use strict'
 
 /* MODULE IMPORTS */
-const bcrypt = require('bcrypt-promise')
-const Koa = require('koa')
+const Koa = require('koa');
 const Router = require('koa-router')
 const views = require('koa-views')
 const staticDir = require('koa-static')
 const bodyParser = require('koa-bodyparser')
 const koaBody = require('koa-body')({multipart: true, uploadDir: '.'})
 const session = require('koa-session')
-const sqlite = require('sqlite-async')
-const fs = require('fs-extra')
-const mime = require('mime-types')
 //const jimp = require('jimp')
 
 /* IMPORT CUSTOM MODULES */
 const User = require('./modules/user')
+
+
 
 const app = new Koa()
 const router = new Router()
@@ -32,9 +30,8 @@ app.use(session(app))
 app.use(views(`${__dirname}/views`, { extension: 'handlebars' }, {map: { handlebars: 'handlebars' }}))
 
 const defaultPort = 8080
-const port = process.env.PORT || defaultPort
-const dbName = 'website.db'
-const saltRounds = 10
+const port = process.env.PORT || defaultPort 
+const dbName = 'website.db'	
 
 /**
  * The secure home page.
@@ -73,7 +70,6 @@ router.post('/register', koaBody, async ctx => {
 		// extract the data from the request
 		const body = ctx.request.body
 		console.log(body)
-		const {path, type} = ctx.request.files.avatar
 		// call the functions in the module
 		const user = await new User(dbName)
 		await user.register(body.user, body.pass)
