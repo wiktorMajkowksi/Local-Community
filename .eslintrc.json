@@ -62,7 +62,7 @@
     "yoda": "error"
 	},
 	"overrides": [{
-		"files": [ "*.test.js", "*.spec.js", "sqlite-async.js" ],
+		"files": [ "*.test.js", "*.spec.js", "*.steps.js" ],
 		"rules": {
       "global-require": "off",
 			"max-lines-per-function": "off",
