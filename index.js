@@ -12,6 +12,7 @@ const staticDir = require('koa-static')
 const bodyParser = require('koa-bodyparser')
 const koaBody = require('koa-body')({multipart: true, uploadDir: '.'})
 const session = require('koa-session')
+const Database = require('sqlite-async')
 //const jimp = require('jimp')
 
 /* IMPORT CUSTOM MODULES */
@@ -58,6 +59,13 @@ router.get('/', async ctx => {
 		const data = {}
 		if(ctx.query.msg) data.msg = ctx.query.msg
 		await ctx.render('index')
+
+		const sql = 'SELECT * from tasks';
+		const db = await Database.open(dbName)
+		const databaseData = await db.all(sql)
+		await db.close()
+
+
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}
@@ -121,11 +129,11 @@ router.get('/logout', async ctx => {
 router.get('/contacts', async ctx => {
 	await ctx.render('contacts')
 })	//routes to Contacts page
-
+/*
 router.get('/', async ctx => {
 	await ctx.render('')
 })	//routes to Home page
-
+*/
 router.get('/staff', async ctx => {
 	await ctx.render('staff')
 })		//routes to Staff page
