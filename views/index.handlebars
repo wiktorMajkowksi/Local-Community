@@ -38,7 +38,7 @@
                 <th>Status</th>      
             </tr>
 
-            {{#each issue}}
+            {{#each data}}
                 <tr>
                     <td>{{this.id}}</td>
                     <td>{{this.issueType}}</td>
@@ -47,9 +47,7 @@
                     <td>{{this.location}}</td>
                     <td>{{this.status}}</td>
                 </tr>
-
             {{/each}}
-
         </table>
 
 

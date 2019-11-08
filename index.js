@@ -55,16 +55,19 @@ const dbName = 'website.db'
  */
 router.get('/', async ctx => {
 	try {
-		if(ctx.session.authorised !== true) return ctx.redirect('/login?msg=you need to log in')
-		const data = {}
+
+		let sql = 'select * FROM tasks;'
+		let querystring = ''
+
+		if(ctx.session.authorised != true) return ctx.redirect('/login?msg=you need to log in')
 		if(ctx.query.msg) data.msg = ctx.query.msg
 		await ctx.render('index')
 
-		const sql = 'SELECT * from tasks';
 		const db = await Database.open(dbName)
 		const databaseData = await db.all(sql)
 		await db.close()
-
+		console.log("Data", databaseData)
+		await ctx.render('index', {tasks: databaseData, query: querystring})
 
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
