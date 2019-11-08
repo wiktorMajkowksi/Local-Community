@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+/* eslint-disable linebreak-style */
+
 //Routes File
 
 'use strict'
@@ -18,20 +20,6 @@ const Database = require('sqlite-async')
 /* IMPORT CUSTOM MODULES */
 const User = require('./modules/user')
 
-/*EXAMPLE BOOK DATA FOR TESTING BEFORE WE HAVE A DATABASE */
-const testData = [
-	{id: 1,
-		issueType: 'vandalism',
-		raisedBy: 'Fred Cook',
-		dateSet: '2019-10-22',
-		location: 'Priory Street',
-		status: 'Incomplete'
-	}
-]
-
-console.log(testData)
-
-
 const app = new Koa()
 const router = new Router()
 
@@ -46,6 +34,19 @@ const defaultPort = 8080
 const port = process.env.PORT || defaultPort
 const dbName = 'website.db'
 
+/*EXAMPLE BOOK DATA FOR TESTING BEFORE WE HAVE A DATABASE */
+const testData = [
+	{id: 1,
+		issueType: 'vandalism',
+		raisedBy: 'Fred Cook',
+		dateSet: '2019-10-22',
+		location: 'Priory Street',
+		status: 'Incomplete'
+	}
+]
+
+console.log(testData)
+
 /**
  * The secure home page.
  *
@@ -55,25 +56,18 @@ const dbName = 'website.db'
  */
 router.get('/', async ctx => {
 	try {
-
-		let sql = 'select * FROM tasks;'
-		let querystring = ''
-
-		if(ctx.session.authorised != true) return ctx.redirect('/login?msg=you need to log in')
-		if(ctx.query.msg) data.msg = ctx.query.msg
-		await ctx.render('index')
-
+		const sql = 'SELECT * FROM tasks;'
+		const querystring = ''
+		console.log(ctx.query.q)
 		const db = await Database.open(dbName)
-		const databaseData = await db.all(sql)
+		const data = await db.all(sql)
 		await db.close()
-		console.log("Data", databaseData)
-		await ctx.render('index', {tasks: databaseData, query: querystring})
-
+		console.log(data)
+		await ctx.render('index', {tasks: data, query: querystring})
 	} catch(err) {
-		await ctx.render('error', {message: err.message})
+		ctx.body = err.message
 	}
 })
-
 /**
  * The user registration page.
  *
