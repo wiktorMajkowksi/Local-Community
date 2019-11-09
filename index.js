@@ -65,7 +65,7 @@ router.get('/', async ctx => {
 		console.log(data)
 		await ctx.render('index', {tasks: data, query: querystring})
 	} catch(err) {
-		ctx.body = err.message
+		await ctx.render('error', {message: err.message})
 	}
 })
 /**
