@@ -31,6 +31,19 @@ const defaultPort = 8080
 const port = process.env.PORT || defaultPort
 const dbName = 'website.db'
 
+/*EXAMPLE BOOK DATA FOR TESTING BEFORE WE HAVE A DATABASE */
+const testData = [
+	{id: 1,
+		issueType: 'vandalism',
+		raisedBy: 'Fred Cook',
+		dateSet: '2019-10-22',
+		location: 'Priory Street',
+		status: 'Incomplete'
+	}
+]
+
+console.log(testData)
+
 /**
  * The secure home page.
  *
