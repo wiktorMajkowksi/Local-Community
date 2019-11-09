@@ -4,7 +4,7 @@
 
 'use strict'
 
-/* MODULE IMPORTS. */
+/* MODULE IMPORTS */
 const Koa = require('koa')
 const Router = require('koa-router')
 const views = require('koa-views')
@@ -16,20 +16,6 @@ const session = require('koa-session')
 
 /* IMPORT CUSTOM MODULES */
 const User = require('./modules/user')
-
-/*EXAMPLE BOOK DATA FOR TESTING BEFORE WE HAVE A DATABASE */
-const testData = [
-	{id: 1,
-		issueType: 'vandalism',
-		raisedBy: 'Fred Cook',
-		dateSet: '2019-10-22',
-		location: 'Priory Street',
-		status: 'Incomplete'
-	}
-]
-
-console.log(testData)
-
 
 const app = new Koa()
 const router = new Router()
