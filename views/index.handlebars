@@ -17,7 +17,9 @@
 				 	<td id="button"><a href="/staff"> Staff </a></td>
 					<td id="button"><a href="/contacts"> Contacts </a></td>
 					<td id="button"><a href="/issues"> Issues </a></td>
-					<a id="lr" href="/register">| Register</a> <a id="lr" href="/login">Login |</a>
+					{{#unless action="/login"}}
+						<a id="lr" href="/register">| Register</a> <a id="lr" href="/login">Login |</a>
+					{{/unless}}
 				</tr>
 			</table>
 		</nav>	
