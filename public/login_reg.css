@@ -10,6 +10,14 @@ body {
     50%{background-position:100% 50%}
     100%{background-position:0% 50%}
 }
+.msg {
+    border: 1px solid red;
+    font-weight: bold;
+    color: red;
+    padding: 1em;
+    width: 320px;
+    margin-left: 41%;
+  }
 
 #button{
     color:white;
