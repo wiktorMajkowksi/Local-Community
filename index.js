@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+/* eslint-disable linebreak-style */
+
 //Routes File
 
 'use strict'
@@ -12,6 +14,7 @@ const staticDir = require('koa-static')
 const bodyParser = require('koa-bodyparser')
 const koaBody = require('koa-body')({multipart: true, uploadDir: '.'})
 const session = require('koa-session')
+const Database = require('sqlite-async')
 //const jimp = require('jimp')
 
 /* IMPORT CUSTOM MODULES */
@@ -53,15 +56,18 @@ console.log(testData)
  */
 router.get('/', async ctx => {
 	try {
-		if(ctx.session.authorised !== true) return ctx.redirect('/login?msg=you need to log in')
-		const data = {}
-		if(ctx.query.msg) data.msg = ctx.query.msg
-		await ctx.render('index')
+		const sql = 'SELECT * FROM tasks;'
+		const querystring = ''
+		console.log(ctx.query.q)
+		const db = await Database.open(dbName)
+		const data = await db.all(sql)
+		await db.close()
+		console.log(data)
+		await ctx.render('index', {tasks: data, query: querystring})
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}
 })
-
 /**
  * The user registration page.
  *
@@ -120,11 +126,11 @@ router.get('/logout', async ctx => {
 router.get('/contacts', async ctx => {
 	await ctx.render('contacts')
 })	//routes to Contacts page
-
+/*
 router.get('/', async ctx => {
 	await ctx.render('')
 })	//routes to Home page
-
+*/
 router.get('/staff', async ctx => {
 	await ctx.render('staff')
 })		//routes to Staff page
