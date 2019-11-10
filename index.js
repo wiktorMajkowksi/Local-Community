@@ -33,6 +33,7 @@ app.use(views(`${__dirname}/views`, { extension: 'handlebars' }, {map: { handleb
 const defaultPort = 8080
 const port = process.env.PORT || defaultPort
 const dbName = 'website.db'
+const tasksDB = 'tasks.db'
 
 /*EXAMPLE BOOK DATA FOR TESTING BEFORE WE HAVE A DATABASE */
 const testData = [
@@ -59,7 +60,7 @@ router.get('/', async ctx => {
 		const sql = 'SELECT * FROM tasks;'
 		const querystring = ''
 		console.log(ctx.query.q)
-		const db = await Database.open(dbName)
+		const db = await Database.open(tasksDB)
 		const data = await db.all(sql)
 		await db.close()
 		console.log(data)
