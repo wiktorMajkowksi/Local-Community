@@ -33,7 +33,6 @@ app.use(views(`${__dirname}/views`, { extension: 'handlebars' }, {map: { handleb
 const defaultPort = 8080
 const port = process.env.PORT || defaultPort
 const dbName = 'website.db'
-const tasksDB = 'tasks.db'
 
 /*EXAMPLE BOOK DATA FOR TESTING BEFORE WE HAVE A DATABASE */
 const testData = [
@@ -60,7 +59,11 @@ router.get('/', async ctx => {
 		const sql = 'SELECT * FROM tasks;'
 		const querystring = ''
 		console.log(ctx.query.q)
-		const db = await Database.open(tasksDB)
+		const db = await Database.open(dbName)
+
+		//Setup the tasks table if it does not exist
+		await db.run("CREATE TABLE IF NOT EXISTS tasks ( id INTEGER PRIMARY KEY, issueType VARCHAR,	raisedBy  VARCHAR,	dateSet   DATE,	location  VARCHAR,	status );")
+		
 		const data = await db.all(sql)
 		await db.close()
 		console.log(data)
