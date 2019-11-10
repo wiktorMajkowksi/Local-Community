@@ -17,7 +17,7 @@
 				 	<td id="button"><a href="/staff"> Staff </a></td>
 					<td id="button"><a href="/contacts"> Contacts </a></td>
 					<td id="button"><a href="/issues"> Issues </a></td>
-					{{#unless action="/login"}}
+					{{#unless action="/login" method="post"}}
 						<a id="lr" href="/register">| Register</a> <a id="lr" href="/login">Login |</a>
 					{{/unless}}
 				</tr>
