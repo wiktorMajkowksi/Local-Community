@@ -1,36 +1,24 @@
 #!/usr/bin/env node
 
+/* eslint-disable linebreak-style */
+
 //Routes File
 
 'use strict'
- 
-/* MODULE IMPORTS. */
-const Koa = require('koa');
+
+/* MODULE IMPORTS */
+const Koa = require('koa')
 const Router = require('koa-router')
 const views = require('koa-views')
 const staticDir = require('koa-static')
 const bodyParser = require('koa-bodyparser')
 const koaBody = require('koa-body')({multipart: true, uploadDir: '.'})
 const session = require('koa-session')
+const Database = require('sqlite-async')
 //const jimp = require('jimp')
 
 /* IMPORT CUSTOM MODULES */
 const User = require('./modules/user')
-
-/*EXAMPLE BOOK DATA FOR TESTING BEFORE WE HAVE A DATABASE */
-const testData = [
-	{id: 1, 
-	issueType : "vandalism",
-	raisedBy : "Fred Cook",
-	dateSet : "2019-10-22",
-	location : "Priory Street",
-	status : "Incomplete"
-	}
-]
-
-console.log(testData)
-
-
 
 const app = new Koa()
 const router = new Router()
@@ -43,8 +31,21 @@ app.use(session(app))
 app.use(views(`${__dirname}/views`, { extension: 'handlebars' }, {map: { handlebars: 'handlebars' }}))
 
 const defaultPort = 8080
-const port = process.env.PORT || defaultPort 
-const dbName = 'website.db'	
+const port = process.env.PORT || defaultPort
+const dbName = 'website.db'
+
+/*EXAMPLE BOOK DATA FOR TESTING BEFORE WE HAVE A DATABASE */
+const testData = [
+	{id: 1,
+		issueType: 'vandalism',
+		raisedBy: 'Fred Cook',
+		dateSet: '2019-10-22',
+		location: 'Priory Street',
+		status: 'Incomplete'
+	}
+]
+
+console.log(testData)
 
 /**
  * The secure home page.
@@ -55,15 +56,22 @@ const dbName = 'website.db'
  */
 router.get('/', async ctx => {
 	try {
-		if(ctx.session.authorised !== true) return ctx.redirect('/login?msg=you need to log in')
-		const data = {}
-		if(ctx.query.msg) data.msg = ctx.query.msg
-		await ctx.render('index')
+		const sql = 'SELECT * FROM tasks;'
+		const querystring = ''
+		console.log(ctx.query.q)
+		const db = await Database.open(dbName)
+
+		//Setup the tasks table if it does not exist
+		await db.run("CREATE TABLE IF NOT EXISTS tasks ( id INTEGER PRIMARY KEY, issueType VARCHAR,	raisedBy  VARCHAR,	dateSet   DATE,	location  VARCHAR,	status );")
+		
+		const data = await db.all(sql)
+		await db.close()
+		console.log(data)
+		await ctx.render('index', {tasks: data, query: querystring})
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}
 })
-
 /**
  * The user registration page.
  *
@@ -119,19 +127,26 @@ router.get('/logout', async ctx => {
 
 })
 
-router.get('/contacts', async ctx => {await ctx.render('contacts')})	//routes to Contacts page
-router.get('/', async ctx => {await ctx.render('')})	//routes to Home page
-router.get('/staff', async ctx => {await ctx.render('staff')})		//routes to Staff page
+router.get('/contacts', async ctx => {
+	await ctx.render('contacts')
+})	//routes to Contacts page
+/*
+router.get('/', async ctx => {
+	await ctx.render('')
+})	//routes to Home page
+*/
+router.get('/staff', async ctx => {
+	await ctx.render('staff')
+})		//routes to Staff page
+
 router.get('/issues', async ctx => {
 	try {
 		console.log(testData)
-		await ctx.render('issues', {issue : testData})
-	}
-	catch (err) {
+		await ctx.render('issues', {issue: testData})
+	} catch (err) {
 		await ctx.render('error', {message: err.message})
 	}
 })
-
 
 
 app.use(router.routes())
