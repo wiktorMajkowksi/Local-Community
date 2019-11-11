@@ -22,9 +22,9 @@
 			</table>
 		</nav>	
         <h1> Issues </h1>
-
+        
         <article>
-            <table id = "table">
+            <table id = "table" width="80%">
                 <tr>
                     <th id = "th">ID</th>
                     <th id = "th">Issue</th>
@@ -34,8 +34,8 @@
                     <th id = "th">Status</th>      
                 </tr>
 
-                {{#each issue}}
-                    <tr>
+                {{#each tasks}}
+                    <tr id="lol">
                         <td id = "td">{{this.id}}</td>
                         <td id = "td">{{this.issueType}}</td>
                         <td id = "td">{{this.raisedBy}}</td>
@@ -46,6 +46,11 @@
 
                 {{/each}}
             </table>
+
+
+
+
+
         </article>    
 	</body>
 

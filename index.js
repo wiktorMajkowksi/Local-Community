@@ -56,18 +56,7 @@ console.log(testData)
  */
 router.get('/', async ctx => {
 	try {
-		const sql = 'SELECT * FROM tasks;'
-		const querystring = ''
-		console.log(ctx.query.q)
-		const db = await Database.open(dbName)
-
-		//Setup the tasks table if it does not exist
-		await db.run("CREATE TABLE IF NOT EXISTS tasks ( id INTEGER PRIMARY KEY, issueType VARCHAR,	raisedBy  VARCHAR,	dateSet   DATE,	location  VARCHAR,	status );")
-		
-		const data = await db.all(sql)
-		await db.close()
-		console.log(data)
-		await ctx.render('index', {tasks: data, query: querystring})
+		await ctx.render('index')
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}
@@ -141,8 +130,17 @@ router.get('/staff', async ctx => {
 
 router.get('/issues', async ctx => {
 	try {
-		console.log(testData)
-		await ctx.render('issues', {issue: testData})
+		const sql = 'SELECT * FROM tasks;'
+		const querystring = ''
+		console.log(ctx.query.q)
+		const db = await Database.open(dbName)
+
+		//Setup the tasks table if it does not exist
+		await db.run("CREATE TABLE IF NOT EXISTS tasks ( id INTEGER PRIMARY KEY, issueType VARCHAR,	raisedBy  VARCHAR,	dateSet   DATE,	location  VARCHAR,	status );")		
+		const data = await db.all(sql)
+		await db.close()
+		console.log(data)
+		await ctx.render('issues', {tasks: data, query: querystring})
 	} catch (err) {
 		await ctx.render('error', {message: err.message})
 	}
