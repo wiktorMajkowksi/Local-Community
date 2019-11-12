@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Issues</title>
-		<meta name="author" content="Fred Cook">
+		<meta name="author" content="Fred Cook, Wiktor Majkowski">
         <link href="defaultStyle.css" type="text/css" rel="stylesheet" />
         <link href="issues.css" type="text/css" rel="stylesheet" />
 	</head>
@@ -33,6 +33,7 @@
                     <th id = "th">Location</th>
                     <th id = "th">Status</th>      
                 </tr>
+                <p><input type="submit" value="Submit"></p>
 
                 {{#each tasks}}
                     <tr id="lol">
@@ -43,8 +44,26 @@
                         <td id = "td">{{this.location}}</td>
                         <td id = "td">{{this.status}}</td>
                     </tr>
-
                 {{/each}}
+                <form action="/issues" method="get">
+                    <td id="td">ID</td>
+                    <td id="td"><input type="text"></td>
+                    <td id="td"><input type="text"></td>
+                    <td id="td"><input type="date"></td>
+                    <td id="td"><input list="location"></td> 
+                        {{#each tasks1}}
+                            <datalist id="location">
+                                <option value="location 1">
+                                <option value={{this.postcode}}>
+                            </datalist>
+                        {{/each}}
+                    <td id="td"><select list="status">
+                            <option value="Choose one">Choose one...</option>
+                            <option value="Complete">Complete</option>
+                            <option value="Incomplete">Incomplete</option>                        </option>
+                        </select>
+                    </td>
+                </form>
             </table>
 
 

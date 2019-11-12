@@ -18,3 +18,13 @@
     background-color: rgba(62, 67, 150, 0.5)
 }
 
+input[type="submit"]{
+    background-color: transparent;
+    float: right;
+    padding: 10px;
+    border: solid black 1px;
+    cursor: pointer;
+}
+input[type="submit"]:hover{
+    background-color: green;
+}

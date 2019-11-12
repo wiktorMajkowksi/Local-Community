@@ -33,6 +33,7 @@ app.use(views(`${__dirname}/views`, { extension: 'handlebars' }, {map: { handleb
 const defaultPort = 8080
 const port = process.env.PORT || defaultPort
 const dbName = 'website.db'
+const wardPost = 'ward_postcodes.db'
 
 /*EXAMPLE BOOK DATA FOR TESTING BEFORE WE HAVE A DATABASE */
 const testData = [
@@ -132,15 +133,33 @@ router.get('/issues', async ctx => {
 	try {
 		const sql = 'SELECT * FROM tasks;'
 		const querystring = ''
-		console.log(ctx.query.q)
+		//console.log(ctx.query.q)
 		const db = await Database.open(dbName)
-
+		
 		//Setup the tasks table if it does not exist
-		await db.run("CREATE TABLE IF NOT EXISTS tasks ( id INTEGER PRIMARY KEY, issueType VARCHAR,	raisedBy  VARCHAR,	dateSet   DATE,	location  VARCHAR,	status );")		
+		await db.run("CREATE TABLE IF NOT EXISTS tasks ( id INTEGER PRIMARY KEY, issueType VARCHAR,	raisedBy  VARCHAR,	dateSet   DATE,	location  VARCHAR,	status );")	
 		const data = await db.all(sql)
 		await db.close()
 		console.log(data)
 		await ctx.render('issues', {tasks: data, query: querystring})
+	} catch (err) {
+		await ctx.render('error', {message: err.message})
+	}
+})
+
+router.get('/issues', async ctx => {
+	try {
+		const sql = 'SELECT * FROM tasks;'
+		const querystring = ''
+		//console.log(ctx.query.q)
+		const wp = await Database.open(wardPost)
+
+		//Setup the tasks table if it does not exist
+		await wp.run("CREATE TABLE IF NOT EXISTS tasks ( postcode VARCHAR, latitude NUMERIC, longitude NUMERIC, easting INT, northing INT, grid_Ref VARCHAR, ward VARCHAR, altitude INT, lSON_Code VARCHAR);")
+		const data1 = await wp.all(sql)
+		await wp.close()
+		console.log(data1)
+		await ctx.render('issues', {tasks1: data1, query: querystring})
 	} catch (err) {
 		await ctx.render('error', {message: err.message})
 	}
