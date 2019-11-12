@@ -46,7 +46,7 @@ const testData = [
 	}
 ]
 
-console.log(testData)
+//console.log(testData)
 
 /**
  * The secure home page.
@@ -130,41 +130,26 @@ router.get('/staff', async ctx => {
 })		//routes to Staff page
 
 router.get('/issues', async ctx => {
-	try {
-		const sql = 'SELECT * FROM tasks;'
-		const querystring = ''
-		//console.log(ctx.query.q)
-		const db = await Database.open(dbName)
-		
-		//Setup the tasks table if it does not exist
-		await db.run("CREATE TABLE IF NOT EXISTS tasks ( id INTEGER PRIMARY KEY, issueType VARCHAR,	raisedBy  VARCHAR,	dateSet   DATE,	location  VARCHAR,	status );")	
-		const data = await db.all(sql)
-		await db.close()
-		console.log(data)
-		await ctx.render('issues', {tasks: data, query: querystring})
-	} catch (err) {
-		await ctx.render('error', {message: err.message})
+	if (ctx.session.authorised == true) {
+		try {
+			const sql = 'SELECT * FROM tasks;'
+			const querystring = ''
+			//console.log(ctx.query.q)
+			const db = await Database.open(dbName)
+			
+			//Setup the tasks table if it does not exist
+			await db.run("CREATE TABLE IF NOT EXISTS tasks ( id INTEGER PRIMARY KEY, issueType VARCHAR,	raisedBy  VARCHAR,	dateSet   DATE,	location  VARCHAR,	status );")	
+			const data = await db.all(sql)
+			await db.close()
+			console.log(data)
+			await ctx.render('issues', {tasks: data, query: querystring})
+		} catch (err) {
+			await ctx.render('error', {message: err.message})
+		}
+	} else {
+		await ctx.render('login')
 	}
 })
-
-router.get('/issues', async ctx => {
-	try {
-		const sql = 'SELECT * FROM tasks;'
-		const querystring = ''
-		//console.log(ctx.query.q)
-		const wp = await Database.open(wardPost)
-
-		//Setup the tasks table if it does not exist
-		await wp.run("CREATE TABLE IF NOT EXISTS tasks ( postcode VARCHAR, latitude NUMERIC, longitude NUMERIC, easting INT, northing INT, grid_Ref VARCHAR, ward VARCHAR, altitude INT, lSON_Code VARCHAR);")
-		const data1 = await wp.all(sql)
-		await wp.close()
-		console.log(data1)
-		await ctx.render('issues', {tasks1: data1, query: querystring})
-	} catch (err) {
-		await ctx.render('error', {message: err.message})
-	}
-})
-
 
 app.use(router.routes())
 module.exports = app.listen(port, async() => console.log(`listening on port ${port}`))
