@@ -135,9 +135,9 @@ router.get('/issues', async ctx => {
 		const querystring = ''
 		//console.log(ctx.query.q)
 		const db = await Database.open(dbName)
-		
+
 		//Setup the tasks table if it does not exist
-		await db.run("CREATE TABLE IF NOT EXISTS tasks ( id INTEGER PRIMARY KEY, issueType VARCHAR,	raisedBy  VARCHAR,	dateSet   DATE,	location  VARCHAR,	status );")	
+		await db.run('CREATE TABLE IF NOT EXISTS tasks ( id INTEGER PRIMARY KEY, issueType VARCHAR,	raisedBy  VARCHAR,	dateSet   DATE,	location  VARCHAR,	status );')
 		const data = await db.all(sql)
 		await db.close()
 		console.log(data)
@@ -155,7 +155,7 @@ router.get('/issues', async ctx => {
 		const wp = await Database.open(wardPost)
 
 		//Setup the tasks table if it does not exist
-		await wp.run("CREATE TABLE IF NOT EXISTS tasks ( postcode VARCHAR, latitude NUMERIC, longitude NUMERIC, easting INT, northing INT, grid_Ref VARCHAR, ward VARCHAR, altitude INT, lSON_Code VARCHAR);")
+		await wp.run('CREATE TABLE IF NOT EXISTS tasks ( postcode VARCHAR, latitude NUMERIC, longitude NUMERIC, easting INT, northing INT, grid_Ref VARCHAR, ward VARCHAR, altitude INT, lSON_Code VARCHAR);')
 		const data1 = await wp.all(sql)
 		await wp.close()
 		console.log(data1)
