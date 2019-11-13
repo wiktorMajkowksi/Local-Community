@@ -1,24 +1,25 @@
+# Local Community Project - Group E3 #
 
-# Assignment Template
-This repository contains the base files for the assignment. You will need to create a _private duplicate_ in your module organisation. Carry out the following steps, taken from the [GitHub documentation](https://help.github.com/en/enterprise/2.16/user/articles/duplicating-a-repository):
 
-Temporarily clone this repository to your development computer. This will create a directory on your computer called `temp` which contains the repository files:
+A local council wants to engage with the community to understand the issues they face. You have been asked to develop a solution that will enable those who live in the community to flag issues that can then be dealt with in a prompt manner.
 
-`git clone https://github.coventry.ac.uk/web/template-dynamic-websites.git temp`
+## Basic
 
-Create a new **private** repository in the module organisation on the GitHub server and copy the _clone url_ to the clipboard (the one that begins with `https://` and ends in `.git`. The repository name should be your username (the one you use to log into the University computers).
+1. Locals can register for an account. They should provide details such as address, postcode and the _ward_ they live in (these are the areas covered by local councillors).
+2. If they want to flag an issue they can add this by providing the location (either as GPS coords or a street name), the type of issue (noise pollution, speeding, potholes, litter, etc) and a brief description.
+3. The staff who are tasked to deal with this can see a list of issues and prioritise these.
+4. Once the issue is resolved, the person who has resolved this can flag the job as complete.
+5. Users can log on and see a list of issues, filtering by status such as reported, allocated and resolved.
 
-Mirror Push to this new repository, replacing xxx with the url from the clipboard making sure you are _in_ the `temp/` directory:
+## Intermediate
 
-`cd temp/ && git push --mirror xxx`
+1. Users can see issues listed be distance from their current location.
+2. When an issues has been allocated or resolved the person who flagged the issues gets an email update.
+3. Each job lists how many days have elapsed between it being raised and either resolved or the current date.
 
-Once you are sure the code is in your new repository, delete the temporary local repository.
+## Advanced
 
-`cd .. && rm -rf temp/`
-Your private repository on GitHub will now contain a complete copy of this template including the commits that were already made. You can now start your assignment by carrying out the following steps:
-
-Clone your private repository
-
-Change your [local config settings](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup). This is a vital step otherwise your commits won't show on the GitHub _graph_ and your grade will be affected.
-
-Start working on the assignment. Remember to install all the dependencies listed in the `package.json` file.
+1. The issues can be seen on a map of the area, clicking on an issues displays its details and status.
+2. Other users can vote for issues and these are then prioritised for resolution.
+3. staff can download a PDF job sheet listing the jobs for that day.
+4. Jobs are clustered by location. When a member of staff picks a job to be resolved the system makes suggestions for other jobs in the same area.
