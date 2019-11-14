@@ -19,6 +19,7 @@ const Database = require('sqlite-async')
 
 /* IMPORT CUSTOM MODULES */
 const User = require('./modules/user')
+const Tasks = require('./modules/tasks')
 
 const app = new Koa()
 const router = new Router()
@@ -129,6 +130,8 @@ router.get('/staff', async ctx => {
 	await ctx.render('staff')
 })		//routes to Staff page
 
+
+/*
 router.get('/issues', async ctx => {
 	try {
 		const sql = 'SELECT * FROM tasks;'
@@ -146,7 +149,20 @@ router.get('/issues', async ctx => {
 		await ctx.render('error', {message: err.message})
 	}
 })
+*/
+//my router.get('/issues)
+router.get('/issues', async ctx => {
+	try {
+		const tasks = await new Tasks('website.db') //the db is opened here and the table is created if not present
+		const data = await tasks.getAll()
+		console.log(data)
+		await ctx.render('issues', {tasks: data, query: ''})
+	} catch(err) {
+		await ctx.render('error', {message: err.message})
+	}
+})
 
+/*
 router.get('/issues', async ctx => {
 	try {
 		const sql = 'SELECT * FROM tasks;'
@@ -164,7 +180,7 @@ router.get('/issues', async ctx => {
 		await ctx.render('error', {message: err.message})
 	}
 })
-
+*/
 
 app.use(router.routes())
 module.exports = app.listen(port, async() => console.log(`listening on port ${port}`))

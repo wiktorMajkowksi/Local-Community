@@ -1,6 +1,6 @@
 'use strict'
 
-const tasks = require('../modules/tasks.js')
+const Tasks = require('../modules/tasks.js')
 
 expect.extend({
 	toContainObject(received, argument) {
@@ -31,24 +31,16 @@ https://gist.github.com/andreipfeiffer/bc38ee6387e8cfe6f1a87e8a01d02a13#file-jes
 
 */
 
-describe('constructor()', () => {
-	test('check if it goes into memory and query works as should be', async done => {
-		const data = await new tasks
-		await expect.assertions(1)
-		expect(1).toEqual(1)
-		done()
-	})
-})
 
 describe('addIssue()', () => {
 	test('single addIssue works correctly', async done => {
 		expect.assertions(2)
-		const data = await new tasks
-		await data.addIssue()
+		const tasks = await new Tasks()
+		await tasks.addIssue()
 
-		const results = await data.getAll()
+		const results = await tasks.getAll()
 		const resultsLength = await results.length
-		const mockIssue = await data.mockIssue()
+		const mockIssue = await tasks.mockIssue()
 
 		expect(results).toEqual(mockIssue)
 		expect(resultsLength).toEqual(1)
@@ -57,21 +49,21 @@ describe('addIssue()', () => {
 
 	test('test multiple addIssue results in correct / unique IDs (autoincrement)', async done => {
 		expect.assertions(3)
-		const data = await new tasks
-		await data.addIssue()
-		await data.addIssue()
+		const tasks = await new Tasks
+		await tasks.addIssue()
+		await tasks.addIssue()
 
-		const results = await data.getAll()
+		const results = await tasks.getAll()
 		const resultsLength = await results.length
-		const mockArray = (await data.mockIssue()).push(await data.mockIssue(2))
+		const mockArray = (await tasks.mockIssue()).push(await tasks.mockIssue(2))
 
 		console.log(mockArray)
 
-		const index0 = (await data.mockIssue())[0]
+		const index0 = (await tasks.mockIssue())[0]
 
 
 		expect(results).toContainObject(index0)
-		expect(results).toContainObject((await data.mockIssue(2))[0])
+		expect(results).toContainObject((await tasks.mockIssue(2))[0])
 		expect(resultsLength).toEqual(2)
 
 		done()
@@ -82,10 +74,10 @@ describe('addIssue()', () => {
 describe('mockIssue()', () => {
 	test('mockIssue gives a valid issue string', async done => {
 		expect.assertions(1)
-		const data = await new tasks()
-		const mockIssue = await data.mockIssue()
-		await data.addIssue()
-		const results = await data.getAll()
+		const tasks = await new Tasks()
+		const mockIssue = await tasks.mockIssue()
+		await tasks.addIssue()
+		const results = await tasks.getAll()
 		expect(results).toEqual(mockIssue)
 		done()
 	})
@@ -94,20 +86,20 @@ describe('mockIssue()', () => {
 
 describe('getAll()', () => {
 	test('getAll when empty', async done => {
-		const data = await new tasks()
+		const tasks = await new Tasks()
 		expect.assertions(1)
-		const result = await data.getAll()
+		const result = await tasks.getAll()
 		expect(result).toEqual([])
 		done()
 	})
 
 	test('getAll when not empty', async done => {
+		const tasks = await new Tasks()
 		expect.assertions(1)
 		//ARRANGE
-		const data = await new tasks()
 		//ACT
-		await data.addIssue()
-		const count = await data.getAll()
+		await tasks.addIssue()
+		const count = await tasks.getAll()
 		//ASSERT
 		expect(count).toEqual([{id: 1,
 			issueType: 'Vandalism',
@@ -124,8 +116,8 @@ describe('getAll()', () => {
 describe('getDateString()', () => {
 	test('test it returns a valid date string', async done => {
 		expect.assertions(2)
-		const data = await new tasks()
-		const dateString = await data.getDateString()
+		const tasks = await new Tasks()
+		const dateString = await tasks.getDateString()
 
 		//date.parse() returns the number of seconds equivalent to the current unix time, so in this case it will be a long string of numbers
 		//date.parse() returns NaN if it given an invalid date as an argument

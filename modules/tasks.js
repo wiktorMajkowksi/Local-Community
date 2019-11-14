@@ -2,7 +2,7 @@
 
 const sqlite = require('sqlite-async')
 
-module.exports = class tasks {
+module.exports = class Tasks {
 
 	constructor(dbName = ':memory:') {
 		return (async() => {
@@ -44,7 +44,7 @@ module.exports = class tasks {
 
 	async complete(id) {
 		expect.assertions(1)
-		const data = await new tasks()
+		const tasks = await new tasks()
 
 		//const query =
 	}
