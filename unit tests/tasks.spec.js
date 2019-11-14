@@ -2,6 +2,35 @@
 
 const tasks = require('../modules/tasks.js')
 
+expect.extend({
+	toContainObject(received, argument) {
+
+		const pass = this.equals(received,
+			expect.arrayContaining([
+				expect.objectContaining(argument)
+			])
+		)
+
+		if (pass) {
+			return {
+				message: () => `expected ${this.utils.printReceived(received)} not to contain object ${this.utils.printExpected(argument)}`,
+				pass: true
+			}
+		} else {
+			return {
+				message: () => `expected ${this.utils.printReceived(received)} to contain object ${this.utils.printExpected(argument)}`,
+				pass: false
+			}
+		}
+	}
+})
+
+/*This custom matcher was created by andreipfeiffer
+it can be viewed at: 
+https://gist.github.com/andreipfeiffer/bc38ee6387e8cfe6f1a87e8a01d02a13#file-jest-tocontainobject-js
+
+*/
+
 describe('constructor()', () => {
 	test('check if it goes into memory and query works as should be', async done => {
 		const data = await new tasks
@@ -10,6 +39,58 @@ describe('constructor()', () => {
 		done()
 	})
 })
+
+describe('addIssue()', () => {
+	test('single addIssue works correctly', async done => {
+		expect.assertions(2)
+		const data = await new tasks
+		await data.addIssue()
+
+		const results = await data.getAll()
+		const resultsLength = await results.length
+		const mockIssue = await data.mockIssue()
+
+		expect(results).toEqual(mockIssue)
+		expect(resultsLength).toEqual(1)
+		done()
+	})
+
+	test('test multiple addIssue results in correct / unique IDs (autoincrement)', async done => {
+		expect.assertions(3)
+		const data = await new tasks
+		await data.addIssue()
+		await data.addIssue()
+
+		const results = await data.getAll()
+		const resultsLength = await results.length
+		const mockArray = (await data.mockIssue()).push(await data.mockIssue(2))
+
+		console.log(mockArray)
+
+		const index0 = (await data.mockIssue())[0]
+
+
+		expect(results).toContainObject(index0)
+		expect(results).toContainObject((await data.mockIssue(2))[0])
+		expect(resultsLength).toEqual(2)
+
+		done()
+	})
+
+})
+
+describe('mockIssue()', () => {
+	test('mockIssue gives a valid issue string', async done => {
+		expect.assertions(1)
+		const data = await new tasks()
+		const mockIssue = await data.mockIssue()
+		await data.addIssue()
+		const results = await data.getAll()
+		expect(results).toEqual(mockIssue)
+		done()
+	})
+})
+
 
 describe('getAll()', () => {
 	test('getAll when empty', async done => {
@@ -28,7 +109,30 @@ describe('getAll()', () => {
 		await data.addIssue()
 		const count = await data.getAll()
 		//ASSERT
-		expect(count).toEqual([{id: 1,issueType: 'Vandalism',raisedBy: 'Fred Cook',dateSet: '2000-01-01',location: '1 Harper Road',status: 'Incomplete'}])
+		expect(count).toEqual([{id: 1,
+			issueType: 'Vandalism',
+			raisedBy: 'Fred Cook',
+			dateSet: '2000-01-01',
+			location: '1 Harper Road',
+			status: 'Incomplete'}])
+		done()
+	})
+
+
+})
+
+describe('getDateString()', () => {
+	test('test it returns a valid date string', async done => {
+		expect.assertions(2)
+		const data = await new tasks()
+		const dateString = await data.getDateString()
+
+		//date.parse() returns the number of seconds equivalent to the current unix time, so in this case it will be a long string of numbers
+		//date.parse() returns NaN if it given an invalid date as an argument
+		const correctResult = Date.parse(dateString)
+		const wrongResult = Date.parse('not a date')
+		expect(correctResult).not.toEqual(NaN)
+		expect(wrongResult).toEqual(NaN)
 		done()
 	})
 })
