@@ -49,6 +49,14 @@ const testData = [
 
 console.log(testData)
 
+
+
+
+let tasks = new Tasks('website.db')
+
+
+
+
 /**
  * The secure home page.
  *
@@ -152,11 +160,39 @@ router.get('/issues', async ctx => {
 */
 //my router.get('/issues)
 router.get('/issues', async ctx => {
-	try {
-		const tasks = await new Tasks('website.db') //the db is opened here and the table is created if not present
+	try { 
+		//the db is opened here and the table is created if not present
+		const tasks = await new Tasks(dbName)
 		const data = await tasks.getAll()
 		console.log(data)
+
 		await ctx.render('issues', {tasks: data, query: ''})
+	} catch(err) {
+		await ctx.render('error', {message: err.message})
+	}
+})
+
+router.post('/issues', async ctx => {
+	try {
+		const tasks = await new Tasks(dbName)
+		const body = await ctx.request.body
+
+		console.log(body)
+		console.log(body.issue)
+
+		const issueTypeIn = body.issue
+		const raisedByIn = body.raisedBy
+		const dateSetIn = body.dateSet
+		const locationIn = body.location
+		const statusIn = body.status
+		tasks.addIssue(issueTypeIn, raisedByIn, dateSetIn, locationIn, statusIn )
+	
+		//console.log(body)
+
+		await tasks.getAll()
+		//console.log(await tasks.getAll)
+
+		ctx.redirect('/issues')
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}
