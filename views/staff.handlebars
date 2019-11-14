@@ -7,6 +7,7 @@
 		<title>Contacts Page</title>
 		<meta name="author" content="Wiktor Majkowski">
 		<link href="defaultStyle.css" type="text/css" rel="stylesheet" />
+		<link href="issues.css" type="text/css" rel="stylesheet" />
 	</head>
 	<body>
 		<nav id = "navigation">
@@ -23,7 +24,46 @@
 		</nav>	
 		<h1>Staff</h1>
 		<article>
-			<p>something</p>
+            <table id = "table" width="80%">
+                <tr>
+                    <th id = "th">ID</th>
+                    <th id = "th">Issue</th>
+                    <th id = "th">Raised by</th>
+                    <th id = "th">Date Set</th>
+                    <th id = "th">Location</th>
+                    <th id = "th">Status</th>      
+                </tr>
+                <p><input type="submit" value="Submit"></p>
+
+                {{#each tasks}}
+                    <tr id="lol">
+                        <td id = "td">{{this.id}}</td>
+                        <td id = "td">{{this.issueType}}</td>
+                        <td id = "td">{{this.raisedBy}}</td>
+                        <td id = "td">{{this.dateSet}}</td>
+                        <td id = "td">{{this.location}}</td>
+                        <td id = "td">{{this.status}}</td>
+                    </tr>
+                {{/each}}
+                <form action="/issues" method="get">
+                    <td id="td">ID</td>
+                    <td id="td"></td>
+                    <td id="td"></td>
+                    <td id="td"></td>
+                    <td id="td"><input list="location"></td> 
+                        {{#each tasks1}}
+                            <datalist id="location">
+                                <option value="location 1">
+                                <option value={{this.postcode}}>
+                            </datalist>
+                        {{/each}}
+                    <td id="td"><select list="status">
+                            <option value="Incomplete">Incomplete</option>
+                            <option value="Complete">Complete</option>
+                        </select>
+                    </td>
+                </form>
+            </table>
 			
 		</article>
 		<footer>

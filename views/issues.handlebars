@@ -45,25 +45,35 @@
                         <td id = "td">{{this.status}}</td>
                     </tr>
                 {{/each}}
-                <form action="/issues" method="get">
+                <tr>
                     <td id="td">ID</td>
-                    <td id="td"><input type="text"></td>
-                    <td id="td"><input type="text"></td>
-                    <td id="td"><input type="date"></td>
+                    <td id="td"></td>
+                    <td id="td"></td>
+                    <td id="td"></td>
                     <td id="td"><input list="location"></td> 
-                        {{#each tasks1}}
-                            <datalist id="location">
-                                <option value="location 1">
-                                <option value={{this.postcode}}>
-                            </datalist>
-                        {{/each}}
-                    <td id="td"><select list="status">
-                            <option value="Choose one">Choose one...</option>
-                            <option value="Complete">Complete</option>
-                            <option value="Incomplete">Incomplete</option>                        </option>
-                        </select>
-                    </td>
-                </form>
+                    {{#each ward_postcodes}}
+                        <datalist id="location">
+                            <option value="Bablake">
+                            <option value="Binley and Willenhall">
+                            <option value="Lower Stoke">
+                            <option value="Cheylesmore">
+                            <option value="Foleshill">
+                            <option value="Sherbourne">
+                            <option value="Whoberley">
+                            <option value="Longford">
+                            <option value="Henley">
+                            <option value="Wyken">
+                            <option value="Upper Stoke">
+                            <option value="Earlsdon">
+                            <option value="Wainbody">
+                            <option value="Westwood">
+                            <option value="Woodlands">
+                            <option value="Holbrook">
+                        </datalist>
+                    {{/each}}
+                    <td id="td">Status</td>
+                
+                </tr>
             </table>
 
 
