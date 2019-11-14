@@ -49,14 +49,6 @@ const testData = [
 
 console.log(testData)
 
-
-
-
-let tasks = new Tasks('website.db')
-
-
-
-
 /**
  * The secure home page.
  *
@@ -143,13 +135,17 @@ router.get('/staff', async ctx => {
 router.get('/issues', async ctx => {
 	try {
 		const sql = 'SELECT * FROM tasks;'
+		const sql1 = 'SELECT * FROM ward_postcodes'
 		const querystring = ''
 		//console.log(ctx.query.q)
 		const db = await Database.open(dbName)
+		const wp = await Database.open(wardPost)
 
 		//Setup the tasks table if it does not exist
 		await db.run('CREATE TABLE IF NOT EXISTS tasks ( id INTEGER PRIMARY KEY, issueType VARCHAR,	raisedBy  VARCHAR,	dateSet   DATE,	location  VARCHAR,	status );')
+		await wp.run('CREATE TABLE IF NOT EXISTS ward_postcodes ( postcode VARCHAR, latitude NUMERIC, longitude NUMERIC, easting INT, northing INT, grid_Ref VARCHAR, ward VARCHAR, altitude INT, lSON_Code VARCHAR);')
 		const data = await db.all(sql)
+		const data1 = await wp.all(sql1)
 		await db.close()
 		console.log(data)
 		await ctx.render('issues', {tasks: data, query: querystring})
@@ -210,8 +206,10 @@ router.get('/issues', async ctx => {
 		await wp.run('CREATE TABLE IF NOT EXISTS tasks ( postcode VARCHAR, latitude NUMERIC, longitude NUMERIC, easting INT, northing INT, grid_Ref VARCHAR, ward VARCHAR, altitude INT, lSON_Code VARCHAR);')
 		const data1 = await wp.all(sql)
 		await wp.close()
+		console.log(data)
 		console.log(data1)
-		await ctx.render('issues', {tasks1: data1, query: querystring})
+		await ctx.render('issues', {tasks: data, query: querystring})
+		await ctx.render('issues', {ward_postcodes: data1, query: querystring})
 	} catch (err) {
 		await ctx.render('error', {message: err.message})
 	}
