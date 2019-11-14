@@ -19,6 +19,7 @@ const Database = require('sqlite-async')
 
 /* IMPORT CUSTOM MODULES */
 const User = require('./modules/user')
+const Tasks = require('./modules/tasks')
 
 const app = new Koa()
 const router = new Router()
@@ -129,16 +130,23 @@ router.get('/staff', async ctx => {
 	await ctx.render('staff')
 })		//routes to Staff page
 
+
+/*
 router.get('/issues', async ctx => {
 	try {
 		const sql = 'SELECT * FROM tasks;'
+		const sql1 = 'SELECT * FROM ward_postcodes'
 		const querystring = ''
 		//console.log(ctx.query.q)
 		const db = await Database.open(dbName)
+		const wp = await Database.open(wardPost)
 
 		//Setup the tasks table if it does not exist
-		await db.run('CREATE TABLE IF NOT EXISTS tasks ( id INTEGER PRIMARY KEY AUTOINCREMENT, issueType VARCHAR,	raisedBy  VARCHAR,	dateSet   DATE,location  VARCHAR,status );')
+
+		await db.run('CREATE TABLE IF NOT EXISTS tasks ( id INTEGER PRIMARY KEY AUTOINCREMENT, issue_type VARCHAR,	raised_by  VARCHAR,	date_set   DATE,	location  VARCHAR,	status );')
+		await wp.run('CREATE TABLE IF NOT EXISTS ward_postcodes ( postcode VARCHAR, latitude NUMERIC, longitude NUMERIC, easting INT, northing INT, grid_Ref VARCHAR, ward VARCHAR, altitude INT, lSON_Code VARCHAR);')
 		const data = await db.all(sql)
+		const data1 = await wp.all(sql1)
 		await db.close()
 		console.log(data)
 		await ctx.render('issues', {tasks: data, query: querystring})
@@ -146,7 +154,49 @@ router.get('/issues', async ctx => {
 		await ctx.render('error', {message: err.message})
 	}
 })
+*/
 
+//my router.get('/issues)
+router.get('/issues', async ctx => {
+	try { 
+		//the db is opened here and the table is created if not present
+		const tasks = await new Tasks(dbName)
+		const data = await tasks.getAll()
+		console.log(data)
+
+		await ctx.render('issues', {tasks: data, query: ''})
+	} catch(err) {
+		await ctx.render('error', {message: err.message})
+	}
+})
+
+router.post('/issues', async ctx => {
+	try {
+		const tasks = await new Tasks(dbName)
+		const body = await ctx.request.body
+
+		console.log(body)
+		console.log(body.issue)
+
+		const issueTypeIn = body.issue
+		const raisedByIn = body.raisedBy
+		const dateSetIn = body.dateSet
+		const locationIn = body.location
+		const statusIn = body.status
+		tasks.addIssue(issueTypeIn, raisedByIn, dateSetIn, locationIn, statusIn )
+	
+		//console.log(body)
+
+		await tasks.getAll()
+		//console.log(await tasks.getAll)
+
+		ctx.redirect('/issues')
+	} catch(err) {
+		await ctx.render('error', {message: err.message})
+	}
+})
+
+/*
 router.get('/issues', async ctx => {
 	try {
 		const sql = 'SELECT * FROM tasks;'
@@ -158,13 +208,15 @@ router.get('/issues', async ctx => {
 		await wp.run('CREATE TABLE IF NOT EXISTS tasks ( postcode VARCHAR, latitude NUMERIC, longitude NUMERIC, easting INT, northing INT, grid_Ref VARCHAR, ward VARCHAR, altitude INT, lSON_Code VARCHAR);')
 		const data1 = await wp.all(sql)
 		await wp.close()
+		console.log(data)
 		console.log(data1)
-		await ctx.render('issues', {tasks1: data1, query: querystring})
+		await ctx.render('issues', {tasks: data, query: querystring})
+		await ctx.render('issues', {ward_postcodes: data1, query: querystring})
 	} catch (err) {
 		await ctx.render('error', {message: err.message})
 	}
 })
-
+*/
 
 app.use(router.routes())
 module.exports = app.listen(port, async() => console.log(`listening on port ${port}`))
