@@ -47,7 +47,7 @@ const testData = [
 	}
 ]
 
-console.log(testData)
+//console.log(testData)
 
 /**
  * The secure home page.
@@ -84,7 +84,7 @@ router.post('/register', koaBody, async ctx => {
 		console.log(body)
 		// call the functions in the module
 		const user = await new User(dbName)
-		await user.register(body.user, body.pass)
+		await user.register(body.user, body.pass, body.address, body.postcode)
 		// await user.uploadPicture(path, type)
 		// redirect to the home page
 		ctx.redirect(`/?msg=new user "${body.name}" added`)
@@ -142,7 +142,8 @@ router.get('/issues', async ctx => {
 		const wp = await Database.open(wardPost)
 
 		//Setup the tasks table if it does not exist
-		await db.run('CREATE TABLE IF NOT EXISTS tasks ( id INTEGER PRIMARY KEY, issueType VARCHAR,	raisedBy  VARCHAR,	dateSet   DATE,	location  VARCHAR,	status );')
+
+		await db.run('CREATE TABLE IF NOT EXISTS tasks ( id INTEGER PRIMARY KEY AUTOINCREMENT, issue_type VARCHAR,	raised_by  VARCHAR,	date_set   DATE,	location  VARCHAR,	status );')
 		await wp.run('CREATE TABLE IF NOT EXISTS ward_postcodes ( postcode VARCHAR, latitude NUMERIC, longitude NUMERIC, easting INT, northing INT, grid_Ref VARCHAR, ward VARCHAR, altitude INT, lSON_Code VARCHAR);')
 		const data = await db.all(sql)
 		const data1 = await wp.all(sql1)
@@ -154,6 +155,7 @@ router.get('/issues', async ctx => {
 	}
 })
 */
+
 //my router.get('/issues)
 router.get('/issues', async ctx => {
 	try { 
