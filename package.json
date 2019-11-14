@@ -9,7 +9,6 @@
   "scripts": {
     "coverage": "./node_modules/.bin/jest --coverage 'unit tests/' && ./node_modules/.bin/istanbul check-coverage --statement 100 --branch 100 --function 100 --line 100",
     "dependency": "./node_modules/.bin/dependency-check -i bcrypt --unused --no-dev . && node_modules/.bin/dependency-check -i modules --missing .",
-    "duplication": "node_modules/.bin/jscpd -p . --config .cpd.yml",
     "start": "node index.js",
     "jsdoc": "node_modules/.bin/jsdoc -c jsdoc.conf",
     "linter": "node_modules/.bin/eslint .",
