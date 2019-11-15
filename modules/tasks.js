@@ -27,8 +27,8 @@ module.exports = class Tasks {
 	async addIssue(issueType = 'Vandalism',
 		issueDesc = 'There is some grafitti',
 		raisedBy = 'Fred Cook',
-		dateSet= '2000-01-01',
-		dateCompleted = '2010-31-12',
+		//dateSet
+		dateCompleted = 'N/A',
 		location = '1 Harper Road',
 		status = 'Incomplete',
 		votes = 0) {
@@ -39,7 +39,7 @@ module.exports = class Tasks {
 			}
 		}
 		const tasks = await new Tasks()
-		dateSet = await tasks.getDate()
+		const dateSet = await tasks.getDate()
 		const query = await `INSERT INTO tasks(issueType, issueDesc, raisedBy, dateSet, dateCompleted, location, status, votes)VALUES("${issueType}","${issueDesc}","${raisedBy}","${dateSet}","${dateCompleted}","${location}","${status}",${votes});`
 		console.log(query)
 		await this.db.run(query)
@@ -86,16 +86,18 @@ module.exports = class Tasks {
 	//can be used for testing purposes, expected record after an insert to DB
 	//gives the ouput that querying the database would give
 	async mockIssue(id = 1) {
+		const tasks = await new Tasks()
+		const date = await tasks.getDate()
 		const mockIssue = [{
 			'id': id,
 			'issueType': 'Vandalism',
 			'issueDesc': 'There is some grafitti',
-			'dateSet': '2000-01-01',
-			'dateCompleted': '2010-31-12',
+			'dateSet': date,
+			'dateCompleted': 'N/A',
 			'location': '1 Harper Road',
 			'raisedBy': 'Fred Cook',
 			'status': 'Incomplete',
-			'votes': 10
+			'votes': 0
 		}]
 		return mockIssue
 	}

@@ -111,17 +111,18 @@ describe('getAll()', () => {
 		const tasks = await new Tasks()
 		//ACT
 		await tasks.addIssue()
+		const date = await tasks.getDate()
 		const count = await tasks.getAll()
 		//ASSERT
 		expect(count).toEqual([{id: 1,
 			issueType: 'Vandalism',
 			raisedBy: 'Fred Cook',
-			dateSet: '2000-01-01',
+			dateSet: date,
 			location: '1 Harper Road',
 			status: 'Incomplete',
-			votes: 10,
+			votes: 0,
 			issueDesc: 'There is some grafitti',
-			dateCompleted: '2010-31-12'}])
+			dateCompleted: 'N/A'}])
 		done()
 	})
 
@@ -159,7 +160,7 @@ describe('complete()', () => {
 		const data = await tasks.customQuery()
 		//ASSERT
 		expect(await data.length).toEqual((await tasks.getAll()).length)
-		expect(data[0].status).toEqual('complete')
+		expect(data[0].status).toEqual('Completed')
 		done()
 	})
 })
