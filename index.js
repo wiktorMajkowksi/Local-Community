@@ -156,7 +156,7 @@ router.get('/issues', async ctx => {
 */
 //my router.get('/issues)
 router.get('/issues', async ctx => {
-	try { 
+	try {
 		//the db is opened here and the table is created if not present
 		const tasks = await new Tasks(dbName)
 		const data = await tasks.getAll()
@@ -173,21 +173,19 @@ router.post('/issues', async ctx => {
 		const tasks = await new Tasks(dbName)
 		const body = await ctx.request.body
 
-		console.log(body)
-		console.log(body.issue)
-
+		//Maybe refactor this? quite untidy
 		const issueTypeIn = body.issue
 		const raisedByIn = body.raisedBy
 		const dateSetIn = body.dateSet
 		const locationIn = body.location
 		const statusIn = body.status
-		tasks.addIssue(issueTypeIn, raisedByIn, dateSetIn, locationIn, statusIn )
-	
-		//console.log(body)
+		const errorThrown = await tasks.addIssue(issueTypeIn, raisedByIn, dateSetIn, locationIn, statusIn)
+		if (errorThrown !== undefined) {
+			throw new Error(errorThrown)
+		}
+
 
 		await tasks.getAll()
-		//console.log(await tasks.getAll)
-
 		ctx.redirect('/issues')
 	} catch(err) {
 		await ctx.render('error', {message: err.message})

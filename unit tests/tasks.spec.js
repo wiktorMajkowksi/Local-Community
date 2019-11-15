@@ -46,6 +46,17 @@ describe('addIssue()', () => {
 		done()
 	})
 
+	
+	test('addIssue without all fields completeted rejected', async done => {
+		//ARRANGE
+		expect.assertions(1)
+		const tasks = await new Tasks()
+		//ACT
+		const errorThrown = await tasks.addIssue('')
+		expect(errorThrown).toEqual('not all fields filled out')
+		done()
+	})
+
 	test('test multiple addIssue results in correct / unique IDs (autoincrement)', async done => {
 		//ARRANGE
 		expect.assertions(3)
@@ -56,7 +67,6 @@ describe('addIssue()', () => {
 		const results = await tasks.getAll()
 		const resultsLength = await results.length
 		const mockArray = (await tasks.mockIssue()).push(await tasks.mockIssue(2))
-		console.log(mockArray)
 		const index0 = (await tasks.mockIssue())[0]
 		//ASSERT
 		expect(results).toContainObject(index0)
@@ -97,8 +107,8 @@ describe('getAll()', () => {
 
 	test('getAll when not empty', async done => {
 		//ARRANGE
-		const tasks = await new Tasks()
 		expect.assertions(1)
+		const tasks = await new Tasks()
 		//ACT
 		await tasks.addIssue()
 		const count = await tasks.getAll()
@@ -130,6 +140,23 @@ describe('getDateString()', () => {
 		//ASSERT
 		expect(correctResult).not.toEqual(NaN)
 		expect(wrongResult).toEqual(NaN)
+		done()
+	})
+})
+
+
+describe('complete()', () => {
+	test('test complete() works when id = 1 on a valid issue', async done => {
+		//ARRANGE
+		expect.assertions(2)
+		const tasks = await new Tasks()
+		//ACT
+		await tasks.addIssue()
+		await tasks.complete(1)
+		const data = await tasks.customQuery()
+		//ASSERT
+		expect(await data.length).toEqual((await tasks.getAll()).length)
+		expect(data[0].status).toEqual('complete')
 		done()
 	})
 })

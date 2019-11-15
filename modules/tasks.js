@@ -20,6 +20,11 @@ module.exports = class Tasks {
 		dateSet= '2000-01-01',
 		location = '1 Harper Road',
 		status = 'Incomplete') {
+		for (let i = 0; i < arguments.length; i++) {
+			if (arguments[i] === '') {
+				return 'not all fields filled out'
+			}
+		}
 		const query = await `INSERT INTO tasks(issueType, raisedBy, dateSet, location, status)VALUES("${issueType}","${raisedBy}","${dateSet}","${location}","${status}");`
 		await this.db.run(query)
 		return
@@ -43,10 +48,16 @@ module.exports = class Tasks {
 	}
 
 	async complete(id) {
-		expect.assertions(1)
-		const tasks = await new tasks()
+		const complete = 'complete'
+		const sql = `UPDATE tasks SET status = "${complete}" WHERE id = ${id};`
+		await this.db.run(sql)
+		return
+	}
 
-		//const query =
+	//just for testing purposes
+	async customQuery(sql = 'SELECT * FROM tasks;') {
+		const data = await this.db.all(sql)
+		return data
 	}
 
 	//can be used for testing purposes, expected record after an insert to DB
