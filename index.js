@@ -19,6 +19,7 @@ const Database = require('sqlite-async')
 
 /* IMPORT CUSTOM MODULES */
 const User = require('./modules/user')
+const Tasks = require('./modules/tasks')
 
 const app = new Koa()
 const router = new Router()
@@ -33,6 +34,7 @@ app.use(views(`${__dirname}/views`, { extension: 'handlebars' }, {map: { handleb
 const defaultPort = 8080
 const port = process.env.PORT || defaultPort
 const dbName = 'website.db'
+const wardPost = 'ward_postcodes.db'
 
 /*EXAMPLE BOOK DATA FOR TESTING BEFORE WE HAVE A DATABASE */
 const testData = [
@@ -45,7 +47,7 @@ const testData = [
 	}
 ]
 
-console.log(testData)
+//console.log(testData)
 
 /**
  * The secure home page.
@@ -56,18 +58,7 @@ console.log(testData)
  */
 router.get('/', async ctx => {
 	try {
-		const sql = 'SELECT * FROM tasks;'
-		const querystring = ''
-		console.log(ctx.query.q)
-		const db = await Database.open(dbName)
-
-		//Setup the tasks table if it does not exist
-		await db.run("CREATE TABLE IF NOT EXISTS tasks ( id INTEGER PRIMARY KEY, issueType VARCHAR,	raisedBy  VARCHAR,	dateSet   DATE,	location  VARCHAR,	status );")
-		
-		const data = await db.all(sql)
-		await db.close()
-		console.log(data)
-		await ctx.render('index', {tasks: data, query: querystring})
+		await ctx.render('index')
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}
@@ -93,7 +84,7 @@ router.post('/register', koaBody, async ctx => {
 		console.log(body)
 		// call the functions in the module
 		const user = await new User(dbName)
-		await user.register(body.user, body.pass)
+		await user.register(body.user, body.pass, body.address, body.postcode)
 		// await user.uploadPicture(path, type)
 		// redirect to the home page
 		ctx.redirect(`/?msg=new user "${body.name}" added`)
@@ -139,15 +130,92 @@ router.get('/staff', async ctx => {
 	await ctx.render('staff')
 })		//routes to Staff page
 
+
+/*
 router.get('/issues', async ctx => {
 	try {
-		console.log(testData)
-		await ctx.render('issues', {issue: testData})
+		const sql = 'SELECT * FROM tasks;'
+		const sql1 = 'SELECT * FROM ward_postcodes'
+		const querystring = ''
+		//console.log(ctx.query.q)
+		const db = await Database.open(dbName)
+		const wp = await Database.open(wardPost)
+
+		//Setup the tasks table if it does not exist
+
+		await db.run('CREATE TABLE IF NOT EXISTS tasks ( id INTEGER PRIMARY KEY AUTOINCREMENT, issue_type VARCHAR,	raised_by  VARCHAR,	date_set   DATE,	location  VARCHAR,	status );')
+		await wp.run('CREATE TABLE IF NOT EXISTS ward_postcodes ( postcode VARCHAR, latitude NUMERIC, longitude NUMERIC, easting INT, northing INT, grid_Ref VARCHAR, ward VARCHAR, altitude INT, lSON_Code VARCHAR);')
+		const data = await db.all(sql)
+		const data1 = await wp.all(sql1)
+		await db.close()
+		console.log(data)
+		await ctx.render('issues', {tasks: data, query: querystring})
 	} catch (err) {
 		await ctx.render('error', {message: err.message})
 	}
 })
+*/
 
+//my router.get('/issues)
+router.get('/issues', async ctx => {
+	try {
+		//the db is opened here and the table is created if not present
+		const tasks = await new Tasks(dbName)
+		const data = await tasks.getAll()
+		await ctx.render('issues', {tasks: data, query: ''})
+	} catch(err) {
+		await ctx.render('error', {message: err.message})
+	}
+})
+
+// eslint-disable-next-line max-lines-per-function
+router.post('/issues', async ctx => {
+	try {
+		const tasks = await new Tasks(dbName)
+		const body = await ctx.request.body
+		console.log()
+
+		//Maybe refactor this? quite untidy
+		const issueTypeIn = body.issue
+		const issueDescriptionIn = body.issueDesc
+		const raisedByIn = body.raisedBy
+		const dateSetIn = body.dateSet
+		const dateCompletedIn = body.dateCompleted
+		const locationIn = body.location
+		const statusIn = body.status
+		const votesIn = body.votes
+		const errorThrown = await tasks.addIssue(issueTypeIn, issueDescriptionIn,raisedByIn, dateSetIn, dateCompletedIn,locationIn, statusIn, votesIn)
+		if (errorThrown !== undefined) {
+			throw new Error(errorThrown)
+		}
+		await tasks.getAll()
+		ctx.redirect('/issues')
+	} catch(err) {
+		await ctx.render('error', {message: err.message})
+	}
+})
+
+/*
+router.get('/issues', async ctx => {
+	try {
+		const sql = 'SELECT * FROM tasks;'
+		const querystring = ''
+		//console.log(ctx.query.q)
+		const wp = await Database.open(wardPost)
+
+		//Setup the tasks table if it does not exist
+		await wp.run('CREATE TABLE IF NOT EXISTS tasks ( postcode VARCHAR, latitude NUMERIC, longitude NUMERIC, easting INT, northing INT, grid_Ref VARCHAR, ward VARCHAR, altitude INT, lSON_Code VARCHAR);')
+		const data1 = await wp.all(sql)
+		await wp.close()
+		console.log(data)
+		console.log(data1)
+		await ctx.render('issues', {tasks: data, query: querystring})
+		await ctx.render('issues', {ward_postcodes: data1, query: querystring})
+	} catch (err) {
+		await ctx.render('error', {message: err.message})
+	}
+})
+*/
 
 app.use(router.routes())
 module.exports = app.listen(port, async() => console.log(`listening on port ${port}`))

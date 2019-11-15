@@ -1,9 +1,30 @@
-#table, #th, #td {
+#th {
+    font-size: 20px;
     padding:10px;
     border:1px black solid;
-    color:red;
-  
+    color:white;
+    background-color: rgba(24, 26, 54);
 }
-#table {
-    background-color: white;
+
+#td, #table {
+    font-size: 15px;
+    color: white;
+    border:1px black solid;
+    padding:10px;
+    background-color: rgba(40, 43, 94, 0.3)
+}
+
+#lol:hover{
+    background-color: rgba(62, 67, 150, 0.5)
+}
+
+input[type="submit"]{
+    background-color: transparent;
+    float: right;
+    padding: 10px;
+    border: solid black 1px;
+    cursor: pointer;
+}
+input[type="submit"]:hover{
+    background-color: green;
 }

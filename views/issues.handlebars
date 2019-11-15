@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Issues</title>
-		<meta name="author" content="Fred Cook">
+		<meta name="author" content="Fred Cook, Wiktor Majkowski">
         <link href="defaultStyle.css" type="text/css" rel="stylesheet" />
         <link href="issues.css" type="text/css" rel="stylesheet" />
 	</head>
@@ -22,30 +22,78 @@
 			</table>
 		</nav>	
         <h1> Issues </h1>
-
+        
         <article>
-            <table id = "table">
+            <table id = "table" width="80%">
                 <tr>
                     <th id = "th">ID</th>
                     <th id = "th">Issue</th>
+                    <th id = "th">Issue Description</th>
                     <th id = "th">Raised by</th>
                     <th id = "th">Date Set</th>
+                    <th id = "th">Date Completed</th>
                     <th id = "th">Location</th>
-                    <th id = "th">Status</th>      
+                    <th id = "th">Status</th>
+                    <th id = "th">Votes</th>
                 </tr>
 
-                {{#each issue}}
-                    <tr>
+                {{#each tasks}}
+                    <tr id="lol">
                         <td id = "td">{{this.id}}</td>
                         <td id = "td">{{this.issueType}}</td>
+                        <td id = "td">{{this.issueDesc}}</td>
                         <td id = "td">{{this.raisedBy}}</td>
                         <td id = "td">{{this.dateSet}}</td>
+                        <td id = "td">{{this.dateCompleted}}</td>
                         <td id = "td">{{this.location}}</td>
                         <td id = "td">{{this.status}}</td>
+                        <td id = "td">{{this.votes}}</td>
                     </tr>
-
                 {{/each}}
-            </table>
+                <form action="/issues" method="post">
+                <p><input type="submit" value="Submit"></p>
+                    <td id="td">ID</td>
+                    <td id="td"><input name = 'issue'type="text"></td>
+                    <td id="td"><input name = 'issueDesc'type="text"></td>
+                    <td id="td"><input name = "raisedBy" type="text" placeholder="You"></td>
+                    <td id="td"><input name= 'dateSet'type="date"></td>
+                    <td id="td"><input name = 'dateCompleted'type="date" readonly></td>
+                    <td id="td"><input name ='location'list="location"></td> 
+                        {{#each ward_postcodes}}
+                        <datalist id="location">
+                            <option value="Bablake">
+                            <option value="Binley and Willenhall">
+                            <option value="Lower Stoke">
+                            <option value="Cheylesmore">
+                            <option value="Foleshill">
+                            <option value="Sherbourne">
+                            <option value="Whoberley">
+                            <option value="Longford">
+                            <option value="Henley">
+                            <option value="Wyken">
+                            <option value="Upper Stoke">
+                            <option value="Earlsdon">
+                            <option value="Wainbody">
+                            <option value="Westwood">
+                            <option value="Woodlands">
+                            <option value="Holbrook">
+                        </datalist>
+                    {{/each}}
+                    <td id="td"><select name='status' list="status" placeholder="incomplete" readonly>
+                            <option value="Choose one">Choose one...</option>
+                            <option value="Complete">Complete</option>
+                            <option value="Incomplete">Incomplete</option>                        </option>
+                        </select>
+                    </td>
+                    <td id="td"><input name = 'votes'type="text" placeholder = 0 readonly></td>
+                </form>
+                </table>
+                
+
+
+
+
+
         </article>    
 	</body>
 

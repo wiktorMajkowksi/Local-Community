@@ -32,15 +32,25 @@ body {
     padding-top: 4%;
 }
 
-h1, form, p{
+h1 { 
+    font-size: 35px;
+    font-weight: bold;
+    color: #FFBA4B;
+    -webkit-text-stroke: 0.5px white;
+    text-align: center;
+    padding-left: 80px;
+  }
+
+form, p{
     text-align: center;
     color: white;
+    font-weight: bold;
 }
 
 form{
     background-color: rgba(0, 0, 0, 0.7);
     width: 350px;
-    height: 270px;
+    height: 290px;
     margin-left: 41%;
     border: 2px solid grey;
 }
@@ -53,6 +63,35 @@ input[type="submit"]{
     cursor: pointer;
 }
 
+input[type=text], input[type=password]{
+    width: 70%;
+    text-align: center;
+    box-sizing: border-box;
+    border: 2px solid  #E09341;
+    border-radius: 4px;
+  }
+
 input[type="submit"]:hover{
     font-size: 120%;
 }
+
+input[type=file]{
+    text-align: center;
+    width: 70%;
+    box-sizing: border-box;
+    border: 2px solid  #E09341;
+    border-radius: 4px;
+    background-color: white;
+  }
+
+p.log_reg_acc {
+    font-size: 15px;
+    
+  }
+  
+a{
+    font-weight: bold;
+    color: orange;
+    text-decoration: none;
+    display: inline-block;
+  }
