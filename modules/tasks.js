@@ -31,7 +31,7 @@ module.exports = class Tasks {
 		dateCompleted = '2010-31-12',
 		location = '1 Harper Road',
 		status = 'Incomplete',
-		votes = 1) {
+		votes = 0) {
 			for (let i = 0; i < arguments.length; i++) {
 			if (arguments[i] === '') {
 				console.log(arguments[i])

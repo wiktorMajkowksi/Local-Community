@@ -57,7 +57,7 @@
                     <td id="td"><input name = 'issueDesc'type="text"></td>
                     <td id="td"><input type="text" placeholder="You" readonly></td>
                     <td id="td"><input type="date" readonly></td>
-                    <td id="td"><input 'dateCompleted'type="date" readonly></td>
+                    <td id="td"><input name = 'dateCompleted'type="date" placeholder="N/A" readonly></td>
                     <td id="td"><input name ='location'list="location"></td> 
                         {{#each ward_postcodes}}
                         <datalist id="location">
@@ -79,12 +79,10 @@
                             <option value="Holbrook">
                         </datalist>
                     {{/each}}
-                    <td id="td"><select name='status' list="status" placeholder="incomplete" readonly>
-                            <option value="Incomplete">Incomplete</option> 
-                            <option> in progress</option>                       
-                            <option value="Complete">Complete</option>
-                        </select>
-                    </td>
+                    <!--
+                    <td id="td"><select name='status' list="status" placeholder="incomplete" readonly> Incomplete </td>
+                    -->
+                    <td id="td"> <input type="text" name = "status" placeholder ="incomplete" value ="incomplete" readonly></td>
                     <td id="td"><input name = 'votes'type="text" placeholder = 0 readonly></td>
                 </form>
                 </table>

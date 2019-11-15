@@ -212,11 +212,11 @@ router.post('/issues', async ctx => {
 		const issueDescriptionIn = body.issueDesc
 		//const raisedByIn = body.raisedBy
 		//const dateSetIn = body.dateSet
-		//const dateCompletedIn = body.dateCompleted
+		const dateCompletedIn = 'N/A'
 		const locationIn = body.location
 		const statusIn = body.status
 		//const votesIn = body.votes
-		const errorThrown = await tasks.addIssue(issueTypeIn, issueDescriptionIn,undefined, undefined, undefined,locationIn, statusIn, undefined)
+		const errorThrown = await tasks.addIssue(issueTypeIn, issueDescriptionIn,undefined, undefined, dateCompletedIn,locationIn, statusIn, undefined)
 		if (errorThrown !== undefined) {
 			throw new Error(errorThrown)
 		}
