@@ -106,6 +106,8 @@ router.post('/login', async ctx => {
 		const user = await new User(dbName)
 		await user.login(body.user, body.pass)
 		ctx.session.authorised = true
+		ctx.cookies.set('user', body.user ,{httpOnly: false})
+		console.log(ctx.cookies.get('user'))
 		console.log(body.user)
 		//if()
 		return ctx.redirect('/')
@@ -190,10 +192,14 @@ router.get('/issues', async ctx => {
 //my router.get('/issues)
 router.get('/issues', async ctx => {
 	try {
+		if (ctx.session.authorised !== true) {
+			throw new Error('you must be logged in to view this page')
+		}
 		//the db is opened here and the table is created if not present
 		const tasks = await new Tasks(dbName)
 		const data = await tasks.getAll()
-		await ctx.render('issues', {tasks: data, query: ''})
+		const userName = ctx.cookies.get('user')
+		await ctx.render('issues', {tasks: data, query: '', user: userName})
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}
@@ -210,13 +216,13 @@ router.post('/issues', async ctx => {
 		//Maybe refactor this? quite untidy
 		const issueTypeIn = body.issue
 		const issueDescriptionIn = body.issueDesc
-		//const raisedByIn = body.raisedBy
+		const raisedByIn = ctx.cookies.get('user')
 		//const dateSetIn = body.dateSet
 		const dateCompletedIn = 'N/A'
 		const locationIn = body.location
 		const statusIn = body.status
 		//const votesIn = body.votes
-		const errorThrown = await tasks.addIssue(issueTypeIn, issueDescriptionIn,undefined, undefined, dateCompletedIn,locationIn, statusIn, undefined)
+		const errorThrown = await tasks.addIssue(issueTypeIn, issueDescriptionIn,raisedByIn, undefined, dateCompletedIn,locationIn, statusIn, undefined)
 		if (errorThrown !== undefined) {
 			throw new Error(errorThrown)
 		}
