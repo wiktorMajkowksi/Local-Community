@@ -8,7 +8,7 @@ module.exports = class Tasks {
 		return (async() => {
 			this.db = await sqlite.open(dbName)
 			// we need this table to store the user accounts
-			const sql = 'CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, issueType VARCHAR, raisedBy VARCHAR, dateSet DATE, location VARCHAR, status VARCHAR);"'
+			const sql = 'CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, issueType VARCHAR, issueDesc VARCHAR, raisedBy VARCHAR, dateSet DATE, dateCompleted DATE, location VARCHAR, status VARCHAR, votes INTEGER);"'
 			await this.db.run(sql)
 			return this
 		})()
@@ -16,16 +16,21 @@ module.exports = class Tasks {
 
 	// eslint-disable-next-line max-params
 	async addIssue(issueType = 'Vandalism',
+		issueDesc = 'There is some grafitti',
 		raisedBy = 'Fred Cook',
 		dateSet= '2000-01-01',
+		dateCompleted = '2010-31-12',
 		location = '1 Harper Road',
-		status = 'Incomplete') {
-		for (let i = 0; i < arguments.length; i++) {
+		status = 'Incomplete',
+		votes = 10) {
+			for (let i = 0; i < arguments.length; i++) {
 			if (arguments[i] === '') {
+				console.log(arguments[i])
 				return 'not all fields filled out'
 			}
 		}
-		const query = await `INSERT INTO tasks(issueType, raisedBy, dateSet, location, status)VALUES("${issueType}","${raisedBy}","${dateSet}","${location}","${status}");`
+		const query = await `INSERT INTO tasks(issueType, issueDesc, raisedBy, dateSet, dateCompleted, location, status, votes)VALUES("${issueType}","${issueDesc}","${raisedBy}","${dateSet}","${dateCompleted}","${location}","${status}",${votes});`
+		console.log(query)
 		await this.db.run(query)
 		return
 	}
@@ -63,12 +68,17 @@ module.exports = class Tasks {
 	//can be used for testing purposes, expected record after an insert to DB
 	//gives the ouput that querying the database would give
 	async mockIssue(id = 1) {
-		const mockIssue = [{'dateSet': '2000-01-01',
+		const mockIssue = [{
 			'id': id,
 			'issueType': 'Vandalism',
+			'issueDesc': 'There is some grafitti',
+			'dateSet': '2000-01-01',
+			'dateCompleted': '2010-31-12',
 			'location': '1 Harper Road',
 			'raisedBy': 'Fred Cook',
-			'status': 'Incomplete'}]
+			'status': 'Incomplete',
+			'votes': 10
+		}]
 		return mockIssue
 	}
 }

@@ -162,31 +162,32 @@ router.get('/issues', async ctx => {
 		//the db is opened here and the table is created if not present
 		const tasks = await new Tasks(dbName)
 		const data = await tasks.getAll()
-		console.log(data)
-
 		await ctx.render('issues', {tasks: data, query: ''})
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}
 })
 
+// eslint-disable-next-line max-lines-per-function
 router.post('/issues', async ctx => {
 	try {
 		const tasks = await new Tasks(dbName)
 		const body = await ctx.request.body
+		console.log()
 
 		//Maybe refactor this? quite untidy
 		const issueTypeIn = body.issue
+		const issueDescriptionIn = body.issueDesc
 		const raisedByIn = body.raisedBy
 		const dateSetIn = body.dateSet
+		const dateCompletedIn = body.dateCompleted
 		const locationIn = body.location
 		const statusIn = body.status
-		const errorThrown = await tasks.addIssue(issueTypeIn, raisedByIn, dateSetIn, locationIn, statusIn)
+		const votesIn = body.votes
+		const errorThrown = await tasks.addIssue(issueTypeIn, issueDescriptionIn,raisedByIn, dateSetIn, dateCompletedIn,locationIn, statusIn, votesIn)
 		if (errorThrown !== undefined) {
 			throw new Error(errorThrown)
 		}
-
-
 		await tasks.getAll()
 		ctx.redirect('/issues')
 	} catch(err) {

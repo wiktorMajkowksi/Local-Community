@@ -118,7 +118,10 @@ describe('getAll()', () => {
 			raisedBy: 'Fred Cook',
 			dateSet: '2000-01-01',
 			location: '1 Harper Road',
-			status: 'Incomplete'}])
+			status: 'Incomplete',
+			votes: 10,
+			issueDesc: 'There is some grafitti',
+			dateCompleted: '2010-31-12'}])
 		done()
 	})
 
