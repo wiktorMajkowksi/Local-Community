@@ -55,9 +55,9 @@
                     <td id="td">ID</td>
                     <td id="td"><input name = 'issue'type="text"></td>
                     <td id="td"><input name = 'issueDesc'type="text"></td>
-                    <td id="td"><input name = "raisedBy" type="text" placeholder="You"></td>
-                    <td id="td"><input name= 'dateSet'type="date"></td>
-                    <td id="td"><input name = 'dateCompleted'type="date" readonly></td>
+                    <td id="td"><input type="text" placeholder="You" readonly></td>
+                    <td id="td"><input type="date" readonly></td>
+                    <td id="td"><input 'dateCompleted'type="date" readonly></td>
                     <td id="td"><input name ='location'list="location"></td> 
                         {{#each ward_postcodes}}
                         <datalist id="location">
@@ -80,9 +80,9 @@
                         </datalist>
                     {{/each}}
                     <td id="td"><select name='status' list="status" placeholder="incomplete" readonly>
-                            <option value="Choose one">Choose one...</option>
+                            <option value="Incomplete">Incomplete</option> 
+                            <option> in progress</option>                       
                             <option value="Complete">Complete</option>
-                            <option value="Incomplete">Incomplete</option>                        </option>
                         </select>
                     </td>
                     <td id="td"><input name = 'votes'type="text" placeholder = 0 readonly></td>

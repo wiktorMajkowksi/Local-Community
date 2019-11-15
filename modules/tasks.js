@@ -14,6 +14,15 @@ module.exports = class Tasks {
 		})()
 	}
 
+	async getDate() {
+		const date = new Date()
+		const day = date.getDate()
+		const month = date.getMonth()
+		const year = date.getFullYear()
+		const total = `${year}-${month}-${day}`
+		return total
+	}
+
 	// eslint-disable-next-line max-params
 	async addIssue(issueType = 'Vandalism',
 		issueDesc = 'There is some grafitti',
@@ -22,13 +31,15 @@ module.exports = class Tasks {
 		dateCompleted = '2010-31-12',
 		location = '1 Harper Road',
 		status = 'Incomplete',
-		votes = 10) {
+		votes = 1) {
 			for (let i = 0; i < arguments.length; i++) {
 			if (arguments[i] === '') {
 				console.log(arguments[i])
 				return 'not all fields filled out'
 			}
 		}
+		const tasks = await new Tasks()
+		dateSet = await tasks.getDate()
 		const query = await `INSERT INTO tasks(issueType, issueDesc, raisedBy, dateSet, dateCompleted, location, status, votes)VALUES("${issueType}","${issueDesc}","${raisedBy}","${dateSet}","${dateCompleted}","${location}","${status}",${votes});`
 		console.log(query)
 		await this.db.run(query)
@@ -53,8 +64,15 @@ module.exports = class Tasks {
 	}
 
 	async complete(id) {
-		const complete = 'complete'
-		const sql = `UPDATE tasks SET status = "${complete}" WHERE id = ${id};`
+		const status = 'Completed'
+		const sql = `UPDATE tasks SET status = "${status}" WHERE id = ${id};`
+		await this.db.run(sql)
+		return
+	}
+
+	async inProgress(id) {
+		const status = 'In Progress'
+		const sql = `UPDATE tasks SET status = "${status}" WHERE id = ${id};`
 		await this.db.run(sql)
 		return
 	}
@@ -81,4 +99,6 @@ module.exports = class Tasks {
 		}]
 		return mockIssue
 	}
+
+
 }
