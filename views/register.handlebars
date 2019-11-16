@@ -6,30 +6,36 @@
 		<meta charset="utf-8">
 		<title>Create an Account</title>
 		<meta name="description" content="form to register new users">
-		<meta name="author" content="Adam Gill">
+		<meta name="author" content="Mariana Leao">
 		<link href="login_reg.css" type="text/css" rel="stylesheet"/>
 		 <link href="register.css" type="text/css" rel="stylesheet"/>
 	</head>
-	<body>
-		<h1>Create an Account</h1>
-		<form action="/register" enctype="multipart/form-data" method="post">
-
-     <!-- the div tag is part of an autcomplete feature taken from https://www.w3schools.com/howto/howto_js_autocomplete.asp -->
-     <div class="autocomplete">
-
-			<p>Username:<br /><input type="text" name="user" placeholder="Your preferred username (no spaces)" value="" style="width: 250px"></p>
-      <p>Password:<br /><input type="password" name="pass" placeholder="Your chosen password" value="" style="width: 250px"></p>  
-      <p>Address:<br /><input type="text" name="address" placeholder="Street Address" value="" style="width: 250px"></p>
-      <p>Postcode:<br /><input type="text" name="postcode" placeholder="Postcode" style="width: 250px" id="myInput"></p>    
-
-      </div>  
-   
-    	<p>Profile Picture:<br /><input type="file" name="avatar"></p>
-			<p><input type="submit" value="Create"></p>
-			<p>__________________________</p>
-			<p class="log_reg_acc">Already registered? <a href="/login">Log In</a></p>
-		</form>
-	</body>
+	
+  <body>
+	    <div class="split left">
+  		  <div class="centered">
+   				<h1>Local</h1><h1 style = "color: #FFA74B">Community</h1>
+    			<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Coventry_City_Centre_from_One_Friargate_2019.jpg/1200px-Coventry_City_Centre_from_One_Friargate_2019.jpg" alt="Avatar man">
+  			</div>	
+		  </div>
+    
+  	<div class="split right">
+  		<div class="centered">
+				<div class="autocomplete">
+					<form action="/register" enctype="multipart/form-data" method="post">
+						<h2>Create an Account</h2>
+						<p>Username<br /><input type="text" name="user" placeholder="your preferred username (no spaces)" value=""></p>
+            			<p>Password<br /><input type="password" name="pass" placeholder="your chosen password" value=""></p>
+						<p>Address:<br /><input type="text" name="address" placeholder="Street Address" value="" style="width: 250px"></p>
+      					<p>Postcode:<br /><input type="text" name="postcode" placeholder="Postcode" style="width: 250px" id="myInput"></p>    
+						<p>Profile Picture<br /><input type="file" name="avatar"></p>
+						<p><input type="submit" value="Create"></p>
+						<p>__________________________</p>
+						<p class="log_reg_acc">Already registered? <a href="/login">Log In</a></p>
+					</form>
+				</div>
+ 			 </div>
+		</div>
 
 </head>     
 <body>
