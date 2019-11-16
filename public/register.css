@@ -1,25 +1,140 @@
-/* This is modified code from https://www.w3schools.com/howto/howto_js_autocomplete.asp */
+body {
+  font-family: Arial;
+  color: black;
+}
 
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-size: 700% 700%;
+}
+
+.msg {
+    border: 1px solid red;
+    font-weight: bold;
+    color: red;
+    padding: 1em;
+    width: 320px;
+    margin-left: 41%;
+  }
+
+#user {
+    padding-top: 4%;
+}
+
+h1 { 
+    font-size: 45px;
+    font-weight: bold;
+    color: #357FD5;
+
+    text-align: center;
+  }
+
+h2{
+    font-size: 35px;
+    font-weight: bold;
+    color: #FFA74B;
+    text-align: center;
+      
+  }
+form, p{
+    text-align: center;
+    color: #357FD5;
+    font-weight: bold;
+
+}
+
+form{
+    background-color: white;
+    width: 350px;
+    height: 480px;
+    border: 2px solid #FFA74B;
+}
+
+input[type="submit"]{
+    text-decoration: none;
+    border: none;
+    background-color: #FFA74B;
+    color: white;
+    cursor: pointer;
+}
+
+input[type=text], input[type=password]{
+    width: 70%;
+    text-align: center;
+    box-sizing: border-box;
+    border: 2px solid  #E09341;
+    border-radius: 4px;
+  }
+
+input[type="submit"]:hover{
+    font-size: 120%;
+}
+
+input[type=file]{
+    text-align: center;
+    width: 70%;
+    box-sizing: border-box;
+    border: 2px solid  #E09341;
+    border-radius: 4px;
+    background-color: white;
+    
+  }
+
+p.log_reg_acc {
+    font-size: 15px;
+    
+  }
+  
+a {
+    font-weight: bold;
+    color: orange;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+.split {
+  height: 100%;
+  width: 50%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+.left {
+  left: 0;
+  background: white;
+}
+
+.right {
+  right: 0;
+  background-color: #3B96FF;
+}
+
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.centered img {
+  width: 300px;
+  border-radius: 50%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* This is modified code from https://www.w3schools.com/howto/howto_js_autocomplete.asp */
 .autocomplete {
   /*the container must be positioned relative:*/
   position: relative;
   display: inline-block;
 }
 
-form {
-  height: 600px;
-}
-
-input {
-  border: 1px solid transparent;
-  background-color: #f1f1f1;
-  padding: 10px;
-  font-size: 16px;
-}
-input[type=submit] {
-  background-color: DodgerBlue;
-  color: #fff;
-}
 .autocomplete-items {
   position: absolute;
  
