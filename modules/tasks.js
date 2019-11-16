@@ -8,7 +8,7 @@ module.exports = class Tasks {
 		return (async() => {
 			this.db = await sqlite.open(dbName)
 			// we need this table to store the user accounts
-			const sql = 'CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, issueType VARCHAR, issueDesc VARCHAR, raisedBy VARCHAR, dateSet DATE, dateCompleted DATE, location VARCHAR, status VARCHAR, votes INTEGER);"'
+			const sql = 'CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, issue_type VARCHAR, issue_desc VARCHAR, raised_by VARCHAR, date_set DATE, date_completed DATE, location VARCHAR, status VARCHAR, votes INTEGER);"'
 			await this.db.run(sql)
 			return this
 		})()
@@ -24,11 +24,11 @@ module.exports = class Tasks {
 	}
 
 	// eslint-disable-next-line max-params
-	async addIssue(issueType = 'Vandalism',
-		issueDesc = 'There is some grafitti',
-		raisedBy = 'Fred Cook',
-		dateSet = undefined,
-		dateCompleted = 'N/A',
+	async addIssue(issue_type = 'Vandalism',
+		issue_desc = 'There is some grafitti',
+		raised_by = 'Fred Cook',
+		date_set = undefined,
+		date_completed = 'N/A',
 		location = '1 Harper Road',
 		status = 'Incomplete',
 		votes = 0) {
@@ -39,8 +39,8 @@ module.exports = class Tasks {
 			}
 		}
 		const tasks = await new Tasks()
-		dateSet = await tasks.getDate()
-		const query = await `INSERT INTO tasks(issueType, issueDesc, raisedBy, dateSet, dateCompleted, location, status, votes)VALUES("${issueType}","${issueDesc}","${raisedBy}","${dateSet}","${dateCompleted}","${location}","${status}",${votes});`
+		date_set = await tasks.getDate()
+		const query = await `INSERT INTO tasks(issue_type, issue_desc, raised_by, date_set, date_completed, location, status, votes)VALUES("${issue_type}","${issue_desc}","${raised_by}","${date_set}","${date_completed}","${location}","${status}",${votes});`
 		console.log(query)
 		await this.db.run(query)
 		return
@@ -90,12 +90,12 @@ module.exports = class Tasks {
 		const date = await tasks.getDate()
 		const mockIssue = [{
 			'id': id,
-			'issueType': 'Vandalism',
-			'issueDesc': 'There is some grafitti',
-			'dateSet': date,
-			'dateCompleted': 'N/A',
+			'issue_type': 'Vandalism',
+			'issue_desc': 'There is some grafitti',
+			'date_set': date,
+			'date_completed': 'N/A',
 			'location': '1 Harper Road',
-			'raisedBy': 'Fred Cook',
+			'raised_by': 'Fred Cook',
 			'status': 'Incomplete',
 			'votes': 0
 		}]
