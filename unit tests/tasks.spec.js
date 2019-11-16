@@ -115,14 +115,14 @@ describe('getAll()', () => {
 		const count = await tasks.getAll()
 		//ASSERT
 		expect(count).toEqual([{id: 1,
-			issueType: 'Vandalism',
-			raisedBy: 'Fred Cook',
-			dateSet: date,
+			issue_type: 'Vandalism',
+			raised_by: 'Fred Cook',
+			date_set: date,
 			location: '1 Harper Road',
 			status: 'Incomplete',
 			votes: 0,
-			issueDesc: 'There is some grafitti',
-			dateCompleted: 'N/A'}])
+			issue_desc: 'There is some grafitti',
+			date_completed: 'N/A'}])
 		done()
 	})
 
