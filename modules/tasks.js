@@ -27,7 +27,7 @@ module.exports = class Tasks {
 	async addIssue(issueType = 'Vandalism',
 		issueDesc = 'There is some grafitti',
 		raisedBy = 'Fred Cook',
-		//dateSet
+		dateSet = undefined,
 		dateCompleted = 'N/A',
 		location = '1 Harper Road',
 		status = 'Incomplete',
@@ -39,7 +39,7 @@ module.exports = class Tasks {
 			}
 		}
 		const tasks = await new Tasks()
-		const dateSet = await tasks.getDate()
+		dateSet = await tasks.getDate()
 		const query = await `INSERT INTO tasks(issueType, issueDesc, raisedBy, dateSet, dateCompleted, location, status, votes)VALUES("${issueType}","${issueDesc}","${raisedBy}","${dateSet}","${dateCompleted}","${location}","${status}",${votes});`
 		console.log(query)
 		await this.db.run(query)
