@@ -62,6 +62,12 @@ module.exports = class Tasks {
 
 	}
 
+	async upvote(id = 1) {
+		const sql = `UPDATE tasks SET votes = votes + 1 WHERE id = ${id}`
+		await this.db.run(sql)
+		return
+	}
+
 	async complete(id) {
 		const status = 'Completed'
 		const sql = `UPDATE tasks SET status = "${status}" WHERE id = ${id};`

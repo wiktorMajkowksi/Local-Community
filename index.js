@@ -194,32 +194,40 @@ router.get('/issues', async ctx => {
 })
 
 // eslint-disable-next-line max-lines-per-function
+// eslint-disable-next-line complexity
 router.post('/issues', async ctx => {
 	try {
 		const tasks = await new Tasks(dbName)
 		const body = await ctx.request.body
-		console.log(body)
-		//Maybe refactor this? quite untidy
-		const issueTypeIn = body.issue
-		const issueDescriptionIn = body.issueDesc
-		const raisedByIn = ctx.cookies.get('user')
-		//const dateSetIn = body.dateSet
-		const dateCompletedIn = 'N/A'
-		const locationIn = body.location
-		const statusIn = body.status
-		//const votesIn = body.votes
-		const errorThrown = await tasks.addIssue(issueTypeIn,
-			issueDescriptionIn,
-			raisedByIn,
-			undefined,
-			dateCompletedIn,
-			locationIn,
-			statusIn,
-			undefined)
-		if (errorThrown !== undefined) {
-			throw new Error(errorThrown)
-		}
-		await tasks.getAll()
+		if (ctx.request.body.upvote === 'Upvote') {
+			if (ctx.cookies.get(ctx.request.body.id)){
+				throw new Error ('please wait 5 minutes before upvoting this issue again')
+			} else {
+				ctx.cookies.set(ctx.request.body.id, 'yes', {httpOnly: false, maxAge: 300000})
+				await tasks.upvote(ctx.request.body.id)
+			}
+		} else {
+			console.log('addissue')
+					const issueTypeIn = body.issue
+					const issueDescriptionIn = body.issueDesc
+					const raisedByIn = ctx.cookies.get('user')
+					//const dateSetIn = body.dateSet
+					const dateCompletedIn = 'N/A'
+					const locationIn = body.location
+					const statusIn = body.status
+					//const votesIn = body.votes
+					const errorThrown = await tasks.addIssue(issueTypeIn,
+						issueDescriptionIn,
+						raisedByIn,
+						undefined,
+						dateCompletedIn,
+						locationIn,
+						statusIn,
+						undefined)
+					if (errorThrown !== undefined) {
+						throw new Error(errorThrown)
+					}
+				}
 		ctx.redirect('/issues')
 	} catch(err) {
 		await ctx.render('error', {message: err.message})

@@ -40,6 +40,7 @@
                 {{#each tasks}}
                     <tr id="lol">
                         <td id = "td">{{this.id}}</td>
+                        <input name ="id" value = {{this.id}} readonly type = "hidden">
                         <td id = "td">{{this.issue_type}}</td>
                         <td id = "td">{{this.issue_desc}}</td>
                         <td id = "td">{{this.raised_by}}</td>
@@ -48,6 +49,10 @@
                         <td id = "td">{{this.location}}</td>
                         <td id = "td">{{this.status}}</td>
                         <td id = "td">{{this.votes}}</td>
+                        <td><form action = '/issues' method = "post">
+                            <input type = "submit" value = "Upvote" name = "upvote">
+                            <input name ="id" type="hidden" value = {{this.id}} readonly>
+                        </form> </td>
                     </tr>
                 {{/each}}
                 <form action="/issues" method="post">
