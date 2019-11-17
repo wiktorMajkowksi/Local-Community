@@ -24,7 +24,7 @@ expect.extend({
 })
 
 /*This custom matcher was created by andreipfeiffer
-it can be viewed at: 
+it can be viewed at:
 https://gist.github.com/andreipfeiffer/bc38ee6387e8cfe6f1a87e8a01d02a13#file-jest-tocontainobject-js
 
 */
@@ -46,7 +46,7 @@ describe('addIssue()', () => {
 		done()
 	})
 
-	
+
 	test('addIssue without all fields completeted rejected', async done => {
 		//ARRANGE
 		expect.assertions(1)
@@ -66,7 +66,6 @@ describe('addIssue()', () => {
 		await tasks.addIssue()
 		const results = await tasks.getAll()
 		const resultsLength = await results.length
-		const mockArray = (await tasks.mockIssue()).push(await tasks.mockIssue(2))
 		const index0 = (await tasks.mockIssue())[0]
 		//ASSERT
 		expect(results).toContainObject(index0)

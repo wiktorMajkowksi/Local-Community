@@ -3,7 +3,6 @@
 const sqlite = require('sqlite-async')
 
 module.exports = class Tasks {
-
 	constructor(dbName = ':memory:') {
 		return (async() => {
 			this.db = await sqlite.open(dbName)
@@ -32,7 +31,7 @@ module.exports = class Tasks {
 		location = '1 Harper Road',
 		status = 'Incomplete',
 		votes = 0) {
-			for (let i = 0; i < arguments.length; i++) {
+		for (let i = 0; i < arguments.length; i++) {
 			if (arguments[i] === '') {
 				console.log(arguments[i])
 				return 'not all fields filled out'
@@ -41,7 +40,7 @@ module.exports = class Tasks {
 		const tasks = await new Tasks()
 		date_set = await tasks.getDate()
 		const query = await `INSERT INTO tasks(issue_type, issue_desc, raised_by, date_set, date_completed, location, status, votes)VALUES("${issue_type}","${issue_desc}","${raised_by}","${date_set}","${date_completed}","${location}","${status}",${votes});`
-		console.log(query)
+
 		await this.db.run(query)
 		return
 	}

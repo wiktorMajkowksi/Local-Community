@@ -14,7 +14,7 @@ const staticDir = require('koa-static')
 const bodyParser = require('koa-bodyparser')
 const koaBody = require('koa-body')({multipart: true, uploadDir: '.'})
 const session = require('koa-session')
-const Database = require('sqlite-async')
+// const Database = require('sqlite-async')
 //const jimp = require('jimp')
 
 /* IMPORT CUSTOM MODULES */
@@ -34,9 +34,11 @@ app.use(views(`${__dirname}/views`, { extension: 'handlebars' }, {map: { handleb
 const defaultPort = 8080
 const port = process.env.PORT || defaultPort
 const dbName = 'website.db'
-const wardPost = 'ward_postcodes.db'
+//change this later
+const staffRegisterPass = 'staff'
+//const wardPost = 'ward_postcodes.db'
 
-/*EXAMPLE BOOK DATA FOR TESTING BEFORE WE HAVE A DATABASE */
+/*EXAMPLE BOOK DATA FOR TESTING BEFORE WE HAVE A DATABASE
 const testData = [
 	{id: 1,
 		issueType: 'vandalism',
@@ -46,7 +48,7 @@ const testData = [
 		status: 'Incomplete'
 	}
 ]
-
+*/
 //console.log(testData)
 
 /**
@@ -77,16 +79,25 @@ router.get('/register', async ctx => await ctx.render('register'))
  * @name Register Script
  * @route {POST} /register
  */
+// eslint-disable-next-line complexity
 router.post('/register', koaBody, async ctx => {
 	try {
 		// extract the data from the request
 		const body = ctx.request.body
-		console.log(body)
 		// call the functions in the module
 		const user = await new User(dbName)
-		await user.register(body.user, body.pass, body.address, body.postcode)
-		// await user.uploadPicture(path, type)
-		// redirect to the home page
+		let userLevel = 'user'
+		console.log(body)
+
+		//password entered for staff registration
+		if (body.staffPassword !== '') {
+			if (body.staffPassword === staffRegisterPass) {
+				userLevel = 'staff'
+			} else { //incorrect staff registration password entered
+				throw new Error('You have entered an incorrect staff registration password')
+			}
+		} //successful staff registration
+		await user.register(body.user, body.pass, body.address, body.postcode, userLevel)
 		ctx.redirect(`/?msg=new user "${body.name}" added`)
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
@@ -106,10 +117,13 @@ router.post('/login', async ctx => {
 		const user = await new User(dbName)
 		await user.login(body.user, body.pass)
 		ctx.session.authorised = true
+		const tasks = await new Tasks(dbName)
+		const accessLevel = await tasks.customQuery(`SELECT access_level FROM users WHERE user = "${body.user}"`)
+
 		ctx.cookies.set('user', body.user ,{httpOnly: false})
+		ctx.cookies.set('accessLevel', accessLevel[0].access_level, {httpOnly: false})
+		console.log(ctx.cookies.get('accessLevel'))
 		console.log(ctx.cookies.get('user'))
-		console.log(body.user)
-		//if()
 		return ctx.redirect('/')
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
@@ -124,17 +138,18 @@ router.get('/logout', async ctx => {
 
 router.get('/contacts', async ctx => {
 	await ctx.render('contacts')
-})	//routes to Contacts page
-/*
-router.get('/', async ctx => {
-	await ctx.render('')
-})	//routes to Home page
-*/
+})
+
 router.get('/staff', async ctx => {
 	try {
 		//the db is opened here and the table is created if not present
 		const tasks = await new Tasks(dbName)
 		const data = await tasks.getAll()
+
+		if (ctx.cookies.get('accessLevel') !== 'staff') {
+			throw new Error('You must be logged in as a staff member to view this page')
+		}
+
 		await ctx.render('staff', {tasks: data, query: ''})
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
@@ -148,7 +163,7 @@ router.post('/staff', async ctx => {
 		console.log(body)
 		const statusChange = body.statusChange
 		const id = body.id
-		if (statusChange === "complete") {
+		if (statusChange === 'complete') {
 			tasks.complete(id)
 		} else if (statusChange === 'inProgress') {
 			tasks.inProgress(id)
@@ -163,33 +178,6 @@ router.post('/staff', async ctx => {
 	}
 })
 
-
-/*
-router.get('/issues', async ctx => {
-	try {
-		const sql = 'SELECT * FROM tasks;'
-		const sql1 = 'SELECT * FROM ward_postcodes'
-		const querystring = ''
-		//console.log(ctx.query.q)
-		const db = await Database.open(dbName)
-		const wp = await Database.open(wardPost)
-
-		//Setup the tasks table if it does not exist
-
-		await db.run('CREATE TABLE IF NOT EXISTS tasks ( id INTEGER PRIMARY KEY AUTOINCREMENT, issue_type VARCHAR,	raised_by  VARCHAR,	date_set   DATE,	location  VARCHAR,	status );')
-		await wp.run('CREATE TABLE IF NOT EXISTS ward_postcodes ( postcode VARCHAR, latitude NUMERIC, longitude NUMERIC, easting INT, northing INT, grid_Ref VARCHAR, ward VARCHAR, altitude INT, lSON_Code VARCHAR);')
-		const data = await db.all(sql)
-		const data1 = await wp.all(sql1)
-		await db.close()
-		console.log(data)
-		await ctx.render('issues', {tasks: data, query: querystring})
-	} catch (err) {
-		await ctx.render('error', {message: err.message})
-	}
-})
-*/
-
-//my router.get('/issues)
 router.get('/issues', async ctx => {
 	try {
 		if (ctx.session.authorised !== true) {
@@ -210,9 +198,7 @@ router.post('/issues', async ctx => {
 	try {
 		const tasks = await new Tasks(dbName)
 		const body = await ctx.request.body
-
 		console.log(body)
-
 		//Maybe refactor this? quite untidy
 		const issueTypeIn = body.issue
 		const issueDescriptionIn = body.issueDesc
@@ -222,7 +208,14 @@ router.post('/issues', async ctx => {
 		const locationIn = body.location
 		const statusIn = body.status
 		//const votesIn = body.votes
-		const errorThrown = await tasks.addIssue(issueTypeIn, issueDescriptionIn,raisedByIn, undefined, dateCompletedIn,locationIn, statusIn, undefined)
+		const errorThrown = await tasks.addIssue(issueTypeIn,
+			issueDescriptionIn,
+			raisedByIn,
+			undefined,
+			dateCompletedIn,
+			locationIn,
+			statusIn,
+			undefined)
 		if (errorThrown !== undefined) {
 			throw new Error(errorThrown)
 		}
@@ -232,28 +225,6 @@ router.post('/issues', async ctx => {
 		await ctx.render('error', {message: err.message})
 	}
 })
-
-/*
-router.get('/issues', async ctx => {
-	try {
-		const sql = 'SELECT * FROM tasks;'
-		const querystring = ''
-		//console.log(ctx.query.q)
-		const wp = await Database.open(wardPost)
-
-		//Setup the tasks table if it does not exist
-		await wp.run('CREATE TABLE IF NOT EXISTS tasks ( postcode VARCHAR, latitude NUMERIC, longitude NUMERIC, easting INT, northing INT, grid_Ref VARCHAR, ward VARCHAR, altitude INT, lSON_Code VARCHAR);')
-		const data1 = await wp.all(sql)
-		await wp.close()
-		console.log(data)
-		console.log(data1)
-		await ctx.render('issues', {tasks: data, query: querystring})
-		await ctx.render('issues', {ward_postcodes: data1, query: querystring})
-	} catch (err) {
-		await ctx.render('error', {message: err.message})
-	}
-})
-*/
 
 app.use(router.routes())
 module.exports = app.listen(port, async() => console.log(`listening on port ${port}`))
