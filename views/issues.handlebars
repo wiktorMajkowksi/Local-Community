@@ -19,9 +19,10 @@
 					<td id="button"><a href="/issues"> Issues </a></td>
 					<a id="lr" href="/register">| Register</a> 
                     {{#if user}}
+                        <a id="lr" href="/logout">Log out |</a>
+                    {{else}}   
 					    <a id="lr" href="/login">Login |</a>
                     {{/if}}
-                        <a id="lr" href="/logout">Log out |</a>
 				</tr>
 			</table>
 		</nav>	
