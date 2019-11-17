@@ -180,9 +180,9 @@ router.post('/staff', async ctx => {
 
 router.get('/issues', async ctx => {
 	try {
-		if (ctx.session.authorised !== true) {
-			throw new Error('you must be logged in to view this page')
-		}
+		//if (ctx.session.authorised !== true) {
+		//	throw new Error('you must be logged in to view this page')
+		//}
 		//the db is opened here and the table is created if not present
 		const tasks = await new Tasks(dbName)
 		const data = await tasks.getAll()
