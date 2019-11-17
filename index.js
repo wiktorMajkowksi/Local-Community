@@ -60,7 +60,13 @@ const testData = [
  */
 router.get('/', async ctx => {
 	try {
-		await ctx.render('index')
+		let loggedIn = false
+		if (ctx.cookies.get('user') !== undefined) { //they are logged in
+			loggedIn = true
+		} else { //they are not logged in
+			loggedIn = false
+		}
+		await ctx.render('index', {user: loggedIn})
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}
@@ -113,6 +119,9 @@ router.get('/login', async ctx => {
 
 router.post('/login', async ctx => {
 	try {
+		console.log(ctx.cookies.get('user'))
+		console.log(ctx.cookies.get('accessLevel'))
+
 		const body = ctx.request.body
 		const user = await new User(dbName)
 		await user.login(body.user, body.pass)
@@ -132,6 +141,11 @@ router.post('/login', async ctx => {
 
 router.get('/logout', async ctx => {
 	ctx.session.authorised = null
+	//not logged in 
+	ctx.cookies.set('user', '')
+	ctx.cookies.set('accessLevel', '')
+	console.log(ctx.cookies.get('user'))
+	console.log(ctx.cookies.get('accessLevel'))
 	ctx.redirect('/login')
 
 })
