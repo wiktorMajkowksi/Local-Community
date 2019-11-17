@@ -164,9 +164,9 @@ router.post('/staff', async ctx => {
 		const statusChange = body.statusChange
 		const id = body.id
 		if (statusChange === 'complete') {
-			tasks.complete(id)
+			await tasks.complete(id)
 		} else if (statusChange === 'inProgress') {
-			tasks.inProgress(id)
+			await tasks.inProgress(id)
 		} else {
 			throw new Error('something went wrong')
 		}

@@ -70,7 +70,10 @@ module.exports = class Tasks {
 
 	async complete(id) {
 		const status = 'Completed'
-		const sql = `UPDATE tasks SET status = "${status}" WHERE id = ${id};`
+		const date = await this.getDate()
+		let sql = `UPDATE tasks SET status = "${status}" WHERE id = ${id};`
+		await this.db.run(sql)
+		sql = `UPDATE tasks SET date_completed = "${date}" WHERE id = ${id}`
 		await this.db.run(sql)
 		return
 	}
