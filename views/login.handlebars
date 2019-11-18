@@ -5,21 +5,33 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Log In</title>
-		<meta name="description" content="form to add new books">
-		<meta name="author" content="Mark Tyers">
+		<meta name="description" content="form to log in users">
+		<meta name="author" content="Mariana Leao">
 		<link href="login_reg.css" type="text/css" rel="stylesheet" />
 	</head>
 	<body>
-		<h1>Log In</h1>
-		{{#if msg}}
- 			<p class="msg">{{msg}}</p>
-		{{/if}}
-		<form action="/login" method="post">
-			<p id="user">Username:<br /><input type="text" name="user" placeholder="Username" value="{{user}}" autofocus></p>
-			<p>Password:<br /><input type="password" name="pass" placeholder="Password" value=""></p>
-			<p><input type="submit" value="Log in"></p>
-			<p>_______________________</p>
-			<p class="log_reg_acc">Don't have an account? <a href="/register">Register</a></p>
-		</form>
+<!-- https://www.w3schools.com/howto/howto_css_split_screen.asp -->
+		<div class="split left">
+  			<div class="centered">
+   				<h1>Local</h1><h1 style = "color: #FFA74B">Community</h1>
+    			<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Coventry_City_Centre_from_One_Friargate_2019.jpg/1200px-Coventry_City_Centre_from_One_Friargate_2019.jpg" alt="Avatar man">
+  			</div>	
+		</div>
+    
+    	<div class="split right">
+  			<div class="centered">
+				<form action="/login" method="post">
+					<h2>Log In</h2>
+					{{#if msg}}
+ 						<p class="msg">{{msg}}</p>
+					{{/if}}
+					<p id="user">Username<br /><input type="text" name="user" placeholder="Username" value="{{user}}" autofocus></p>
+					<p>Password<br /><input type="password" name="pass" placeholder="Password" value=""></p>
+					<p><input type="submit" value="Log in"></p>
+					<p>_______________________</p>
+					<p class="log_reg_acc">Don't have an account? <a href="/register">Register</a></p>
+				</form>
+ 			 </div>
+		</div>
 	</body>
 </html>

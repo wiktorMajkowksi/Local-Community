@@ -17,7 +17,12 @@
 				 	<td id="button"><a href="/staff"> Staff </a></td>
 					<td id="button"><a href="/contacts"> Contacts </a></td>
 					<td id="button"><a href="/issues"> Issues </a></td>
-					<a id="lr" href="/register">| Register</a> <a id="lr" href="/login">Login |</a>
+					<a id="lr" href="/register">| Register</a> 
+                    {{#if user}}
+                        <a id="lr" href="/logout">Log out |</a>
+                    {{else}}   
+					    <a id="lr" href="/login">Login |</a>
+                    {{/if}}
 				</tr>
 			</table>
 		</nav>	
@@ -40,14 +45,19 @@
                 {{#each tasks}}
                     <tr id="lol">
                         <td id = "td">{{this.id}}</td>
-                        <td id = "td">{{this.issueType}}</td>
-                        <td id = "td">{{this.issueDesc}}</td>
-                        <td id = "td">{{this.raisedBy}}</td>
-                        <td id = "td">{{this.dateSet}}</td>
-                        <td id = "td">{{this.dateCompleted}}</td>
+                        <input name ="id" value = {{this.id}} readonly type = "hidden">
+                        <td id = "td">{{this.issue_type}}</td>
+                        <td id = "td">{{this.issue_desc}}</td>
+                        <td id = "td">{{this.raised_by}}</td>
+                        <td id = "td">{{this.date_set}}</td>
+                        <td id = "td">{{this.date_completed}}</td>
                         <td id = "td">{{this.location}}</td>
                         <td id = "td">{{this.status}}</td>
                         <td id = "td">{{this.votes}}</td>
+                        <td><form action = '/issues' method = "post">
+                            <input type = "submit" value = "Upvote" name = "upvote">
+                            <input name ="id" type="hidden" value = {{this.id}} readonly>
+                        </form> </td>
                     </tr>
                 {{/each}}
                 <form action="/issues" method="post">
@@ -55,11 +65,10 @@
                     <td id="td">ID</td>
                     <td id="td"><input name = 'issue'type="text"></td>
                     <td id="td"><input name = 'issueDesc'type="text"></td>
-                    <td id="td"><input name = "raisedBy" type="text" placeholder="You"></td>
-                    <td id="td"><input name= 'dateSet'type="date"></td>
-                    <td id="td"><input name = 'dateCompleted'type="date" readonly></td>
-                    <td id="td"><input name ='location'list="location"></td> 
-                        {{#each ward_postcodes}}
+                    <td id="td"><input type="text" placeholder="{{user}}" readonly></td>
+                    <td id="td"><input type="date" readonly></td>
+                    <td id="td"><input name = 'dateCompleted'type="date" placeholder="N/A" readonly></td>
+                    <td id="td"><input name ='location' list="location"></td> 
                         <datalist id="location">
                             <option value="Bablake">
                             <option value="Binley and Willenhall">
@@ -78,22 +87,13 @@
                             <option value="Woodlands">
                             <option value="Holbrook">
                         </datalist>
-                    {{/each}}
-                    <td id="td"><select name='status' list="status" placeholder="incomplete" readonly>
-                            <option value="Choose one">Choose one...</option>
-                            <option value="Complete">Complete</option>
-                            <option value="Incomplete">Incomplete</option>                        </option>
-                        </select>
-                    </td>
+                    <!--
+                    <td id="td"><select name='status' list="status" placeholder="incomplete" readonly> Incomplete </td>
+                    -->
+                    <td id="td"> <input type="text" name = "status" placeholder ="incomplete" value ="incomplete" readonly></td>
                     <td id="td"><input name = 'votes'type="text" placeholder = 0 readonly></td>
                 </form>
                 </table>
-                
-
-
-
-
-
         </article>    
 	</body>
 

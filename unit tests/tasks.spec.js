@@ -24,7 +24,7 @@ expect.extend({
 })
 
 /*This custom matcher was created by andreipfeiffer
-it can be viewed at: 
+it can be viewed at:
 https://gist.github.com/andreipfeiffer/bc38ee6387e8cfe6f1a87e8a01d02a13#file-jest-tocontainobject-js
 
 */
@@ -46,7 +46,7 @@ describe('addIssue()', () => {
 		done()
 	})
 
-	
+
 	test('addIssue without all fields completeted rejected', async done => {
 		//ARRANGE
 		expect.assertions(1)
@@ -66,7 +66,6 @@ describe('addIssue()', () => {
 		await tasks.addIssue()
 		const results = await tasks.getAll()
 		const resultsLength = await results.length
-		const mockArray = (await tasks.mockIssue()).push(await tasks.mockIssue(2))
 		const index0 = (await tasks.mockIssue())[0]
 		//ASSERT
 		expect(results).toContainObject(index0)
@@ -111,17 +110,18 @@ describe('getAll()', () => {
 		const tasks = await new Tasks()
 		//ACT
 		await tasks.addIssue()
+		const date = await tasks.getDate()
 		const count = await tasks.getAll()
 		//ASSERT
 		expect(count).toEqual([{id: 1,
-			issueType: 'Vandalism',
-			raisedBy: 'Fred Cook',
-			dateSet: '2000-01-01',
+			issue_type: 'Vandalism',
+			raised_by: 'Fred Cook',
+			date_set: date,
 			location: '1 Harper Road',
 			status: 'Incomplete',
-			votes: 10,
-			issueDesc: 'There is some grafitti',
-			dateCompleted: '2010-31-12'}])
+			votes: 0,
+			issue_desc: 'There is some grafitti',
+			date_completed: 'N/A'}])
 		done()
 	})
 
@@ -159,7 +159,7 @@ describe('complete()', () => {
 		const data = await tasks.customQuery()
 		//ASSERT
 		expect(await data.length).toEqual((await tasks.getAll()).length)
-		expect(data[0].status).toEqual('complete')
+		expect(data[0].status).toEqual('Completed')
 		done()
 	})
 })

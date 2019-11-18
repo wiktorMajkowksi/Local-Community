@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 <!doctype html>
 
@@ -32,3 +33,73 @@
 			<p><a href="/logout">log out</a></p>
 		</footer>
 </html>
+=======
+<!doctype html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Issues</title>
+		<meta name="author" content="Fred Cook, Wiktor Majkowski">
+        <link href="defaultStyle.css" type="text/css" rel="stylesheet" />
+        <link href="issues.css" type="text/css" rel="stylesheet" />
+	</head>
+	<body>
+        <nav id = "navigation">
+			<table>
+				<tr> 
+					<td id="logo"> L</td>
+					<td id="button"><a href="/"> Home </a></td>
+				 	<td id="button"><a href="/staff"> Staff </a></td>
+					<td id="button"><a href="/contacts"> Contacts </a></td>
+					<td id="button"><a href="/issues"> Issues </a></td>
+                    <a id="lr" href="/register">| Register</a>
+                    {{#if user}}
+                        <a id="lr" href="/logout">Log out |</a>
+                    {{else}}   
+					    <a id="lr" href="/login">Login |</a>
+					{{/if}}
+				</tr>
+			</table>
+			
+			
+		</nav>	
+        <h1> Issue Tacker </h1>
+        
+        <article>
+            <table id = "table" width="80%">
+                <tr>
+                    <th id = "th">ID</th>
+                    <th id = "th">Issue</th>
+                    <th id = "th">Issue Description</th>
+                    <th id = "th">Raised by</th>
+                    <th id = "th">Date Set</th>
+                    <th id = "th">Date Completed</th>
+                    <th id = "th">Location</th>
+                    <th id = "th">Status</th>
+                    <th id = "th">Votes</th>
+                </tr>
+
+                {{#each tasks}}
+                    <form action="/staff" method="post">
+                    <tr id="lol">
+                        <td id = "td">{{this.id}}</td>
+                        <td id = "td">{{this.issue_type}}</td>
+                        <td id = "td">{{this.issue_desc}}</td>
+                        <td id = "td">{{this.raised_by}}</td>
+                        <td id = "td">{{this.date_set}}</td>
+                        <td id = "td">{{this.date_completed}}</td>
+                        <td id = "td">{{this.location}}</td>
+                        <td id = "td">{{this.status}}</td>
+                        <td id = "td">{{this.votes}}</td>
+                        <td><input name = "statusChange" type="submit" value="In Progress"></td>
+                        <td><input name = "statusChange" type="submit" value="Complete"></td>
+                    </tr>
+                    </form>
+                    {{/each}}
+                </table>
+                </article>
+                </body>
+		
+</html>
+>>>>>>> af8e79084fd3e61fa72d152d15bb0f1ce0e0b75c

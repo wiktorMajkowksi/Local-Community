@@ -17,7 +17,12 @@
 				 	<td id="button"><a href="/staff"> Staff </a></td>
 					<td id="button"><a href="/contacts"> Contacts </a></td>
 					<td id="button"><a href="/issues"> Issues </a></td>
-					<a id="lr" href="/register">| Register</a> <a id="lr" href="/login">Login |</a>
+					<a id="lr" href="/register">| Register</a>
+                    {{#if user}}
+                        <a id="lr" href="/logout">Log out |</a>
+                    {{else}}   
+					    <a id="lr" href="/login">Login |</a>
+					{{/if}}
 				</tr>
 			</table>
 		</nav>	
@@ -36,7 +41,4 @@
 			</p>
 			
 		</article>
-		<footer>
-			<p><a href="/logout">log out</a></p>
-		</footer>
 </html>
