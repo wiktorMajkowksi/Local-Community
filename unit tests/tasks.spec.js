@@ -56,7 +56,7 @@ describe('addIssue()', () => {
 		done()
 	})
 
-
+/*
 	test('addIssue without all fields completeted rejected', async done => {
 		//ARRANGE
 		expect.assertions(1)
@@ -67,23 +67,50 @@ describe('addIssue()', () => {
 		      
 		expect(tasks.addIssue({issueType: 'fail'}, cookies)).rejects.toEqual(new Error('One or more fields were not filled in'))
 	});
-		
+*/		
 	
 
 	test('test multiple addIssue results in correct / unique IDs (autoincrement)', async done => {
 		//ARRANGE
-		expect.assertions(3)
+		expect.assertions(2)
 		const tasks = await new Tasks
 		//ACT
-		await tasks.addIssue()
-		await tasks.addIssue()
+		await tasks.addIssue(await tasks.mockIssue(), cookies)
+		await tasks.addIssue({issueType: 'issueType',
+			issueDesc: 'description',
+			raisedBy: 'fred',
+			dateSet: '2019-10-18',
+			dateCompleted: 'N/A',
+			location: 'location',
+			status: 'Incomplete',
+			votes: 0}, cookies)
 		const results = await tasks.getAll()
-		const resultsLength = await results.length
-		const index0 = (await tasks.mockIssue())[0]
 		//ASSERT
-		expect(results).toContainObject(index0)
-		expect(results).toContainObject((await tasks.mockIssue(2))[0])
-		expect(resultsLength).toEqual(2)
+		expect(results.length).toEqual(2)
+		expect(results).toEqual([
+			{
+			  id: 1,
+			  issueType: 'issueType',
+			  issueDesc: 'description',
+			  raisedBy: 'fred',
+			  dateSet: '2019-10-18',
+			  dateCompleted: 'N/A',
+			  location: 'location',
+			  status: 'Incomplete',
+			  votes: 0
+			},
+			{
+			  id: 2,
+			  issueType: 'issueType',
+			  issueDesc: 'description',
+			  raisedBy: 'fred',
+			  dateSet: '2019-10-18',
+			  dateCompleted: 'N/A',
+			  location: 'location',
+			  status: 'Incomplete',
+			  votes: 0
+			}
+		  ])
 		done()
 	})
 
@@ -96,10 +123,10 @@ describe('mockIssue()', () => {
 		const tasks = await new Tasks()
 		const mockIssue = await tasks.mockIssue()
 		//ACT
-		await tasks.addIssue()
+		await tasks.addIssue(mockIssue, cookies)
 		const results = await tasks.getAll()
 		//ASSERT
-		expect(results).toEqual(mockIssue)
+		expect(results[0]).toEqual(mockIssue)
 		done()
 	})
 })
@@ -122,19 +149,19 @@ describe('getAll()', () => {
 		expect.assertions(1)
 		const tasks = await new Tasks()
 		//ACT
-		await tasks.addIssue()
+		await tasks.addIssue(await tasks.mockIssue(), cookies)
 		const date = await tasks.getDate()
 		const count = await tasks.getAll()
 		//ASSERT
 		expect(count).toEqual([{id: 1,
-			issue_type: 'Vandalism',
-			raised_by: 'Fred Cook',
-			date_set: date,
-			location: '1 Harper Road',
+			issueType: 'issueType',
+			raisedBy: 'fred',
+			dateSet: date,
+			location: 'location',
 			status: 'Incomplete',
 			votes: 0,
-			issue_desc: 'There is some grafitti',
-			date_completed: 'N/A'}])
+			issueDesc: 'description',
+			dateCompleted: 'N/A'}])
 		done()
 	})
 
@@ -166,8 +193,8 @@ describe('complete()', () => {
 		expect.assertions(2)
 		const tasks = await new Tasks()
 		//ACT
-		await tasks.addIssue()
-		await tasks.complete(1)
+		await tasks.addIssue(await tasks.mockIssue(), cookies)
+		await tasks.changeStatus(1, 'Completed')
 		const data = await tasks.customQuery()
 		//ASSERT
 		expect(await data.length).toEqual((await tasks.getAll()).length)
