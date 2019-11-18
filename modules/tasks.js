@@ -74,10 +74,14 @@ module.exports = class Tasks {
 		}
 	}
 
-	async getIssue(id = undefined) {
+	async getIssue(id) {
 		try {
+			console.log(id)
 			if (id !== undefined) {
-				const data = this.db.get(`SELECT * from tasks WHERE id = ${id};`)
+				console.log('in the if')
+				const sql = `SELECT * from tasks WHERE id = ${id};`
+				console.log(sql)
+				const data = await this.db.all(`SELECT * from tasks WHERE id = ${id};`)
 				return data
 			}else {
 				throw new Error('Issue not supplied')
