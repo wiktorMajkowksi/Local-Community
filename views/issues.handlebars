@@ -46,11 +46,11 @@
                     <tr id="lol">
                         <td id = "td">{{this.id}}</td>
                         <input name ="id" value = {{this.id}} readonly type = "hidden">
-                        <td id = "td">{{this.issue_type}}</td>
-                        <td id = "td">{{this.issue_desc}}</td>
-                        <td id = "td">{{this.raised_by}}</td>
-                        <td id = "td">{{this.date_set}}</td>
-                        <td id = "td">{{this.date_completed}}</td>
+                        <td id = "td">{{this.issueType}}</td>
+                        <td id = "td">{{this.issueDesc}}</td>
+                        <td id = "td">{{this.raisedBy}}</td>
+                        <td id = "td">{{this.dateSet}}</td>
+                        <td id = "td">{{this.dateCompleted}}</td>
                         <td id = "td">{{this.location}}</td>
                         <td id = "td">{{this.status}}</td>
                         <td id = "td">{{this.votes}}</td>
@@ -63,7 +63,7 @@
                 <form action="/issues" method="post">
                 <p><input type="submit" value="Submit"></p>
                     <td id="td">ID</td>
-                    <td id="td"><input name = 'issue'type="text"></td>
+                    <td id="td"><input name = 'issueType'type="text"></td>
                     <td id="td"><input name = 'issueDesc'type="text"></td>
                     <td id="td"><input type="text" placeholder="{{user}}" readonly></td>
                     <td id="td"><input type="date" readonly></td>

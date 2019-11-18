@@ -7,108 +7,165 @@ module.exports = class Tasks {
 		return (async() => {
 			this.db = await sqlite.open(dbName)
 			// we need this table to store the user accounts
-			const sql = 'CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, issue_type VARCHAR, issue_desc VARCHAR, raised_by VARCHAR, date_set DATE, date_completed DATE, location VARCHAR, status VARCHAR, votes INTEGER);"'
+			const sql = 'CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, issueType VARCHAR, issueDesc VARCHAR, raisedBy VARCHAR, dateSet DATE, dateCompleted DATE, location VARCHAR, status VARCHAR, votes INTEGER);"'
 			await this.db.run(sql)
 			return this
 		})()
 	}
 
 	async getDate() {
-		const date = new Date()
-		const day = date.getDate()
-		const month = date.getMonth()
-		const year = date.getFullYear()
-		const total = `${year}-${month}-${day}`
-		return total
+		try {
+			const date = new Date()
+			const day = date.getDate()
+			const month = date.getMonth()
+			const year = date.getFullYear()
+			const total = `${year}-${month}-${day}`
+			return total
+		} catch(err) {
+			throw err
+		}
+	}
+	//takes a body and makes it so add Issue can take it as an argument
+	async createIssue(body, cookies) {
+		try {
+			console.log((await this.getUserCookies(cookies)).user)
+			return {'issueType': body.issueType,
+				'issueDesc': body.issueDesc,
+				'raisedBy': (await this.getUserCookies(cookies)).user,
+				'dateSet': await this.getDate(),
+				'dateCompleted': 'N/A',
+				'location': body.location,
+				'status': 'Incomplete',
+				'votes': 0}
+		} catch (err) {
+			throw err
+		}
 	}
 
-	// eslint-disable-next-line max-params
-	async addIssue(issue_type = 'Vandalism',
-		issue_desc = 'There is some grafitti',
-		raised_by = 'Fred Cook',
-		date_set = undefined,
-		date_completed = 'N/A',
-		location = '1 Harper Road',
-		status = 'Incomplete',
-		votes = 0) {
-		for (let i = 0; i < arguments.length; i++) {
-			if (arguments[i] === '') {
-				console.log(arguments[i])
-				return 'not all fields filled out'
+	//takes a request body from the issues page as a parameter
+	async addIssue(body, cookies) {
+		try {
+			console.log(body)
+			const expectedIssueLength = 3
+			const issue = await this.createIssue(body, cookies)
+			//check that all fields are filled out to ensure the validity of the issue
+			const givenFields = [issue.issueType, issue.issueDesc, issue.location]
+			for (let i = 0; i < expectedIssueLength; i++) {
+				if (givenFields[i] === '' || givenFields[i] === undefined) {
+					throw new Error('One or more fields were not filled in')
+				}
 			}
+			const sql = await `INSERT INTO tasks(
+				issueType, issueDesc, raisedBy, dateSet, dateCompleted, location, status, votes)
+				VALUES ("${issue.issueType}", "${issue.issueDesc}", "${issue.raisedBy}", "${issue.dateSet}", "${issue.dateCompleted}", "${issue.location}", "${issue.status}", ${issue.votes});`
+			await this.db.run(sql)
+       		return
+		} catch(err) {
+    		throw err
 		}
-		const tasks = await new Tasks()
-		date_set = await tasks.getDate()
-		const query = await `INSERT INTO tasks(issue_type, issue_desc, raised_by, date_set, date_completed, location, status, votes)VALUES("${issue_type}","${issue_desc}","${raised_by}","${date_set}","${date_completed}","${location}","${status}",${votes});`
-
-		await this.db.run(query)
-		return
 	}
 
 	async getAll() {
-		const query = 'SELECT * FROM tasks'
-		const data = await this.db.all(query)
-
-		return data
+		try{
+			const query = 'SELECT * FROM tasks'
+			const data = await this.db.all(query)
+			return data
+		} catch (err) {
+			throw err
+		}
 	}
 
-	async getDateString() {
-		const datetime = new Date()
-		const year = datetime.getFullYear()
-		const month = datetime.getMonth()
-		const day = datetime.getDate()
-		const dateString = `"${year}-${month}-${day}"`
-		return dateString
+	async upvote(id, cookies) {
+		try {
+			//if they upvoted recently it will fail and throw an error
+			//console.log(errorCheck)
+
+			await this.checkIfUpvotedRecently(id, cookies)
+			console.log('after 85')
+			//if (errorCheck) {
+			//	console.log('errorcheck is in')
+			//	throw new Error('Error in checkIfUpVotedRecently')
+			//}
+			console.log('gonna upvote')
+			const sql = `UPDATE tasks SET votes = votes + 1 WHERE id = ${id}`
+			await this.db.run(sql)
+			return
+		} catch (err) {
+			throw err
+		}
+	}
+
+	async checkIfUpvotedRecently(id, cookies) {
+		try {
+			//console.log(await this.getUserCookies(cookies))
+			if (await cookies.get(id) === 'upvoted') {
+				throw new Error('Please wait up to 5 minutes before upvoting this issue again')
+			} else {
+				return
+			}
+		} catch (err) {
+			throw err
+		}
+	}
+
+	async changeStatus(id, status) {
+		try {
+			console.log('in changeStatus')
+			let sql = `UPDATE tasks SET status = "${status}" WHERE id = ${id};`
+			if (status === 'Completed') {
+				const date = await this.getDate()
+				await this.db.run(sql)
+				sql = `UPDATE tasks SET dateCompleted = "${date}" WHERE id = ${id};`
+				await this.db.run(sql)
+			} else {
+				await this.db.run(sql)
+			}
+			return undefined
+			throw err
+		} catch(err) {
+			throw err
+		}
+	}
+
+	async getUserCookies(cookies) {
+		/*the only cookies that are ever set are
+		'user' - the username of the user logged in
+		'accessLevel - whether the user that is logged in is a staff member or regular user
+		'upvoted' where the key will be the ID of the issue they upvoted within the last 5 minutes
+
+		this function will only return the uer and accessLevel
+		*/
+		try {
+			const user = await cookies.get('user')
+			const accessLevel = await cookies.get('accessLevel')
+			const all = await {'user': user, 'accessLevel': accessLevel}
+			console.log(all)
+			return all
+		} catch (err) {
+			throw err
+		}
 
 	}
 
-	async upvote(id = 1) {
-		const sql = `UPDATE tasks SET votes = votes + 1 WHERE id = ${id}`
-		await this.db.run(sql)
-		return
-	}
 
-	async complete(id) {
-		const status = 'Completed'
-		const date = await this.getDate()
-		let sql = `UPDATE tasks SET status = "${status}" WHERE id = ${id};`
-		await this.db.run(sql)
-		sql = `UPDATE tasks SET date_completed = "${date}" WHERE id = ${id}`
-		await this.db.run(sql)
-		return
-	}
-
-	async inProgress(id) {
-		const status = 'In Progress'
-		const sql = `UPDATE tasks SET status = "${status}" WHERE id = ${id};`
-		await this.db.run(sql)
-		return
-	}
-
-	//just for testing purposes
+	////just for testing purposes
 	async customQuery(sql = 'SELECT * FROM tasks;') {
 		const data = await this.db.all(sql)
 		return data
 	}
-
-	//can be used for testing purposes, expected record after an insert to DB
-	//gives the ouput that querying the database would give
+	//just for testing
 	async mockIssue(id = 1) {
-		const tasks = await new Tasks()
-		const date = await tasks.getDate()
-		const mockIssue = [{
-			'id': id,
-			'issue_type': 'Vandalism',
-			'issue_desc': 'There is some grafitti',
-			'date_set': date,
-			'date_completed': 'N/A',
-			'location': '1 Harper Road',
-			'raised_by': 'Fred Cook',
-			'status': 'Incomplete',
-			'votes': 0
-		}]
+		const mockIssue = {
+			id: 1,
+			issueType: 'issueType',
+			issueDesc: 'description',
+			raisedBy: 'fred',
+			dateSet: '2019-10-18',
+			dateCompleted: 'N/A',
+			location: 'location',
+			status: 'Incomplete',
+			votes: 0
+		  }
 		return mockIssue
 	}
-
-
 }
