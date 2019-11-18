@@ -39,7 +39,7 @@ describe('addIssue()', () => {
 		}
 		return
 	})
-	
+
 	test('single addIssue works correctly', async done => {
 		//ARRANGE
 		expect.assertions(2)
@@ -56,19 +56,17 @@ describe('addIssue()', () => {
 		done()
 	})
 
-/*
+	/*
 	test('addIssue without all fields completeted rejected', async done => {
 		//ARRANGE
 		expect.assertions(1)
 		const tasks = await new Tasks()
 		//ACT
 		const results = await tasks.addIssue({issueType: 'fail'}, cookies)
-
-		      
-		expect(tasks.addIssue({issueType: 'fail'}, cookies)).rejects.toEqual(new Error('One or more fields were not filled in'))
+	expect(tasks.addIssue({issueType: 'fail'}, cookies)).rejects.toEqual(new Error('One or more fields were not filled in'))
 	});
-*/		
-	
+	*/
+
 
 	test('test multiple addIssue results in correct / unique IDs (autoincrement)', async done => {
 		//ARRANGE
@@ -176,7 +174,7 @@ describe('getDate()', () => {
 		//ACT
 		const dateString = await tasks.getDate()
 
-		//date.parse() returns the number of seconds equivalent to the current unix time, so in this case it will be a long string of numbers
+		//date.parse() returns the number of seconds equivalent to the current unix time (long string of numbers)
 		//date.parse() returns NaN if it given an invalid date as an argument
 		const correctResult = Date.parse(dateString)
 		const wrongResult = Date.parse('not a date')
