@@ -81,19 +81,20 @@
                 </tr>
 
                 {{#each tasks}}
-                    <form action="/staff" method="post">
                     <tr id="lol">
                         <td id = "td">{{this.id}}</td>
-                        <td id = "td">{{this.issue_type}}</td>
-                        <td id = "td">{{this.issue_desc}}</td>
-                        <td id = "td">{{this.raised_by}}</td>
-                        <td id = "td">{{this.date_set}}</td>
-                        <td id = "td">{{this.date_completed}}</td>
+                        <td id = "td">{{this.issueType}}</td>
+                        <td id = "td">{{this.issueDesc}}</td>
+                        <td id = "td">{{this.raisedBy}}</td>
+                        <td id = "td">{{this.dateSet}}</td>
+                        <td id = "td">{{this.dateCompleted}}</td>
                         <td id = "td">{{this.location}}</td>
                         <td id = "td">{{this.status}}</td>
                         <td id = "td">{{this.votes}}</td>
+                    <form action="/staff" method="post">
                         <td><input name = "statusChange" type="submit" value="In Progress"></td>
                         <td><input name = "statusChange" type="submit" value="Complete"></td>
+                        <input name = "id" type = "hidden" value ={{this.id}} readonly>
                     </tr>
                     </form>
                     {{/each}}

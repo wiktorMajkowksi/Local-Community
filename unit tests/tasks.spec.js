@@ -28,20 +28,30 @@ it can be viewed at:
 https://gist.github.com/andreipfeiffer/bc38ee6387e8cfe6f1a87e8a01d02a13#file-jest-tocontainobject-js
 
 */
-
+const cookies = {accessLevel: 'staff', user: 'fred', 1: 'upvoted'}
 
 describe('addIssue()', () => {
+	beforeAll(() => {
+		//when running tests because we dont have access to 'ctx' it means cookies we pass into function
+		//dont have the 'get' method so here we prototype it to give the behaviour the standard application has
+		Object.prototype.get = function(givenKey) {
+			return cookies[givenKey]
+		}
+		return
+	})
+	
 	test('single addIssue works correctly', async done => {
 		//ARRANGE
 		expect.assertions(2)
 		const tasks = await new Tasks()
 		//ACT
-		await tasks.addIssue()
+
+		const body = await tasks.mockIssue()
+		await tasks.addIssue(body, cookies)
 		const results = await tasks.getAll()
-		const resultsLength = await results.length
-		const mockIssue = await tasks.mockIssue()
+		const resultsLength = results.length
 		//ASSERT
-		expect(results).toEqual(mockIssue)
+		expect(results[0]).toEqual(body)
 		expect(resultsLength).toEqual(1)
 		done()
 	})
@@ -52,10 +62,13 @@ describe('addIssue()', () => {
 		expect.assertions(1)
 		const tasks = await new Tasks()
 		//ACT
-		const errorThrown = await tasks.addIssue('')
-		expect(errorThrown).toEqual('not all fields filled out')
-		done()
-	})
+		const results = await tasks.addIssue({issueType: 'fail'}, cookies)
+
+		      
+		expect(tasks.addIssue({issueType: 'fail'}, cookies)).rejects.toEqual(new Error('One or more fields were not filled in'))
+	});
+		
+	
 
 	test('test multiple addIssue results in correct / unique IDs (autoincrement)', async done => {
 		//ARRANGE
@@ -128,13 +141,13 @@ describe('getAll()', () => {
 
 })
 
-describe('getDateString()', () => {
+describe('getDate()', () => {
 	test('test it returns a valid date string', async done => {
 		//ARRANGE
 		expect.assertions(2)
 		const tasks = await new Tasks()
 		//ACT
-		const dateString = await tasks.getDateString()
+		const dateString = await tasks.getDate()
 
 		//date.parse() returns the number of seconds equivalent to the current unix time, so in this case it will be a long string of numbers
 		//date.parse() returns NaN if it given an invalid date as an argument
@@ -146,7 +159,6 @@ describe('getDateString()', () => {
 		done()
 	})
 })
-
 
 describe('complete()', () => {
 	test('test complete() works when id = 1 on a valid issue', async done => {

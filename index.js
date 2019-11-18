@@ -114,25 +114,25 @@ router.get('/login', async ctx => {
 	const data = {}
 	if(ctx.query.msg) data.msg = ctx.query.msg
 	if(ctx.query.user) data.user = ctx.query.user
+
+	console.log(ctx.cookies)
 	await ctx.render('login', data)
 })
 
 router.post('/login', async ctx => {
 	try {
-		console.log(ctx.cookies.get('user'))
-		console.log(ctx.cookies.get('accessLevel'))
-
 		const body = ctx.request.body
 		const user = await new User(dbName)
 		await user.login(body.user, body.pass)
 		ctx.session.authorised = true
 		const tasks = await new Tasks(dbName)
-		const accessLevel = await tasks.customQuery(`SELECT access_level FROM users WHERE user = "${body.user}"`)
-
-		ctx.cookies.set('user', body.user ,{httpOnly: false})
-		ctx.cookies.set('accessLevel', accessLevel[0].access_level, {httpOnly: false})
-		console.log(ctx.cookies.get('accessLevel'))
-		console.log(ctx.cookies.get('user'))
+		let accessLevel = await tasks.customQuery(`SELECT accessLevel FROM users WHERE user = "${body.user}"`)
+		accessLevel = accessLevel[0].accessLevel
+		console.log(accessLevel)
+		//sets cookies for the user name and accessLevel so we can use these on other pages
+		await ctx.cookies.set('user', body.user ,{httpOnly: false})
+		await ctx.cookies.set('accessLevel', accessLevel, {httpOnly: false})
+		//console.log(ctx.cookies.get('accessLevel'))
 		return ctx.redirect('/')
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
@@ -141,11 +141,11 @@ router.post('/login', async ctx => {
 
 router.get('/logout', async ctx => {
 	ctx.session.authorised = null
-	//not logged in 
+	//destorys cookies set
 	ctx.cookies.set('user', '')
 	ctx.cookies.set('accessLevel', '')
-	console.log(ctx.cookies.get('user'))
-	console.log(ctx.cookies.get('accessLevel'))
+	//console.log(ctx.cookies.get('user'))
+	//console.log(ctx.cookies.get('accessLevel'))
 	ctx.redirect('/login')
 
 })
@@ -159,11 +159,12 @@ router.get('/staff', async ctx => {
 		//the db is opened here and the table is created if not present
 		const tasks = await new Tasks(dbName)
 		const data = await tasks.getAll()
-
-		if (ctx.cookies.get('accessLevel') !== 'staff') {
+		const cookies = await tasks.getUserCookies(ctx.cookies)
+		//gets the cookie for the accessLevel and if it is not 'staff' it throws an error
+		console.log(cookies)
+		if (cookies.accessLevel !== 'staff') {
 			throw new Error('You must be logged in as a staff member to view this page')
 		}
-
 		await ctx.render('staff', {tasks: data, query: ''})
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
@@ -175,17 +176,12 @@ router.post('/staff', async ctx => {
 		const tasks = await new Tasks(dbName)
 		const body = await ctx.request.body
 		console.log(body)
-		const statusChange = body.statusChange
-		const id = body.id
-		if (statusChange === 'complete') {
-			await tasks.complete(id)
-		} else if (statusChange === 'inProgress') {
-			await tasks.inProgress(id)
-		} else {
-			throw new Error('something went wrong')
-		}
 
+		//body.statusChange will either be 'inProgress' or 'complete' depending on which button the staff member clicks
 
+		//body.id is the same as the issue ID that is being interacted with
+		//body.statusChange is determined by the button the staff member clicks, either 'In Progress' or 'Complete'
+		await tasks.changeStatus(body.id, body.statusChange)
 		ctx.redirect('/staff')
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
@@ -200,6 +196,8 @@ router.get('/issues', async ctx => {
 		//the db is opened here and the table is created if not present
 		const tasks = await new Tasks(dbName)
 		const data = await tasks.getAll()
+
+		//userName here is used to set the rasiedBy attribute of the task to whoever is logged in
 		const userName = ctx.cookies.get('user')
 		await ctx.render('issues', {tasks: data, query: '', user: userName})
 	} catch(err) {
@@ -207,41 +205,20 @@ router.get('/issues', async ctx => {
 	}
 })
 
-// eslint-disable-next-line max-lines-per-function
-// eslint-disable-next-line complexity
 router.post('/issues', async ctx => {
 	try {
 		const tasks = await new Tasks(dbName)
 		const body = await ctx.request.body
 		if (ctx.request.body.upvote === 'Upvote') {
-			if (ctx.cookies.get(ctx.request.body.id)){
-				throw new Error ('please wait 5 minutes before upvoting this issue again')
-			} else {
-				ctx.cookies.set(ctx.request.body.id, 'yes', {httpOnly: false, maxAge: 300000})
-				await tasks.upvote(ctx.request.body.id)
-			}
-		} else {
-			console.log('addissue')
-					const issueTypeIn = body.issue
-					const issueDescriptionIn = body.issueDesc
-					const raisedByIn = ctx.cookies.get('user')
-					//const dateSetIn = body.dateSet
-					const dateCompletedIn = 'N/A'
-					const locationIn = body.location
-					const statusIn = body.status
-					//const votesIn = body.votes
-					const errorThrown = await tasks.addIssue(issueTypeIn,
-						issueDescriptionIn,
-						raisedByIn,
-						undefined,
-						dateCompletedIn,
-						locationIn,
-						statusIn,
-						undefined)
-					if (errorThrown !== undefined) {
-						throw new Error(errorThrown)
-					}
-				}
+			//if they havent upvoted the problem within the last 5 minutes, the below won't throw an error
+			await tasks.upvote(body.id, ctx.cookies)
+			//if the above throws an error execution stops
+			//sets a cookie thats 'key' is the id of the issue they upvoted, meaning they cant upvote the same issue within 5 minutes
+			ctx.cookies.set(ctx.request.body.id, 'upvoted', {httpOnly: false, maxAge: 300000})
+
+		} else { //They are submitting an issue and not upvoting
+			await tasks.addIssue(body, ctx.cookies)
+		}
 		ctx.redirect('/issues')
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
