@@ -213,15 +213,31 @@ router.post('/issues', async ctx => {
 			//if they havent upvoted the problem within the last 5 minutes, the below won't throw an error
 			await tasks.upvote(body.id, ctx.cookies)
 			//if the above throws an error execution stops
-			//sets a cookie thats 'key' is the id of the issue they upvoted, meaning they cant upvote the same issue within 5 minutes
+     		//sets a cookie thats 'key' is the id of the issue they upvoted, meaning they cant upvote the same issue within 5 minutes
 			ctx.cookies.set(ctx.request.body.id, 'upvoted', {httpOnly: false, maxAge: 300000})
+			ctx.redirect('/issues')
+
+		} else if (ctx.request.body.details === 'Details') {
+			await ctx.redirect(`/issue_details/?id=${issue}`)
 
 		} else { //They are submitting an issue and not upvoting
 			await tasks.addIssue(body, ctx.cookies)
+			await ctx.redirect('/issues')
 		}
-		ctx.redirect('/issues')
+		
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
+	}
+})
+
+router.get('/issue_details', async ctx => {
+	try {
+		const issue = await tasks.getIssue(body.id)
+		await ctx.render('issue_details', issue)
+	}
+	catch(err)
+	{
+		await ctx.render('error', {message: err.message})	
 	}
 })
 

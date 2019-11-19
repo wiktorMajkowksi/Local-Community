@@ -28,3 +28,10 @@ input[type="submit"]{
 input[type="submit"]:hover{
     background-color: green;
 }
+input[type="text"]{
+    width:100%;
+
+}
+input[type="date"]{
+    width:100%;
+}

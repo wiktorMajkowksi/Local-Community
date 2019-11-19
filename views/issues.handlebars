@@ -44,7 +44,7 @@
 
                 {{#each tasks}}
                     <tr id="lol">
-                        <td id = "td">{{this.id}}</td>
+                        <td id = "td"><a href="/">{{this.id}}</a> </td>
                         <input name ="id" value = {{this.id}} readonly type = "hidden">
                         <td id = "td">{{this.issueType}}</td>
                         <td id = "td">{{this.issueDesc}}</td>
@@ -58,6 +58,12 @@
                             <input type = "submit" value = "Upvote" name = "upvote">
                             <input name ="id" type="hidden" value = {{this.id}} readonly>
                         </form> </td>
+                        <td>
+                            <form action="/issues" method="post">
+                            <input type = "submit" value = "Details" name = "details">
+                            <input name ="id" type="hidden" value = {{this.id}} readonly>
+                            </form>
+                        </td>
                     </tr>
                 {{/each}}
                 <form action="/issues" method="post">

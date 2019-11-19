@@ -45,7 +45,6 @@ module.exports = class Tasks {
 	//takes a request body from the issues page as a parameter
 	async addIssue(body, cookies) {
 		try {
-			console.log(body)
 			const expectedIssueLength = 3
 			const issue = await this.createIssue(body, cookies)
 			//check that all fields are filled out to ensure the validity of the issue
@@ -71,6 +70,17 @@ module.exports = class Tasks {
 			const data = await this.db.all(query)
 			return data
 		} catch (err) {
+			throw err
+		}
+	}
+
+	async getIssue(id = undefined) {
+		try {
+			if (id !== undefined) {
+				let data = this.db.get(`SELECT * from tasks WHERE id = ${id};`)
+				return data
+			} else throw new Error("Issue not supplied")
+		} catch(err){
 			throw err
 		}
 	}
@@ -120,8 +130,7 @@ module.exports = class Tasks {
 			} else {
 				await this.db.run(sql)
 			}
-			return undefined
-			throw err
+			return
 		} catch(err) {
 			throw err
 		}
@@ -156,7 +165,7 @@ module.exports = class Tasks {
 	//just for testing
 	async mockIssue(id = 1) {
 		const mockIssue = {
-			id: 1,
+			id: id,
 			issueType: 'issueType',
 			issueDesc: 'description',
 			raisedBy: 'fred',

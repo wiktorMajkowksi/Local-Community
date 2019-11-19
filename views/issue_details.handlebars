@@ -1,0 +1,31 @@
+<!doctype html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Home Page</title>
+		<meta name="author" content="Wiktor Majkowski">
+		<link href="defaultStyle.css" type="text/css" rel="stylesheet" />
+	</head>
+	<body>
+		<nav id = "navigation">
+			<table>
+				<tr> 
+					<td id="logo"> L</td>
+					<td id="button"><a href="/"> Home </a></td>
+				 	<td id="button"><a href="/staff"> Staff </a></td>
+					<td id="button"><a href="/contacts"> Contacts </a></td>
+					<td id="button"><a href="/issues"> Issues </a></td>
+					<a id="lr" href="/register">| Register</a> 
+					{{#if user}}
+                        <a id="lr" href="/logout">Log out |</a>
+					{{else}}
+					    <a id="lr" href="/login">Login |</a>
+                    {{/if}}
+				</tr>
+			</table>
+		</nav>	
+		<article>
+			
+		</article>
+</html>
