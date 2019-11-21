@@ -28,7 +28,7 @@
 
         {{issue}}
         <h1> Issue: {{this.issueType}} </h1>
-
+		
         <!-- 
             The colums of the database are issueType, issueDesc,  raisedBy, dateSet, dateCompleted, location, status and votes
 
@@ -37,7 +37,38 @@
 
        
         <article>
-            
+            <table id = "table" width="80%">
+                <tr>
+                    <th id = "th">ID</th>
+                    <th id = "th">Issue</th>
+                    <th id = "th">Issue Description</th>
+                    <th id = "th">Raised by</th>
+                    <th id = "th">Date Set</th>
+                    <th id = "th">Date Completed</th>
+                    <th id = "th">Location</th>
+                    <th id = "th">Status</th>
+                    <th id = "th">Votes</th>
+                </tr>
+
+                
+                    <tr id="lol">
+                        <td id = "td">{{this.id}}</td>
+                        <td id = "td">{{this.issueType}}</td>
+                                <td id = "td">{{this.issueDesc}}</td>
+                                <td id = "td">{{this.raisedBy}}</td>
+                                <td id = "td">{{this.dateSet}}</td>
+                                <td id = "td">{{this.dateCompleted}}</td>
+                        <td id = "td">{{this.location}}</td>
+                        <td id = "td">{{this.status}}</td>
+                                <td id = "td">{{this.votes}}</td>
+                        <td><form action = '/issues' method = "post">
+                            <input type = "submit" value = "Upvote" name = "upvote">
+                            <input name ="id" type="hidden" value = {{this.id}} readonly>
+                        </form> </td>
+                        
+                    </tr>
+                
+            </table>
         </article>    
 	</body>
 
