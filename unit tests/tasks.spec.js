@@ -244,7 +244,6 @@ describe('upvote()', () => {
 		const tasks = await new Tasks()
 		//ACT
 		await tasks.addIssue(await tasks.mockIssue(), cookies)
-
 		delete cookies[1]
 		await tasks.upvote(1, cookies)
 		const data = await tasks.getAll()
@@ -283,9 +282,7 @@ describe('customQuery()', () => {
 		//ACT
 		await tasks.addIssue(await tasks.mockIssue(), cookies)
 		await tasks.addIssue(await tasks.mockIssue(2), cookies)
-		console.log(await tasks.getAll())
 		const data = await tasks.customQuery('SELECT * FROM tasks WHERE id = 2')
-		console.log(data)
 		//ASSERT
 		expect(data[0]).toEqual(await tasks.mockIssue(2))
 		done()
