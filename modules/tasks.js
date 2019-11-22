@@ -157,6 +157,17 @@ module.exports = class Tasks {
 
 	}
 
+	async getPostcodes() {
+		try {
+			this.db = await sqlite.open('postcodes.db')
+			const postcodes = await this.db.all('SELECT postcode FROM ward_postcodes;')
+			return postcodes
+
+		}catch (err) {
+			throw err
+		}
+	}
+
 
 	////just for testing purposes
 	async customQuery(sql = 'SELECT * FROM tasks;') {

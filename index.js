@@ -77,8 +77,12 @@ router.get('/', async ctx => {
  * @name Register Page
  * @route {GET} /register
  */
-router.get('/register', async ctx => await ctx.render('register'))
-
+router.get('/register', async ctx => {
+	const tasks = await new Tasks()
+	const postcodes = await tasks.getPostcodes()
+	console.log(postcodes)
+	await ctx.render('register', {postcode: postcodes})
+})
 /**
  * The script to process new user registrations.
  *
