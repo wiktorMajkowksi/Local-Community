@@ -80,12 +80,16 @@ module.exports = class Tasks {
 			if (id !== undefined) {
 				const data = this.db.get(`SELECT * from tasks WHERE id = ${id};`)
 				return data
+<<<<<<< HEAD
 			} else throw new Error('Issue not supplied')
+=======
+			} else throw new Error("Issue not supplied")
+>>>>>>> d1571be306e9d7e8a76ede2e8b6821eb401314da
 		} catch(err) {
 			throw err
 		}
 	}
-
+	
 	async upvote(id, cookies) {
 		try {
 			//if they upvoted recently it will fail and throw an error

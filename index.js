@@ -218,7 +218,11 @@ router.post('/issues', async ctx => {
 			ctx.redirect('/issues')
 
 		} else if (ctx.request.body.details === 'Details') {
+<<<<<<< HEAD
 			await ctx.redirect(`/issue_details/?id=${body.id}`)
+=======
+			await ctx.redirect(`/issue_details/${body.id}`)
+>>>>>>> d1571be306e9d7e8a76ede2e8b6821eb401314da
 
 		} else { //They are submitting an issue and not upvoting
 			await tasks.addIssue(body, ctx.cookies)
@@ -229,14 +233,13 @@ router.post('/issues', async ctx => {
 	}
 })
 
-router.get('/issue_details', async ctx => {
+router.get('/issue_details/:num', async ctx => {
 	try {
-		const issue = await tasks.getIssue(body.id)
+		const db = await new Tasks(dbName)
+		const issue = await db.getIssue(ctx.params.num)
 		await ctx.render('issue_details', issue)
-	}
-	catch(err)
-	{
-		await ctx.render('error', {message: err.message})	
+	} catch(err) {
+		await ctx.render('error', {message: err.message})
 	}
 })
 

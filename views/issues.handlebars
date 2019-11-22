@@ -44,16 +44,16 @@
 
                 {{#each tasks}}
                     <tr id="lol">
-                        <td id = "td"><a href="/">{{this.id}}</a> </td>
+                        <td id = "td"><a href="/issue_details/{{this.id}}">{{this.id}}</a> </td>
                         <input name ="id" value = {{this.id}} readonly type = "hidden">
                         <td id = "td">{{this.issueType}}</td>
-                        <td id = "td">{{this.issueDesc}}</td>
-                        <td id = "td">{{this.raisedBy}}</td>
-                        <td id = "td">{{this.dateSet}}</td>
-                        <td id = "td">{{this.dateCompleted}}</td>
+                                <td id = "td">{{this.issueDesc}}</td>
+                                <td id = "td">{{this.raisedBy}}</td>
+                                <td id = "td">{{this.dateSet}}</td>
+                                <td id = "td">{{this.dateCompleted}}</td>
                         <td id = "td">{{this.location}}</td>
                         <td id = "td">{{this.status}}</td>
-                        <td id = "td">{{this.votes}}</td>
+                                <td id = "td">{{this.votes}}</td>
                         <td><form action = '/issues' method = "post">
                             <input type = "submit" value = "Upvote" name = "upvote">
                             <input name ="id" type="hidden" value = {{this.id}} readonly>
@@ -69,11 +69,12 @@
                 <form action="/issues" method="post">
                 <p><input type="submit" value="Submit"></p>
                     <td id="td">ID</td>
-                    <td id="td"><input name = 'issueType'type="text"></td>
-                    <td id="td"><input name = 'issueDesc'type="text"></td>
-                    <td id="td"><input type="text" placeholder="{{user}}" readonly></td>
+                    <td id="td"><input name = 'issueType' type="text"></td>
+                    <td id="td"><input name = 'issueDesc' type="text"></td>
+                    <td id="td">User: <br><b>{{user}}</b></td>
+                        <!--<td id="td"><input type="text" placeholder="{{user}}" readonly></td>-->
                     <td id="td"><input type="date" readonly></td>
-                    <td id="td"><input name = 'dateCompleted'type="date" placeholder="N/A" readonly></td>
+                    <td id="td"><input name = 'dateCompleted' type="date" placeholder="N/A" readonly></td>
                     <td id="td"><input name ='location' list="location"></td> 
                         <datalist id="location">
                             <option value="Bablake">
@@ -96,8 +97,8 @@
                     <!--
                     <td id="td"><select name='status' list="status" placeholder="incomplete" readonly> Incomplete </td>
                     -->
-                    <td id="td"> <input type="text" name = "status" placeholder ="incomplete" value ="incomplete" readonly></td>
-                    <td id="td"><input name = 'votes'type="text" placeholder = 0 readonly></td>
+                    <td id="td"><input type='text' name = 'status' placeholder='incomplete' value='incomplete' readonly></td>
+                    <td id="td"><input name='votes' type='text' placeholder=0 readonly></td>
                 </form>
                 </table>
         </article>    
