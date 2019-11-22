@@ -118,8 +118,7 @@ router.get('/login', async ctx => {
 	const data = {}
 	if(ctx.query.msg) data.msg = ctx.query.msg
 	if(ctx.query.user) data.user = ctx.query.user
-
-	console.log(ctx.cookies)
+	console.log(ctx.request.ip)
 	await ctx.render('login', data)
 })
 

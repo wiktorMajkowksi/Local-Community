@@ -15,6 +15,7 @@ trace/
 .node-persist/
 
 *.db
+!postcodes.db
 *snap.png
 *diff.png
 *trace.json
