@@ -28,7 +28,7 @@ module.exports = class Tasks {
 	//takes a body and makes it so add Issue can take it as an argument
 	async createIssue(body, cookies) {
 		try {
-			console.log((await this.getUserCookies(cookies)).user)
+			//console.log((await this.getUserCookies(cookies)).user)
 			return {'issueType': body.issueType,
 				'issueDesc': body.issueDesc,
 				'raisedBy': (await this.getUserCookies(cookies)).user,
@@ -74,8 +74,9 @@ module.exports = class Tasks {
 		}
 	}
 
-	async getIssue(id = undefined) {
+	async getIssue(id) {
 		try {
+			//console.log(id)
 			if (id !== undefined) {
 				const data = this.db.get(`SELECT * from tasks WHERE id = ${id};`)
 				return data
@@ -91,12 +92,12 @@ module.exports = class Tasks {
 			//console.log(errorCheck)
 
 			await this.checkIfUpvotedRecently(id, cookies)
-			console.log('after 85')
+			//console.log('after 85')
 			//if (errorCheck) {
 			//	console.log('errorcheck is in')
 			//	throw new Error('Error in checkIfUpVotedRecently')
 			//}
-			console.log('gonna upvote')
+			//console.log('gonna upvote')
 			const sql = `UPDATE tasks SET votes = votes + 1 WHERE id = ${id}`
 			await this.db.run(sql)
 			return
@@ -108,6 +109,7 @@ module.exports = class Tasks {
 	async checkIfUpvotedRecently(id, cookies) {
 		try {
 			//console.log(await this.getUserCookies(cookies))
+			//console.log(cookies)
 			if (await cookies.get(id) === 'upvoted') {
 				throw new Error('Please wait up to 5 minutes before upvoting this issue again')
 			} else {
@@ -120,9 +122,9 @@ module.exports = class Tasks {
 
 	async changeStatus(id, status) {
 		try {
-			console.log('in changeStatus')
+			//console.log('in changeStatus')
 			let sql = `UPDATE tasks SET status = "${status}" WHERE id = ${id};`
-			if (status === 'Completed') {
+			if (status === 'Complete') {
 				const date = await this.getDate()
 				await this.db.run(sql)
 				sql = `UPDATE tasks SET dateCompleted = "${date}" WHERE id = ${id};`
@@ -148,7 +150,6 @@ module.exports = class Tasks {
 			const user = await cookies.get('user')
 			const accessLevel = await cookies.get('accessLevel')
 			const all = await {'user': user, 'accessLevel': accessLevel}
-			console.log(all)
 			return all
 		} catch (err) {
 			throw err
@@ -159,9 +160,15 @@ module.exports = class Tasks {
 
 	////just for testing purposes
 	async customQuery(sql = 'SELECT * FROM tasks;') {
-		const data = await this.db.all(sql)
-		return data
+		try {
+			console.log(sql)
+			const data = await this.db.all(sql)
+			return data
+		} catch(err) {
+			throw err
+		}
 	}
+
 	//just for testing
 	async mockIssue(id = 1) {
 		const mockIssue = {
@@ -169,7 +176,7 @@ module.exports = class Tasks {
 			issueType: 'issueType',
 			issueDesc: 'description',
 			raisedBy: 'fred',
-			dateSet: '2019-10-18',
+			dateSet: await this.getDate(),
 			dateCompleted: 'N/A',
 			location: 'location',
 			status: 'Incomplete',

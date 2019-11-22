@@ -223,8 +223,7 @@ router.post('/issues', async ctx => {
 		} else { //They are submitting an issue and not upvoting
 			await tasks.addIssue(body, ctx.cookies)
 			await ctx.redirect('/issues')
-		}
-		
+		}	
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}
