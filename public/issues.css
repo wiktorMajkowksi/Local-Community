@@ -35,3 +35,9 @@ input[type="text"]{
 input[type="date"]{
     width:100%;
 }
+
+#map {
+    height: 50%;
+    width: 100%;
+    color: black;
+  }

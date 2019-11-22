@@ -6,23 +6,8 @@
 		<meta name="author" content="Fred Cook, Wiktor Majkowski">
         <link href="../defaultStyle.css" type="text/css" rel="stylesheet" />
         <link href="../issues.css" type="text/css" rel="stylesheet" />
-		<style>
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-      #map {
-        height: 50%;
-		width: 100%;
-      }
-      /* Optional: Makes the sample page fill the window. */
-        html, body {
-        height: 100%;
-		width: 100%;
-        margin: 0;
-        padding: 0;
-      }
-    </style>
-	</head>
-	<body>
+	    </head>
+		<body>
         <nav id = "navigation">
 			<table>
 				<tr> 
@@ -42,7 +27,7 @@
 		</nav>	
 
         {{issue}}
-        <h1> {{this.issueType}} </h1>
+        <h1> Issue Details: {{this.issueType}} </h1>
 
         <!-- 
             The colums of the database are issueType, issueDesc,  raisedBy, dateSet, dateCompleted, location, status and votes
@@ -51,7 +36,8 @@
         -->
 
 		<h1>{{issue.issueType}}</h1>
-			<div id="map"></div>
+		<article>
+		<section id="map"></section>
     	<script>
      		// Note: This example requires that you consent to location sharing when
       // prompted by your browser. If you see the error "The Geolocation service
@@ -97,7 +83,6 @@
     	</script>
     	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAtbfw01y8WV94fCvOe2FLXbRkjBKoAxEo&callback=initMap"
     	async defer></script>
-		<article>
             <table id = "table" width="100%">
                 <tr>
                     <th id = "th">ID</th>
