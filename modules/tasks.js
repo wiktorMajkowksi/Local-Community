@@ -80,11 +80,7 @@ module.exports = class Tasks {
 			if (id !== undefined) {
 				const data = this.db.get(`SELECT * from tasks WHERE id = ${id};`)
 				return data
-<<<<<<< HEAD
-			} else throw new Error('Issue not supplied')
-=======
 			} else throw new Error("Issue not supplied")
->>>>>>> d1571be306e9d7e8a76ede2e8b6821eb401314da
 		} catch(err) {
 			throw err
 		}
@@ -159,6 +155,17 @@ module.exports = class Tasks {
 			throw err
 		}
 
+	}
+
+	async getPostcodes() {
+		try {
+			this.db = await sqlite.open('postcodes.db')
+			const postcodes = await this.db.all('SELECT postcode FROM ward_postcodes;')
+			return postcodes
+
+		}catch (err) {
+			throw err
+		}
 	}
 
 

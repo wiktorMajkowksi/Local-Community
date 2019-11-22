@@ -77,8 +77,12 @@ router.get('/', async ctx => {
  * @name Register Page
  * @route {GET} /register
  */
-router.get('/register', async ctx => await ctx.render('register'))
-
+router.get('/register', async ctx => {
+	const tasks = await new Tasks()
+	const postcodes = await tasks.getPostcodes()
+	console.log(postcodes)
+	await ctx.render('register', {postcode: postcodes})
+})
 /**
  * The script to process new user registrations.
  *
@@ -218,11 +222,7 @@ router.post('/issues', async ctx => {
 			ctx.redirect('/issues')
 
 		} else if (ctx.request.body.details === 'Details') {
-<<<<<<< HEAD
-			await ctx.redirect(`/issue_details/?id=${body.id}`)
-=======
 			await ctx.redirect(`/issue_details/${body.id}`)
->>>>>>> d1571be306e9d7e8a76ede2e8b6821eb401314da
 
 		} else { //They are submitting an issue and not upvoting
 			await tasks.addIssue(body, ctx.cookies)
