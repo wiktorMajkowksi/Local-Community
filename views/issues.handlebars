@@ -69,7 +69,17 @@
                 <form action="/issues" method="post">
                 <p><input type="submit" value="Submit"></p>
                     <td id="td">ID</td>
-                    <td id="td"><input name = 'issueType' type="text"></td>
+                    <td id="td"><input name ='issueType' list="issueType"></td> 
+                        <datalist id="location">
+                            <option value = "Vandalism">
+                            <option value = "Noise pollution">
+                            <option value = "Litter">
+                            <option value = "Speeding">
+                            <option value = "Potholes">
+                            <option value = "Other">
+                        </datalist>
+                    </td>
+
                     <td id="td"><input name = 'issueDesc' type="text"></td>
                     <td id="td">User: <br><b>{{user}}</b></td>
                         <!--<td id="td"><input type="text" placeholder="{{user}}" readonly></td>-->

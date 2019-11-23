@@ -26,7 +26,6 @@
 			</table>
 		</nav>	
 
-        {{issue}}
         <h1> Issue Details: {{this.issueType}} </h1>
 
         <!-- 
@@ -98,18 +97,18 @@
 
                 
                     <tr id="lol">
-                        <td id = "td">{{this.id}}</td>
-                        <td id = "td">{{this.issueType}}</td>
-                                <td id = "td">{{this.issueDesc}}</td>
-                                <td id = "td">{{this.raisedBy}}</td>
-                                <td id = "td">{{this.dateSet}}</td>
-                                <td id = "td">{{this.dateCompleted}}</td>
-                        <td id = "td">{{this.location}}</td>
-                        <td id = "td">{{this.status}}</td>
-                                <td id = "td">{{this.votes}}</td>
+                        <td id = "td">{{this.issue.id}}</td>
+                        <td id = "td">{{this.issue.issueType}}</td>
+                                <td id = "td">{{this.issue.issueDesc}}</td>
+                                <td id = "td">{{this.issue.raisedBy}}</td>
+                                <td id = "td">{{this.issue.dateSet}}</td>
+                                <td id = "td">{{this.issue.dateCompleted}}</td>
+                        <td id = "td">{{this.issue.location}}</td>
+                        <td id = "td">{{this.issue.status}}</td>
+                                <td id = "td">{{this.issue.votes}}</td>
                         <td><form action = '/issues' method = "post">
                             <input type = "submit" value = "Upvote" name = "upvote">
-                            <input name ="id" type="hidden" value = {{this.id}} readonly>
+                            <input name ="id" type="hidden" value = {{this.issue.id}} readonly>
                         </form> </td>
                         
                     </tr>

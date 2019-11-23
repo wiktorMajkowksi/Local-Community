@@ -118,7 +118,8 @@ router.get('/login', async ctx => {
 	const data = {}
 	if(ctx.query.msg) data.msg = ctx.query.msg
 	if(ctx.query.user) data.user = ctx.query.user
-	console.log(ctx.request.ip)
+
+	console.log(ctx.cookies)
 	await ctx.render('login', data)
 })
 
@@ -212,6 +213,7 @@ router.post('/issues', async ctx => {
 	try {
 		const tasks = await new Tasks(dbName)
 		const body = await ctx.request.body
+		console.log(body)
 		if (ctx.request.body.upvote === 'Upvote') {
 			//if they havent upvoted the problem within the last 5 minutes, the below won't throw an error
 			await tasks.upvote(body.id, ctx.cookies)
@@ -236,7 +238,8 @@ router.get('/issue_details/:num', async ctx => {
 	try {
 		const db = await new Tasks(dbName)
 		const issue = await db.getIssue(ctx.params.num)
-		await ctx.render('issue_details', issue)
+		const userName = ctx.cookies.get('user')
+		await ctx.render('issue_details', {issue: issue, user: userName})
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}
