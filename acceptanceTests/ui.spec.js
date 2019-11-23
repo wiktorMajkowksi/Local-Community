@@ -25,16 +25,16 @@ beforeAll( async() => {
 	page = await browser.newPage()
 	har = new PuppeteerHar(page)
 	await page.setViewport({ width, height })
-	await shell.exec('beforeAll.sh')
+	await shell.exec('acceptanceTests/scripts/beforeAll.sh')
 })
 
 afterAll( async() => {
 	browser.close()
-	await shell.exec('afterAll.sh')
+	await shell.exec('acceptanceTests/scripts/afterAll.sh')
 })
 
 beforeEach(async() => {
-	await shell.exec('beforeEach.sh')
+	await shell.exec('acceptanceTests/scripts/beforeEach.sh')
 })
 
 describe('Registering', () => {
