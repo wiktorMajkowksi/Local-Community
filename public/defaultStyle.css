@@ -46,7 +46,7 @@ button:hover {
 article {
     padding: 5px;
     background-color: rgba(0, 0, 0, 0.7);
-    height: 700px;
+    height: auto;
     color: white;
 }
 a {
