@@ -63,5 +63,14 @@ footer {
     clear: both;
 }
 
+div a:link{
+    font-weight: bold;
+    color: orange;
+    text-decoration: none;
+    display: inline-block;
+}
 
-
+h2{
+    display:inline;
+    font-size: 40px;
+}
