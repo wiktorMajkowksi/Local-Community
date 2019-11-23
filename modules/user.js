@@ -56,5 +56,8 @@ module.exports = class User {
 			throw err
 		}
 	}
-
+	
+	async tearDown() {
+		await this.db.close()
+	}
 }
