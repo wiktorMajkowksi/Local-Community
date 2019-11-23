@@ -11,12 +11,14 @@ expect.extend({
 		)
 		if (pass) {
 			return {
-				message: () => `expected ${this.utils.printReceived(received)} not to contain object ${this.utils.printExpected(argument)}`,
+				message: () => `expected ${this.utils.printReceived(received)} 
+				not to contain object ${this.utils.printExpected(argument)}`,
 				pass: true
 			}
 		} else {
 			return {
-				message: () => `expected ${this.utils.printReceived(received)} to contain object ${this.utils.printExpected(argument)}`,
+				message: () => `expected ${this.utils.printReceived(received)} 
+				to contain object ${this.utils.printExpected(argument)}`,
 				pass: false
 			}
 		}
@@ -53,18 +55,6 @@ describe('addIssue()', () => {
 		expect(resultsLength).toEqual(1)
 		done()
 	})
-
-	/*
-	test('addIssue without all fields completeted rejected', async done => {
-		//ARRANGE
-		expect.assertions(1)
-		const tasks = await new Tasks()
-		//ACT
-		const results = await tasks.addIssue({issueType: 'fail'}, cookies)
-	expect(tasks.addIssue({issueType: 'fail'}, cookies)).rejects.toEqual(new Error('One or more fields were not filled in'))
-	});
-	*/
-
 
 	test('test multiple addIssue results in correct / unique IDs (autoincrement)', async done => {
 		//ARRANGE
@@ -236,7 +226,7 @@ describe('getIssue()', () => {
 describe('upvote()', () => {
 	afterEach(() => {
 		cookies = {accessLevel: 'staff', user: 'fred', 1: 'upvoted'}
-	  });
+	  })
 
 	test('Test upvote works when it should (the user has not upvoted in the past 5 minutes)', async done => {
 		//ARRANGE
@@ -253,7 +243,7 @@ describe('upvote()', () => {
 		done()
 	})
 
-	test('If cookies has the ID of the present e.g. they have upvoted the same issue in the past 5 minutes, do not upvote', async done => {
+	test('Fails if upvoted in the past 5 minutes', async done => {
 		//ARRANGE
 		expect.assertions(2)
 		const tasks = await new Tasks()
@@ -268,7 +258,7 @@ describe('upvote()', () => {
 		//ASSERT
 		await expect(tasks.upvote(1, cookies))
 			.rejects
-		.toThrow('Please wait up to 5 minutes before upvoting this issue again');
+			.toThrow('Please wait up to 5 minutes before upvoting this issue again')
 		expect(data[0].votes).toEqual(1)
 		done()
 	})

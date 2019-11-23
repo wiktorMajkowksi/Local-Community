@@ -14,6 +14,7 @@ const staticDir = require('koa-static')
 const bodyParser = require('koa-bodyparser')
 const koaBody = require('koa-body')({multipart: true, uploadDir: '.'})
 const session = require('koa-session')
+const request = require('request-promise')
 // const Database = require('sqlite-async')
 //const jimp = require('jimp')
 
@@ -51,7 +52,8 @@ const testData = [
 */
 //console.log(testData)
 
-const googleMapsAPIKey = 'AIzaSyAIl1QIAQMTrmZ44aKulJQgY2D_BbqRRcU'
+//const googleMapsAPIKey = 'AIzaSyAIl1QIAQMTrmZ44aKulJQgY2D_BbqRRcU'
+//const ipIOKey = '801bc4b6-a3e4-482b-b998-3a6915db11bb'
 
 /**
  * The secure home page.
@@ -203,9 +205,13 @@ router.get('/issues', async ctx => {
 		const tasks = await new Tasks(dbName)
 		const data = await tasks.getAll()
 
+		const currentLocation = await request('http://ip-api.io/api/json?api_key=801bc4b6-a3e4-482b-b998-3a6915db11bb')
+  			.then(response => JSON.parse(response))
+			.catch(err => console.log(err))
+		const coords = `${currentLocation['latitude']},${currentLocation['longitude']}`
 		//userName here is used to set the rasiedBy attribute of the task to whoever is logged in
 		const userName = ctx.cookies.get('user')
-		await ctx.render('issues', {tasks: data, query: '', user: userName})
+		await ctx.render('issues', {tasks: data, query: '', user: userName, currentLocation: coords})
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}
@@ -215,7 +221,6 @@ router.post('/issues', async ctx => {
 	try {
 		const tasks = await new Tasks(dbName)
 		const body = await ctx.request.body
-		console.log(body)
 		if (ctx.request.body.upvote === 'Upvote') {
 			//if they havent upvoted the problem within the last 5 minutes, the below won't throw an error
 			await tasks.upvote(body.id, ctx.cookies)
@@ -223,21 +228,15 @@ router.post('/issues', async ctx => {
      		//sets a cookie thats 'key' is the id of the issue they upvoted, meaning they cant upvote the same issue within 5 minutes
 			ctx.cookies.set(ctx.request.body.id, 'upvoted', {httpOnly: false, maxAge: 300000})
 			ctx.redirect('/issues')
-
 		} else if (ctx.request.body.details === 'Details') {
 			await ctx.redirect(`/issue_details/${body.id}`)
-
 		} else if (ctx.request.body.filter === 'Filter') {
-			console.log("jest")
 			await tasks.filter(body)
 			await ctx.redirect('/issues')
-		} 
-		
-		
-		else { //They are submitting an issue and not upvoting
+		} else { //They are submitting an issue and not upvoting
 			await tasks.addIssue(body, ctx.cookies)
 			await ctx.redirect('/issues')
-		}	
+		}
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}

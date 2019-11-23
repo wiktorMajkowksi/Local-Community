@@ -7,7 +7,7 @@ module.exports = class Tasks {
 		return (async() => {
 			this.db = await sqlite.open(dbName)
 			// we need this table to store the user accounts
-			const sql = 'CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, issueType VARCHAR, issueDesc VARCHAR, raisedBy VARCHAR, dateSet DATE, dateCompleted DATE, location VARCHAR, status VARCHAR, votes INTEGER);"'
+			const sql = 'CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, issueType VARCHAR, issueDesc VARCHAR, raisedBy VARCHAR, dateSet DATE, dateCompleted DATE, location VARCHAR, status VARCHAR, votes INTEGER);'
 			await this.db.run(sql)
 			return this
 		})()
@@ -16,7 +16,7 @@ module.exports = class Tasks {
 		try{
 			const data = this.db.get(`SELECT * FROM tasks WHERE issueType = ${issueType};`)
 			return data
-		} catch(err){
+		} catch(err) {
 			throw err
 		}
 	}
@@ -64,7 +64,8 @@ module.exports = class Tasks {
 			}
 			const sql = await `INSERT INTO tasks(
 				issueType, issueDesc, raisedBy, dateSet, dateCompleted, location, status, votes)
-				VALUES ("${issue.issueType}", "${issue.issueDesc}", "${issue.raisedBy}", "${issue.dateSet}", "${issue.dateCompleted}", "${issue.location}", "${issue.status}", ${issue.votes});`
+				VALUES ("${issue.issueType}", "${issue.issueDesc}", "${issue.raisedBy}", 
+				"${issue.dateSet}", "${issue.dateCompleted}", "${issue.location}", "${issue.status}", ${issue.votes});`
 			await this.db.run(sql)
        		return
 		} catch(err) {
@@ -88,12 +89,12 @@ module.exports = class Tasks {
 			if (id !== undefined) {
 				const data = this.db.get(`SELECT * from tasks WHERE id = ${id};`)
 				return data
-			} else throw new Error("Issue not supplied")
+			} else throw new Error('Issue not supplied')
 		} catch(err) {
 			throw err
 		}
 	}
-	
+
 	async upvote(id, cookies) {
 		try {
 			//if they upvoted recently it will fail and throw an error

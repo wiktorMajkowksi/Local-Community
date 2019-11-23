@@ -39,9 +39,18 @@
 		<article>
 		<section id="map">
     	<iframe frameborder="0" style="border:0"
-            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAIl1QIAQMTrmZ44aKulJQgY2D_BbqRRcU&q={{this.encodedLocation}}" allowfullscreen>
+            src='https://www.google.com/maps/embed/v1/place?key=AIzaSyAIl1QIAQMTrmZ44aKulJQgY2D_BbqRRcU&q={{this.encodedLocation}}' allowfullscreen>
         </iframe> 
         </section>
+
+        <!-- Directions mode requires a subscription, if we have it we can have the above src = src='https://www.google.com/maps/embed/v1/directions?key=AIzaSyAIl1QIAQMTrmZ44aKulJQgY2D_BbqRRcU&destination={{this.encodedLocation}}&origin={{this.userLat}}+{{this.userLong}}' allowfullscreen>
+        -->
+
+
+
+
+
+        
 
             <table id = "table" width="100%">
                 <tr>
