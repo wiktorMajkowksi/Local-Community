@@ -36,8 +36,8 @@ input[type="date"]{
     width:100%;
 }
 
-#map {
-    height: 50%;
+#map iframe, #map{
+    height: 100%;
     width: 100%;
     color: black;
-  }
+}

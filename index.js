@@ -51,6 +51,8 @@ const testData = [
 */
 //console.log(testData)
 
+const googleMapsAPIKey = 'AIzaSyAIl1QIAQMTrmZ44aKulJQgY2D_BbqRRcU'
+
 /**
  * The secure home page.
  *
@@ -239,7 +241,9 @@ router.get('/issue_details/:num', async ctx => {
 		const db = await new Tasks(dbName)
 		const issue = await db.getIssue(ctx.params.num)
 		const userName = ctx.cookies.get('user')
-		await ctx.render('issue_details', {issue: issue, user: userName})
+		const encoded = await db.encodeLocation(issue.location)
+
+		await ctx.render('issue_details', {issue: issue, user: userName, encodedLocation: encoded})
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}

@@ -168,6 +168,18 @@ module.exports = class Tasks {
 		}
 	}
 
+	async encodeLocation(location) {
+		let encoded = ''
+		for (let i = 0; i < location.length; i++) {
+			if (location[i] !== ' ') {
+				encoded += location[i]
+			} else {
+				encoded += '+'
+			}
+		}
+		return encoded
+	}
+
 
 	////just for testing purposes
 	async customQuery(sql = 'SELECT * FROM tasks;') {
