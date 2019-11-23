@@ -3,7 +3,7 @@
 
 const bcrypt = require('bcrypt-promise')
 // const fs = require('fs-extra')
-const mime = require('mime-types')
+// const mime = require('mime-types')
 const sqlite = require('sqlite-async')
 const saltRounds = 10
 
@@ -35,12 +35,12 @@ module.exports = class User {
 		}
 	}
 
-	async uploadPicture(path, mimeType) {
-		const extension = mime.extension(mimeType)
-		console.log(`path: ${path}`)
-		console.log(`extension: ${extension}`)
-		//await fs.copy(path, `public/avatars/${username}.${fileExtension}`)
-	}
+	// async uploadPicture(path, mimeType) {
+	// 	const extension = mime.extension(mimeType)
+	// 	console.log(`path: ${path}`)
+	// 	console.log(`extension: ${extension}`)
+	// 	//await fs.copy(path, `public/avatars/${username}.${fileExtension}`)
+	// }
 
 	async login(username, password) {
 		try {
@@ -56,7 +56,7 @@ module.exports = class User {
 			throw err
 		}
 	}
-	
+
 	async tearDown() {
 		await this.db.close()
 	}
