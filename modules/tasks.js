@@ -12,6 +12,14 @@ module.exports = class Tasks {
 			return this
 		})()
 	}
+	async filter(issueType) {
+		try{
+			const data = this.db.get(`SELECT * FROM tasks WHERE issueType = ${issueType};`)
+			return data
+		} catch(err){
+			throw err
+		}
+	}
 
 	async getDate() {
 		try {

@@ -227,7 +227,14 @@ router.post('/issues', async ctx => {
 		} else if (ctx.request.body.details === 'Details') {
 			await ctx.redirect(`/issue_details/${body.id}`)
 
-		} else { //They are submitting an issue and not upvoting
+		} else if (ctx.request.body.filter === 'Filter') {
+			console.log("jest")
+			await tasks.filter(body)
+			await ctx.redirect('/issues')
+		} 
+		
+		
+		else { //They are submitting an issue and not upvoting
 			await tasks.addIssue(body, ctx.cookies)
 			await ctx.redirect('/issues')
 		}	
