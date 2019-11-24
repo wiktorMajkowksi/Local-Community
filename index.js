@@ -15,6 +15,7 @@ const bodyParser = require('koa-bodyparser')
 const koaBody = require('koa-body')({multipart: true, uploadDir: '.'})
 const session = require('koa-session')
 const request = require('request-promise')
+const nodemailer = require('nodemailer')
 // const Database = require('sqlite-async')
 //const jimp = require('jimp')
 
@@ -54,6 +55,24 @@ const testData = [
 
 //const googleMapsAPIKey = 'AIzaSyAIl1QIAQMTrmZ44aKulJQgY2D_BbqRRcU'
 //const ipIOKey = '801bc4b6-a3e4-482b-b998-3a6915db11bb'
+
+const transporter = nodemailer.createTransport({
+	// example with google mail service
+	host: 'smtp.gmail.com',
+	port: 465,
+	secure: true, // true for 465, false for other ports
+	auth: {
+		user: 'fredcook789@gmail.com', // replace by your email to practice
+		pass: 'koxmzvwnzhmhnope' // replace by your-password
+	}
+})
+   
+const mailOptions = {
+	from: 'fredcook789@gmail.com',
+	to: 'fredcook789@gmail.com',
+	subject: 'Sending Email using Nodemailer',
+	html: '<h1>Hello world!</h1><p>The mail has been sent from Node.js application!</p>'
+}
 
 let user
 
@@ -183,11 +202,18 @@ router.post('/staff', async ctx => {
 	try {
 		const tasks = await new Tasks(dbName)
 		const body = await ctx.request.body
-		console.log(body)
-		//console.log(body)
 		if (body.priorityChange) {
 			await tasks.changePriority(body.id, body.priorityChange)
 		} else if (body.statusChange) {
+			if (body.statusChange === 'Complete') {
+				const email = (await tasks.customQuery(`SELECT raisedBy FROM tasks WHERE id = ${body.id}`))[0].raisedBy
+				mailOptions['to'] = email
+				transporter.sendMail(mailOptions, (error, info) => {
+					if (error)
+						return console.log(error)
+					console.log(`Email sent: ${  info.response}`)
+				})
+			}
 			await tasks.changeStatus(body.id, body.statusChange)
 		}
 		//body.statusChange will either be 'inProgress' or 'complete' depending on which button the staff member clicks
