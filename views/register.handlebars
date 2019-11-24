@@ -27,7 +27,7 @@
                         <p>Username<br /><input required="required" type="text" name="user" placeholder="your preferred username (no spaces)" value=""></p>
                         <p>Password<br /><input required="required" type="password" name="pass" placeholder="your chosen password" value=""></p>
                         <p>Address:<br /><input type="text" name="address" placeholder="Street Address" value="" style="width: 250px"></p>
-                        <td>Postcode:<br /><input type="text" required="required" list="postcode" name="postcode" oninvalid="Please fill out this field" placeholder="Postcode" style="width: 250px" id="myInput" ></td>   
+                        <td>Postcode:<br /><input type="text"list="postcode" name="postcode" placeholder="Postcode" style="width: 250px" id="myInput" ></td>   
                   <datalist id = "postcode">
                     {{#each postcode}}
                       <option value = "{{this.postcode}}"> </option>
