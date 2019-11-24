@@ -36,6 +36,7 @@
                         <th id = "th">Issue</th>
                         <th id = "th">Location</th>
                         <th id = "th">Status</th>
+                        <th id = "th">Priortiy</th>
                     </tr>
 
                     {{#each tasks}}
@@ -45,6 +46,7 @@
                             <td id = "td">{{this.issueType}}</td>
                             <td id = "td">{{this.location}}</td>
                             <td id = "td">{{this.status}}</td>
+                            <td id = "td">{{this.priority}}</td>
                             <td>
                                 <form action="/issues" method="post">
                                 <input type = "submit" value = "Details" name = "details">

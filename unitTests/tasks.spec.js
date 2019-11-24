@@ -47,8 +47,10 @@ describe('addIssue()', () => {
 
 
 		const body = await tasks.mockIssue()
+		console.log(body)
 		await tasks.addIssue(body, cookies)
 		const results = await tasks.getAll()
+		console.log(results)
 		const resultsLength = results.length
 		//ASSERT
 		expect(results[0]).toEqual(body)
@@ -69,7 +71,8 @@ describe('addIssue()', () => {
 			dateCompleted: 'N/A',
 			location: 'location',
 			status: 'Incomplete',
-			votes: 0}, cookies)
+			votes: 0,
+			priority: 'Low'}, cookies)
 		const results = await tasks.getAll()
 		//ASSERT
 		expect(results.length).toEqual(2)
@@ -83,7 +86,8 @@ describe('addIssue()', () => {
 			  dateCompleted: 'N/A',
 			  location: 'location',
 			  status: 'Incomplete',
-			  votes: 0
+			  votes: 0,
+			  priority: 'Low'
 			},
 			{
 			  id: 2,
@@ -94,7 +98,8 @@ describe('addIssue()', () => {
 			  dateCompleted: 'N/A',
 			  location: 'location',
 			  status: 'Incomplete',
-			  votes: 0
+			  votes: 0,
+			  priority: 'Low'
 			}
 		  ])
 		done()
@@ -147,7 +152,8 @@ describe('getAll()', () => {
 			status: 'Incomplete',
 			votes: 0,
 			issueDesc: 'description',
-			dateCompleted: 'N/A'}])
+			dateCompleted: 'N/A',
+			priority: 'Low'}])
 		done()
 	})
 

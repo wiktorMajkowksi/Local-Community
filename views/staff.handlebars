@@ -28,7 +28,7 @@
 			
 			
 		</nav>	
-        <h1> Issue Tacker </h1>
+        <h1> Issue Tracker </h1>
         
         <article>
             <table id = "table" width="80%">
@@ -42,6 +42,7 @@
                     <th id = "th">Location</th>
                     <th id = "th">Status</th>
                     <th id = "th">Votes</th>
+                    <th id = "th">Priority</th>
                 </tr>
 
                 {{#each tasks}}
@@ -55,9 +56,13 @@
                         <td id = "td">{{this.location}}</td>
                         <td id = "td">{{this.status}}</td>
                         <td id = "td">{{this.votes}}</td>
+                        <td id = "td">{{this.priority}}</td>
                     <form action="/staff" method="post">
                         <td><input name = "statusChange" type="submit" value="In Progress"></td>
                         <td><input name = "statusChange" type="submit" value="Complete"></td>
+                        <td><input name = "priorityChange" type = "submit" value=  "Low"></td>
+                        <td><input name = "priorityChange" type = "submit" value = "Medium"></td>
+                        <td><input name = "priorityChange" type = "submit" value = "High"></td>
                         <input name = "id" type = "hidden" value ={{this.id}} readonly>
                     </tr>
                     </form>

@@ -183,13 +183,17 @@ router.post('/staff', async ctx => {
 	try {
 		const tasks = await new Tasks(dbName)
 		const body = await ctx.request.body
+		console.log(body)
 		//console.log(body)
-
+		if (body.priorityChange) {
+			await tasks.changePriority(body.id, body.priorityChange)
+		} else if (body.statusChange) {
+			await tasks.changeStatus(body.id, body.statusChange)
+		}
 		//body.statusChange will either be 'inProgress' or 'complete' depending on which button the staff member clicks
 
 		//body.id is the same as the issue ID that is being interacted with
 		//body.statusChange is determined by the button the staff member clicks, either 'In Progress' or 'Complete'
-		await tasks.changeStatus(body.id, body.statusChange)
 		ctx.redirect('/staff')
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
@@ -221,6 +225,7 @@ router.post('/issues', async ctx => {
 	try {
 		const tasks = await new Tasks(dbName)
 		const body = await ctx.request.body
+		console.log(body)
 		if (ctx.request.body.upvote === 'Upvote') {
 			//if they havent upvoted the problem within the last 5 minutes, the below won't throw an error
 			await tasks.upvote(body.id, ctx.cookies)

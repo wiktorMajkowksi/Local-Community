@@ -53,6 +53,7 @@
                     <th id = "th">Location</th>
                     <th id = "th">Status</th>
                     <th id = "th">Votes</th>
+                    <th id = "th">Priority</th>
                 </tr>
 
                 
@@ -66,6 +67,7 @@
                         <td id = "td">{{this.issue.location}}</td>
                         <td id = "td">{{this.issue.status}}</td>
                                 <td id = "td">{{this.issue.votes}}</td>
+                                <td id = "td">{{this.issue.priority}}</td>
                         <td><form action = '/issues' method = "post">
                             <input type = "submit" value = "Upvote" name = "upvote">
                             <input name ="id" type="hidden" value = {{this.issue.id}} readonly>
