@@ -252,8 +252,9 @@ router.get('/issue_details/:num', async ctx => {
 		const issue = await db.getIssue(ctx.params.num)
 		const userName = ctx.cookies.get('user')
 		const encoded = await db.encodeLocation(issue.location)
+		const dateDifference = await db.getDateDifference(ctx.params.num)
 
-		await ctx.render('issue_details', {issue: issue, user: userName, encodedLocation: encoded})
+		await ctx.render('issue_details', {issue: issue, user: userName, encodedLocation: encoded, dateDifference: dateDifference})
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}

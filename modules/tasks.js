@@ -84,6 +84,32 @@ module.exports = class Tasks {
 		}
 	}
 
+	async getDateDifference(id) {
+		//Dates go year-month-day
+		const issue = (await this.customQuery(`SELECT * FROM tasks WHERE id = ${id};`))[0]
+		let dateSet = issue.dateSet
+		//console.log(dateSet)
+		let dateResolved = 0
+		if (issue.dateCompleted === 'N/A') {
+			dateResolved = await this.getDate()
+		} else {
+			dateResolved = issue.dateCompleted
+		}
+
+		console.log(dateResolved)
+
+		dateSet = Date.parse(dateSet)
+		console.log(dateSet)
+		dateResolved = Date.parse(dateResolved)
+		let difference = dateResolved - dateSet
+
+		//number of milliseconds in a day = 86400000
+		difference = Math.floor(difference / 86400000)
+		console.log(difference)
+
+		return difference
+	}
+
 	async getAll() {
 		try{
 			const query = 'SELECT * FROM tasks'

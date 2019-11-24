@@ -50,6 +50,7 @@
                     <th id = "th">Raised by</th>
                     <th id = "th">Date Set</th>
                     <th id = "th">Date Completed</th>
+                    <th id = "th">Days since raised or completion</th>
                     <th id = "th">Location</th>
                     <th id = "th">Status</th>
                     <th id = "th">Votes</th>
@@ -64,6 +65,7 @@
                                 <td id = "td">{{this.issue.raisedBy}}</td>
                                 <td id = "td">{{this.issue.dateSet}}</td>
                                 <td id = "td">{{this.issue.dateCompleted}}</td>
+                                <td id = "td">{{this.dateDifference}}</td>
                         <td id = "td">{{this.issue.location}}</td>
                         <td id = "td">{{this.issue.status}}</td>
                                 <td id = "td">{{this.issue.votes}}</td>
