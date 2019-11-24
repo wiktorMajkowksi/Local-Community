@@ -225,7 +225,6 @@ router.post('/issues', async ctx => {
 	try {
 		const tasks = await new Tasks(dbName)
 		const body = await ctx.request.body
-		console.log(body)
 		if (ctx.request.body.upvote === 'Upvote') {
 			//if they havent upvoted the problem within the last 5 minutes, the below won't throw an error
 			await tasks.upvote(body.id, ctx.cookies)

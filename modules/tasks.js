@@ -54,7 +54,6 @@ module.exports = class Tasks {
 	//takes a request body from the issues page as a parameter
 	async addIssue(body, cookies) {
 		try {
-			console.log(body)
 			const expectedIssueLength = 3
 			const issue = await this.createIssue(body, cookies)
 			//check that all fields are filled out to ensure the validity of the issue
@@ -68,7 +67,6 @@ module.exports = class Tasks {
 				issueType, issueDesc, raisedBy, dateSet, dateCompleted, location, status, votes, priority)
 				VALUES ("${issue.issueType}", "${issue.issueDesc}", "${issue.raisedBy}", 
 				"${issue.dateSet}", "${issue.dateCompleted}", "${issue.location}", "${issue.status}", ${issue.votes}, "${issue.priority}");`
-			console.log(sql)
 			await this.db.run(sql)
        		return
 		} catch(err) {

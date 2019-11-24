@@ -47,10 +47,8 @@ describe('addIssue()', () => {
 
 
 		const body = await tasks.mockIssue()
-		console.log(body)
 		await tasks.addIssue(body, cookies)
 		const results = await tasks.getAll()
-		console.log(results)
 		const resultsLength = results.length
 		//ASSERT
 		expect(results[0]).toEqual(body)
@@ -102,6 +100,31 @@ describe('addIssue()', () => {
 			  priority: 'Low'
 			}
 		  ])
+		done()
+	})
+	test('throws error when a field is not filled in', async done => {
+		//ARRANGE
+		expect.assertions(1)
+		const tasks = await new Tasks()
+		//ACT
+		const failIssue = {
+			id: 1,
+			issueType: 'issueType',
+			issueDesc: '',
+			raisedBy: 'fred',
+			dateSet: await tasks.getDate(),
+			dateCompleted: 'N/A',
+			location: 'location',
+			status: 'Incomplete',
+			votes: 0,
+			priority: 'Low'
+		  }
+		//ASSERT
+		try{
+			await tasks.addIssue(failIssue, cookies)
+		  } catch(e) {
+			expect(e).toBeDefined()
+		  }
 		done()
 	})
 
@@ -158,6 +181,48 @@ describe('getAll()', () => {
 	})
 
 
+})
+
+describe('changePriority()', () => {
+	test('changePriority works from low to medium', async done => {
+		//ARRNAGE
+		expect.assertions(2)
+		const tasks = await new Tasks()
+		//ACT
+		await tasks.addIssue(await tasks.mockIssue(), cookies)
+		await tasks.changePriority(1, 'Medium')
+		const data = await tasks.getAll()
+		//ASSERT
+		expect(data.length).toEqual(1)
+		expect(data[0].priority).toEqual('Medium')
+		done()
+	})
+})
+
+describe('getPostcode()', () => {
+	test('Gets the correct postcode from the DB', async done => {
+		//ARRANGE
+		expect.assertions(1)
+		const tasks = await new Tasks()
+		//ACT
+		const data = await tasks.getPostcodes()
+		//ASSERT
+		expect(data.length).toEqual(9994)
+		done()
+	})
+})
+
+describe('encodeLocation()', () => {
+	test('Gives correct encoding when given "1 Harper Road"', async done => {
+		//ARRANGE
+		expect.assertions(1)
+		const tasks = await new Tasks()
+		//ACT
+		const data = await tasks.encodeLocation('1 Harper Road')
+		//ASSERT
+		expect(data).toEqual('1+Harper+Road')
+		done()
+	})
 })
 
 describe('getDate()', () => {
