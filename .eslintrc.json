@@ -8,7 +8,9 @@
     "jest": true
   },
   "parserOptions": {
-    "ecmaVersion": 8
+    "ecmaVersion": 2018,
+    "noInlineConfig": true,
+    "reportUnusedDisableDirectives": true
   },
   "rules": {
     "arrow-body-style": "error",
@@ -60,7 +62,7 @@
     "space-before-function-paren": ["error", "never"],
     "strict": ["error", "global"],
     "yoda": "error"
-	},
+  },
 	"overrides": [{
 		"files": [ "*.test.js", "*.spec.js", "*.steps.js" ],
 		"rules": {

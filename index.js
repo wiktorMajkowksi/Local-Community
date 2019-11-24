@@ -55,6 +55,8 @@ const testData = [
 //const googleMapsAPIKey = 'AIzaSyAIl1QIAQMTrmZ44aKulJQgY2D_BbqRRcU'
 //const ipIOKey = '801bc4b6-a3e4-482b-b998-3a6915db11bb'
 
+let user
+
 /**
  * The secure home page.
  *
@@ -101,8 +103,6 @@ router.post('/register', koaBody, async ctx => {
 		// call the functions in the module
 		const user = await new User(dbName)
 		let userLevel = 'user'
-		console.log(body)
-
 		//password entered for staff registration
 		if (body.staffPassword !== '') {
 			if (body.staffPassword === staffRegisterPass) {
@@ -115,6 +115,8 @@ router.post('/register', koaBody, async ctx => {
 		ctx.redirect(`/?msg=new user "${body.name}" added`)
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
+	} finally {
+		user.tearDown()
 	}
 })
 
@@ -130,7 +132,7 @@ router.get('/login', async ctx => {
 router.post('/login', async ctx => {
 	try {
 		const body = ctx.request.body
-		const user = await new User(dbName)
+		user = await new User(dbName)
 		await user.login(body.user, body.pass)
 		ctx.session.authorised = true
 		const tasks = await new Tasks(dbName)
@@ -144,6 +146,8 @@ router.post('/login', async ctx => {
 		return ctx.redirect('/')
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
+	} finally {
+		user.tearDown()
 	}
 })
 
