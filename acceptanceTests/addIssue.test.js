@@ -38,8 +38,8 @@ beforeEach(async() => {
 })
 
 describe('Create an issue', () => {
-    test('Create an issue with generic values', async done => {
-        		//start generating a trace file.
+	test('Create an issue with generic values', async done => {
+		//start generating a trace file.
 		await page.tracing.start({path: 'trace/registering_user_har.json',screenshots: true})
 		await har.start({path: 'trace/registering_user_trace.har'})
 		//ARRANGE
@@ -51,25 +51,24 @@ describe('Create an issue', () => {
 		await page.goto('http://localhost:8080/login', { timeout: 30000, waitUntil: 'load' })
 		await page.type('input[name=user]', 'NewUser')
 		await page.type('input[name=pass]', 'password')
-        await page.click('input[type=submit]')
-        await page.goto('http://localhost:8080/issues', { timeout: 30000, waitUntil: 'load' })
-        await page.type('input[name=issueType]', 'genericIssueType')
-        await page.type('input[name=issueDesc]', 'genericIssueDesc')
-        await page.click('input[name=submitIssueButton')
+		await page.click('input[type=submit]')
+		await page.goto('http://localhost:8080/issues', { timeout: 30000, waitUntil: 'load' })
+		await page.type('input[name=issueType]', 'genericIssueType')
+		await page.type('input[name=issueDesc]', 'genericIssueDesc')
+		await page.click('input[name=submitIssueButton')
 
-        //ASSERT
-        await page.waitForSelector('h1')
+		//ASSERT
+		await page.waitForSelector('h1')
 		expect( await page.evaluate( () => document.querySelector('h1').innerText ) )
-            .toBe('Issues')
-            
+			.toBe('Issues')
 
 		// stop logging to the trace files
 		await page.tracing.stop()
 		await har.stop()
 		done()
-    })
+	})
 
-    test('creating an issue with missing values fails', async done => {
+	test('creating an issue with missing values fails', async done => {
 		//ARRANGE
 		await page.goto('http://localhost:8080/register', { timeout: 30000, waitUntil: 'load' })
 		//ACT
@@ -79,16 +78,16 @@ describe('Create an issue', () => {
 		await page.goto('http://localhost:8080/login', { timeout: 30000, waitUntil: 'load' })
 		await page.type('input[name=user]', 'NewUser')
 		await page.type('input[name=pass]', 'password')
-        await page.click('input[type=submit]')
-        await page.goto('http://localhost:8080/issues', { timeout: 30000, waitUntil: 'load' })
-        await page.click('input[name=submitIssueButton')
+		await page.click('input[type=submit]')
+		await page.goto('http://localhost:8080/issues', { timeout: 30000, waitUntil: 'load' })
+		await page.click('input[name=submitIssueButton')
 
-        //ASSERT
-        await page.waitForSelector('h2')
+		//ASSERT
+		await page.waitForSelector('h2')
 		expect( await page.evaluate( () => document.querySelector('h2').innerText ) )
-            .toBe('One or more fields were not filled in')
+			.toBe('One or more fields were not filled in')
 
 		done()
 
-    })
+	})
 })

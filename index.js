@@ -115,7 +115,7 @@ router.post('/register', koaBody, async ctx => {
 		ctx.redirect(`/?msg=new user "${body.name}" added`)
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
-	} 
+	}
 })
 
 router.get('/login', async ctx => {
@@ -144,7 +144,7 @@ router.post('/login', async ctx => {
 		return ctx.redirect('/')
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
-	} 
+	}
 })
 
 router.get('/logout', async ctx => {
