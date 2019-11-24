@@ -193,7 +193,7 @@ module.exports = class Tasks {
 	////just for testing purposes
 	async customQuery(sql = 'SELECT * FROM tasks;') {
 		try {
-			console.log(sql)
+			//console.log(sql)
 			const data = await this.db.all(sql)
 			return data
 		} catch(err) {

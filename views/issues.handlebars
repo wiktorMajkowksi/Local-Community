@@ -56,7 +56,7 @@
                     <section id="filter">
                         <dt>Filter
                             <dd>by Issue
-                                <input name ='issueType' list="issueType"></td> 
+                                <input name ='issueTypeFilter' list="issueType"></td> 
                                 <datalist id="issueType">
                                     <option value = "Vandalism">
                                     <option value = "Noise pollution">
@@ -90,7 +90,7 @@
                             <th id = "th">Votes</th>
                         </tr>
                         <form action="/issues" method="post">
-                        <p><input type="submit" value="Submit"></p>
+                        <p><input type="submit" value="Submit" name = "submitIssueButton"></p>
                             <td id="td">ID</td>
                             <td id="td"><input name ='issueType' list="issueType"></td> 
                                 <datalist id="issueType">

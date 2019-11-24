@@ -86,7 +86,7 @@ router.get('/', async ctx => {
 router.get('/register', async ctx => {
 	const tasks = await new Tasks()
 	const postcodes = await tasks.getPostcodes()
-	console.log(postcodes)
+	//console.log(postcodes)
 	await ctx.render('register', {postcode: postcodes})
 })
 /**
@@ -115,8 +115,6 @@ router.post('/register', koaBody, async ctx => {
 		ctx.redirect(`/?msg=new user "${body.name}" added`)
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
-	} finally {
-		user.tearDown()
 	}
 })
 
@@ -125,7 +123,7 @@ router.get('/login', async ctx => {
 	if(ctx.query.msg) data.msg = ctx.query.msg
 	if(ctx.query.user) data.user = ctx.query.user
 
-	console.log(ctx.cookies)
+	//console.log(ctx.cookies)
 	await ctx.render('login', data)
 })
 
@@ -138,7 +136,7 @@ router.post('/login', async ctx => {
 		const tasks = await new Tasks(dbName)
 		let accessLevel = await tasks.customQuery(`SELECT accessLevel FROM users WHERE user = "${body.user}"`)
 		accessLevel = accessLevel[0].accessLevel
-		console.log(accessLevel)
+		//console.log(accessLevel)
 		//sets cookies for the user name and accessLevel so we can use these on other pages
 		await ctx.cookies.set('user', body.user ,{httpOnly: false})
 		await ctx.cookies.set('accessLevel', accessLevel, {httpOnly: false})
@@ -147,7 +145,7 @@ router.post('/login', async ctx => {
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	} finally {
-		user.tearDown()
+		await user.tearDown()
 	}
 })
 
@@ -173,7 +171,7 @@ router.get('/staff', async ctx => {
 		const data = await tasks.getAll()
 		const cookies = await tasks.getUserCookies(ctx.cookies)
 		//gets the cookie for the accessLevel and if it is not 'staff' it throws an error
-		console.log(cookies)
+		//console.log(cookies)
 		if (cookies.accessLevel !== 'staff') {
 			throw new Error('You must be logged in as a staff member to view this page')
 		}
@@ -187,7 +185,7 @@ router.post('/staff', async ctx => {
 	try {
 		const tasks = await new Tasks(dbName)
 		const body = await ctx.request.body
-		console.log(body)
+		//console.log(body)
 
 		//body.statusChange will either be 'inProgress' or 'complete' depending on which button the staff member clicks
 
