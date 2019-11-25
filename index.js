@@ -177,7 +177,8 @@ router.get('/logout', async ctx => {
 })
 
 router.get('/contacts', async ctx => {
-	await ctx.render('contacts')
+	const userName = ctx.cookies.get('user')
+	await ctx.render('contacts', {user: userName})
 })
 
 /**
@@ -197,7 +198,8 @@ router.get('/staff', async ctx => {
 		if (cookies.accessLevel !== 'staff') {
 			throw new Error('You must be logged in as a staff member to view this page')
 		}
-		await ctx.render('staff', {tasks: data, query: ''})
+		const userName = ctx.cookies.get('user')
+		await ctx.render('staff', {tasks: data, query: '', user: userName})
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}
@@ -229,7 +231,6 @@ router.post('/staff', async ctx => {
 			await tasks.changeStatus(body.id, body.statusChange)
 		}
 		//body.statusChange will either be 'inProgress' or 'complete' depending on which button the staff member clicks
-
 		//body.id is the same as the issue ID that is being interacted with
 		//body.statusChange is determined by the button the staff member clicks, either 'In Progress' or 'Complete'
 		ctx.redirect('/staff')
@@ -259,6 +260,7 @@ router.get('/issues', async ctx => {
 			.catch(err => console.log(err))
 		const coords = `${currentLocation['latitude']},${currentLocation['longitude']}`
 		//userName here is used to set the rasiedBy attribute of the task to whoever is logged in
+
 		const userName = ctx.cookies.get('user')
 		await ctx.render('issues', {tasks: data, query: '', user: userName, currentLocation: coords})
 	} catch(err) {
@@ -308,10 +310,10 @@ router.get('/issue_details/:num', async ctx => {
 	try {
 		const db = await new Tasks(dbName)
 		const issue = await db.getIssue(ctx.params.num)
-		const userName = ctx.cookies.get('user')
 		const encoded = await db.encodeLocation(issue.location)
 		const dateDifference = await db.getDateDifference(ctx.params.num)
-
+		
+		const userName = ctx.cookies.get('user')
 		await ctx.render('issue_details', {issue: issue, user: userName, encodedLocation: encoded, dateDifference: dateDifference})
 	} catch(err) {
 		await ctx.render('error', {message: err.message})

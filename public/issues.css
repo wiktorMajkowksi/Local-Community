@@ -13,11 +13,17 @@
     padding:10px;
     background-color: rgba(40, 43, 94, 0.9);
 }
-#table{
-    width: 100%;
+
+#tableSubmitted{
+    width: 85%;
+}
+
+#SubmitNew{
+    width: 85%;
 }
 
 #table1 {
+    width: 100%;
     float: right;
     font-size: 15px;
     color: white;
@@ -41,11 +47,17 @@ input[type="submit"]:hover{
     background-color: lightgrey;
 }
 #filter{
-    background-color: transparent;
-    /*float: right;*/
+    background-color: rgba(40, 43, 94, 0.9);
+    float: right;
+    margin: 0px 0% 0px;
     padding: 10px;
     border: solid black 1px;
     cursor: pointer;
+
+}
+#filter > input[type="text"]{
+    float: right;
+    width: 50%;
 }
 input[type="text"]{
     width:100%;
