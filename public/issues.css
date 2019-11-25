@@ -11,10 +11,10 @@
     color: white;
     border:1px black solid;
     padding:10px;
-    background-color: rgba(40, 43, 94, 0.3);
+    background-color: rgba(40, 43, 94, 0.9);
 }
 #table{
-    width: 80%;
+    width: 100%;
 }
 
 #table1 {
@@ -31,18 +31,18 @@
 }
 
 input[type="submit"]{
-    background-color: transparent;
+    background-color:gray;
     float: right;
     padding: 10px;
     border: solid black 1px;
     cursor: pointer;
 }
 input[type="submit"]:hover{
-    background-color: green;
+    background-color: lightgrey;
 }
 #filter{
     background-color: transparent;
-    float: right;
+    /*float: right;*/
     padding: 10px;
     border: solid black 1px;
     cursor: pointer;
