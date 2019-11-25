@@ -253,7 +253,6 @@ describe('changeStatus()', () => {
 		await tasks.addIssue(await tasks.mockIssue(), cookies)
 		await tasks.changeStatus(1, 'Complete')
 		const data = await tasks.getAll()
-		//console.log(data)
 		//ASSERT
 		expect(await data.length).toEqual((await tasks.getAll()).length)
 		expect(data[0].status).toEqual('Complete')
@@ -319,7 +318,6 @@ describe('upvote()', () => {
 		expect.assertions(2)
 		const tasks = await new Tasks()
 		//ACT
-		//console.log(cookies)
 		await tasks.addIssue(await tasks.mockIssue(), cookies)
 		delete cookies[1]
 		await tasks.upvote(1, cookies)
