@@ -41,22 +41,22 @@
 
                     {{#each tasks}}
                         <tr id="lol">
+                            <form action="/issues" method="post">
                             <td id = "td"><a href="/issue_details/{{this.id}}">{{this.id}}</a> </td>
-                            <input name ="id" value = {{this.id}} readonly type = "hidden">
+                            <!--<input name ="id" value = {{this.id}} readonly type = "hidden">-->
+                            <!--<td id = "td">{{this.id}}</td>-->
                             <td id = "td">{{this.issueType}}</td>
                             <td id = "td">{{this.location}}</td>
                             <td id = "td">{{this.status}}</td>
                             <td id = "td">{{this.priority}}</td>
+                           <!-- <td><input name ="id" type="hidden" value = {{this.id}}></td> -->
                             <td><input type = "submit" value = "Details" name = "details"></td>
-                            <td>
-                                <form action="/issues" method="post">
-                                <input name ="id" type="hidden" value = {{this.id}}>
-                                </form>
-                            </td>
+                            </form>
                         </tr>
                     {{/each}}
                     <section id="filter">
-                        <dt>Filter
+                        <dt>
+                            <dd>Filter</dd>
                             <dd>
                                 <input placeholder="Issue" name ='issueTypeFilter' list="issueType"></td> 
                                 <datalist id="issueType">
