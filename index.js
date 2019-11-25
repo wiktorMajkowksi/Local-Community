@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-/* eslint-disable linebreak-style */
-
 //Routes File
 
 'use strict'
@@ -40,22 +38,10 @@ const dbName = 'website.db'
 const staffRegisterPass = 'staff'
 //const wardPost = 'ward_postcodes.db'
 
-/*EXAMPLE BOOK DATA FOR TESTING BEFORE WE HAVE A DATABASE
-const testData = [
-	{id: 1,
-		issueType: 'vandalism',
-		raisedBy: 'Fred Cook',
-		dateSet: '2019-10-22',
-		location: 'Priory Street',
-		status: 'Incomplete'
-	}
-]
-*/
-//console.log(testData)
-
 //const googleMapsAPIKey = 'AIzaSyAIl1QIAQMTrmZ44aKulJQgY2D_BbqRRcU'
 //const ipIOKey = '801bc4b6-a3e4-482b-b998-3a6915db11bb'
 
+//Configuring nodeMailer to use gmail
 const transporter = nodemailer.createTransport({
 	// example with google mail service
 	host: 'smtp.gmail.com',
@@ -66,22 +52,22 @@ const transporter = nodemailer.createTransport({
 		pass: 'koxmzvwnzhmhnope' // replace by your-password
 	}
 })
-   
+//Configuring nodeMailer messages  
 const mailOptions = {
 	from: 'fredcook789@gmail.com',
 	to: 'fredcook789@gmail.com',
-	subject: 'Sending Email using Nodemailer',
-	html: '<h1>Hello world!</h1><p>The mail has been sent from Node.js application!</p>'
+	subject: 'One of your tasks has been complete!',
+	html: 'One of your tasks has been complete!'
 }
 
 let user
 
 /**
- * The secure home page.
+ * The home page.
  *
  * @name Home Page
  * @route {GET} /
- * @authentication This route requires cookie-based authentication.
+ * @authentication None
  */
 router.get('/', async ctx => {
 	try {
@@ -105,7 +91,7 @@ router.get('/', async ctx => {
 router.get('/register', async ctx => {
 	const tasks = await new Tasks()
 	const postcodes = await tasks.getPostcodes()
-	//console.log(postcodes)
+	
 	await ctx.render('register', {postcode: postcodes})
 })
 /**
@@ -114,7 +100,6 @@ router.get('/register', async ctx => {
  * @name Register Script
  * @route {POST} /register
  */
-// eslint-disable-next-line complexity
 router.post('/register', koaBody, async ctx => {
 	try {
 		// extract the data from the request
@@ -137,15 +122,26 @@ router.post('/register', koaBody, async ctx => {
 	}
 })
 
+/**
+ * The login page
+ * @name login page
+ * @route {GET} /login
+ */
 router.get('/login', async ctx => {
 	const data = {}
 	if(ctx.query.msg) data.msg = ctx.query.msg
 	if(ctx.query.user) data.user = ctx.query.user
 
-	//console.log(ctx.cookies)
+	
 	await ctx.render('login', data)
 })
 
+/**
+ * The script to handle attempted login
+ * @name Login Script
+ * @route {POST} /login
+ * Upon success sets ctx.cookies.user and ctx.cookies.accessLevel
+ */
 router.post('/login', async ctx => {
 	try {
 		const body = ctx.request.body
@@ -155,24 +151,27 @@ router.post('/login', async ctx => {
 		const tasks = await new Tasks(dbName)
 		let accessLevel = await tasks.customQuery(`SELECT accessLevel FROM users WHERE user = "${body.user}"`)
 		accessLevel = accessLevel[0].accessLevel
-		//console.log(accessLevel)
 		//sets cookies for the user name and accessLevel so we can use these on other pages
 		await ctx.cookies.set('user', body.user ,{httpOnly: false})
 		await ctx.cookies.set('accessLevel', accessLevel, {httpOnly: false})
-		//console.log(ctx.cookies.get('accessLevel'))
 		return ctx.redirect('/')
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}
 })
 
+/**
+ * The logout page
+ * @name logout page
+ * @route {GET} /logout
+ * Removes values from the ctx.cookies.user and ctx.cookies.accessLevel
+ */
+
 router.get('/logout', async ctx => {
 	ctx.session.authorised = null
 	//destorys cookies set
 	ctx.cookies.set('user', '')
 	ctx.cookies.set('accessLevel', '')
-	//console.log(ctx.cookies.get('user'))
-	//console.log(ctx.cookies.get('accessLevel'))
 	ctx.redirect('/login')
 
 })
@@ -182,6 +181,13 @@ router.get('/contacts', async ctx => {
 	await ctx.render('contacts', {user: userName})
 })
 
+/**
+ * The Staff page
+ * @name Staff page
+ * @route {GET} /staff
+ * @authentication requires cookie based authentication
+ */
+
 router.get('/staff', async ctx => {
 	try {
 		//the db is opened here and the table is created if not present
@@ -189,7 +195,6 @@ router.get('/staff', async ctx => {
 		const data = await tasks.getAll()
 		const cookies = await tasks.getUserCookies(ctx.cookies)
 		//gets the cookie for the accessLevel and if it is not 'staff' it throws an error
-		//console.log(cookies)
 		if (cookies.accessLevel !== 'staff') {
 			throw new Error('You must be logged in as a staff member to view this page')
 		}
@@ -199,6 +204,13 @@ router.get('/staff', async ctx => {
 		await ctx.render('error', {message: err.message})
 	}
 })		//routes to Staff page
+
+/**
+ * Handles post requests on the Staff page
+ * @name Staff page
+ * @route {POST} /staff
+ * @authentication Requires cookie based authentication of a staff account
+ */
 
 router.post('/staff', async ctx => {
 	try {
@@ -227,6 +239,13 @@ router.post('/staff', async ctx => {
 	}
 })
 
+/**
+ * The Issues page
+ * @name Issues page
+ * @route {GET} /issues
+ * @authentication requires no authentication to view, requires an account of any kind to post an issue
+ */
+
 router.get('/issues', async ctx => {
 	try {
 		//if (ctx.session.authorised !== true) {
@@ -248,6 +267,13 @@ router.get('/issues', async ctx => {
 		await ctx.render('error', {message: err.message})
 	}
 })
+
+/**
+ * Handles post requests on the Issues page
+ * @name issues page
+ * @route {POST} /issues
+ * Upon successful upvote sets ctx.cookies.upvote which wil time out after 5 minutes
+ */
 
 router.post('/issues', async ctx => {
 	try {
@@ -274,6 +300,12 @@ router.post('/issues', async ctx => {
 	}
 })
 
+/**
+ * The Issue_details page
+ * @name issue_details/:num page
+ * @route {GET} /issue_details/:num
+ * Displays additional information about an issue, such as location on a map, raisedBy, and dateSet
+ */
 router.get('/issue_details/:num', async ctx => {
 	try {
 		const db = await new Tasks(dbName)

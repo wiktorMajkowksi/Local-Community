@@ -36,7 +36,6 @@ module.exports = class Tasks {
 	//takes a body and makes it so add Issue can take it as an argument
 	async createIssue(body, cookies) {
 		try {
-			//console.log((await this.getUserCookies(cookies)).user)
 			return {'issueType': body.issueType,
 				'issueDesc': body.issueDesc,
 				'raisedBy': (await this.getUserCookies(cookies)).user,
@@ -88,7 +87,6 @@ module.exports = class Tasks {
 		//Dates go year-month-day
 		const issue = (await this.customQuery(`SELECT * FROM tasks WHERE id = ${id};`))[0]
 		let dateSet = issue.dateSet
-		//console.log(dateSet)
 		let dateResolved = 0
 		if (issue.dateCompleted === 'N/A') {
 			dateResolved = await this.getDate()
@@ -96,16 +94,13 @@ module.exports = class Tasks {
 			dateResolved = issue.dateCompleted
 		}
 
-		console.log(dateResolved)
 
 		dateSet = Date.parse(dateSet)
-		console.log(dateSet)
 		dateResolved = Date.parse(dateResolved)
 		let difference = dateResolved - dateSet
 
 		//number of milliseconds in a day = 86400000
 		difference = Math.floor(difference / 86400000)
-		console.log(difference)
 
 		return difference
 	}
@@ -122,7 +117,6 @@ module.exports = class Tasks {
 
 	async getIssue(id) {
 		try {
-			//console.log(id)
 			if (id !== undefined) {
 				const data = this.db.get(`SELECT * from tasks WHERE id = ${id};`)
 				return data
@@ -135,15 +129,8 @@ module.exports = class Tasks {
 	async upvote(id, cookies) {
 		try {
 			//if they upvoted recently it will fail and throw an error
-			//console.log(errorCheck)
 
 			await this.checkIfUpvotedRecently(id, cookies)
-			//console.log('after 85')
-			//if (errorCheck) {
-			//	console.log('errorcheck is in')
-			//	throw new Error('Error in checkIfUpVotedRecently')
-			//}
-			//console.log('gonna upvote')
 			const sql = `UPDATE tasks SET votes = votes + 1 WHERE id = ${id}`
 			await this.db.run(sql)
 			return
@@ -154,8 +141,6 @@ module.exports = class Tasks {
 
 	async checkIfUpvotedRecently(id, cookies) {
 		try {
-			//console.log(await this.getUserCookies(cookies))
-			//console.log(cookies)
 			if (await cookies.get(id) === 'upvoted') {
 				throw new Error('Please wait up to 5 minutes before upvoting this issue again')
 			} else {
@@ -168,7 +153,6 @@ module.exports = class Tasks {
 
 	async changeStatus(id, status) {
 		try {
-			//console.log('in changeStatus')
 			let sql = `UPDATE tasks SET status = "${status}" WHERE id = ${id};`
 			if (status === 'Complete') {
 				const date = await this.getDate()
@@ -230,7 +214,6 @@ module.exports = class Tasks {
 	////just for testing purposes
 	async customQuery(sql = 'SELECT * FROM tasks;') {
 		try {
-			//console.log(sql)
 			const data = await this.db.all(sql)
 			return data
 		} catch(err) {
