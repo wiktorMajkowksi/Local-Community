@@ -81,32 +81,21 @@ router.get('/', async ctx => {
 		await ctx.render('error', {message: err.message})
 	}
 })
-
 /**
  *  Handling if the User wants to look at the profile page
- * @name Home page 
- * @route {POST} /   
+ * @name ProfileInfo page 
+ * @route {GET} /profile_info   
  */
-router.post('/', async ctx => {
+router.get('/profileInfo', async ctx => {
 	try {
-		const body = ctx.request.body
-		console.log(body)
-		if (body.isLoggedIn) {
-			const currentUser = ctx.cookies.get('user')
-			const user = await new User(dbName)
-			const data = await user.getInfo(currentUser)
-			
-			// TODO Get the users profile from the db and give it to the render call
-			await ctx.render('profileInfo', {user: currentUser, data: data})
-		} else {
-			await ctx.render('index', {user: body.isLoggedIn})	
-		}
+		const currentUser = ctx.cookies.get('user')
+		const user = await new User(dbName)
+		const data = await user.getInfo(currentUser)
+		await ctx.render('profileInfo', {user: currentUser, data: data})
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}
 })
-
-
 /**
  * The user registration page. *
  * @name Register Page
@@ -307,15 +296,15 @@ router.post('/issues', async ctx => {
 	try {
 		const tasks = await new Tasks(dbName)
 		const body = await ctx.request.body
-		if (ctx.request.body.upvote === 'Upvote') {
+		if (body.upvote === 'Upvote') {
 			//if they havent upvoted the problem within the last 5 minutes, the below won't throw an error
 			await tasks.upvote(body.id, ctx.cookies)
 			//if the above throws an error execution stops, sets a cookie thats 'key' is the id of the issue they upvoted, meaning they cant upvote the same issue within 5 minutes
-			ctx.cookies.set(ctx.request.body.id, 'upvoted', {httpOnly: false, maxAge: 300000})
+			ctx.cookies.set(body.id, 'upvoted', {httpOnly: false, maxAge: 300000})
 			ctx.redirect('/issues')
-		} else if (ctx.request.body.details === 'Details') {
+		} else if (body.details === 'Details') {
 			await ctx.redirect(`/issue_details/${body.id}`)
-		} else if (ctx.request.body.filter === 'Filter') {
+		} else if (body.filter === 'Filter') {
 			await tasks.filter(body)
 			await ctx.redirect('/issues')
 		} else { //They are submitting an issue and not upvoting
