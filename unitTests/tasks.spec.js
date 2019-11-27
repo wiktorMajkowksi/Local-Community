@@ -379,7 +379,3 @@ describe('getDateDifference()', () => {
 
 })
 
-
-describe('filter()', () => {
-	test('')
-})
