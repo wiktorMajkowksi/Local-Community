@@ -18,6 +18,8 @@
 					<td id="button"><a href="/contacts"> Contacts </a></td>
 					<td id="button"><a href="/issues"> Issues </a></td>
 					{{#if user}}
+					</form>				
+						<a id="lr" href="/profileInfo">Profile</a>
                         <a id="lr" href="/logout">Log out |</a>
 					{{else}}
                     	<a id="lr" href="/register">| Register</a> 
@@ -32,9 +34,5 @@
 			<p>Our purpose is to help and raise issues within Coventry by allowing the local council to engage with residents of this community.
 			<br>If you have any issues, you can let us know by submiting them in the <a style ="color:#FFA74B" href="/issues">issues</a> page.</p>
 
-			<form action="/" method="post">
-				<p><input type="submit" name="test" value="Test"></p>
-				<p><input type="hidden" name="isLoggedIn" value={{this.user}}></p>
-			</form>
 		</article>
 </html>

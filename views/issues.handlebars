@@ -18,6 +18,7 @@
 					<td id="button"><a href="/contacts"> Contacts </a></td>
 					<td id="button"><a href="/issues"> Issues </a></td>
                     {{#if user}}
+                        <a id="lr" href="/profileInfo">Profile</a>
                         <a id="lr" href="/logout">Log out |</a>
                     {{else}}   
                     	<a id="lr" href="/register">| Register</a> 
@@ -50,7 +51,7 @@
                             <td id = "td">{{this.status}}</td>
                             <td id = "td">{{this.priority}}</td>
                             <td><input name ="id" type="hidden" value = {{this.id}}></td>
-                            <td><input type = "submit" value = "Details" name = "details"></td>
+                            <td style="width:60px"><input style="float:left" type="submit" value="Details" name="details"></td>
                             </form>
                         </tr>
                     {{/each}}
@@ -58,15 +59,15 @@
                         <dt>
                             <dd>Filter</dd>
                             <dd>
-                                <input placeholder="Issue" name ='issueTypeFilter' list="issueType"></td> 
-                                <datalist id="issueType">
-                                    <option value = "Vandalism">
-                                    <option value = "Noise pollution">
-                                    <option value = "Litter">
-                                    <option value = "Speeding">
-                                    <option value = "Potholes">
-                                    <option value = "Other">
-                                </datalist>
+                                <input placeholder="Issue" type="hidden" name ='issueTypeFilter' list="issueType"></td> 
+                                <select id="issueType">
+                                    <option value="vandalism"> Vandalism </option>
+                                    <option value="noisePollution">Noise Pollution</option>
+                                    <option value="litter">Litter</option>
+                                    <option value="speeding">Speeding</option>
+                                    <option value="potholes">Potholes</option>
+                                    <option value="other">Other</option>
+                                </select>
                             </dd>
                             <!--<dd>by Location</dd>-->
                             <dd>    <input placeholder="Location" type="text">  </dd>
