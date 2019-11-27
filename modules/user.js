@@ -35,6 +35,14 @@ module.exports = class User {
 		}
 	}
 
+	async getInfo(username) {
+		try {
+			const data = await this.db.get(`SELECT * FROM users WHERE user = "${username}"`)
+			return data
+		} catch (err) {
+			throw err
+		}
+	}
 	// async uploadPicture(path, mimeType) {
 	// 	const extension = mime.extension(mimeType)
 	// 	console.log(`path: ${path}`)

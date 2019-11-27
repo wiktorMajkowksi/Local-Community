@@ -5,8 +5,9 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Home Page</title>
-		<meta name="author" content="Wiktor Majkowski">
+		<meta name="author" content="Adam Gill">
 		<link href="defaultStyle.css" type="text/css" rel="stylesheet" />
+		<link href="issues.css" type="text/css" rel="stylesheet" />
 	</head>
 	<body>
 		<nav id = "navigation">
@@ -28,13 +29,24 @@
 		</nav>	
 		<br>
 		<article>
-			<h1 style = "color: #3B96FF">Home</h1><h2 style = "color: #FFA74B"> Community</h2>
-			<p>Our purpose is to help and raise issues within Coventry by allowing the local council to engage with residents of this community.
-			<br>If you have any issues, you can let us know by submiting them in the <a style ="color:#FFA74B" href="/issues">issues</a> page.</p>
+			<h1>Profile Page</h1>
 
-			<form action="/" method="post">
-				<p><input type="submit" name="test" value="Test"></p>
-				<p><input type="hidden" name="isLoggedIn" value={{this.user}}></p>
-			</form>
+			<nav>
+				<table id="table" width="80%">
+					<tr id="lol">
+						<td id="th"> Username </td>
+						<td id="th"> Location </td>
+						<td id="th"> Address</td>
+						<td id="th"> Postcode</td>
+						<td id="th"> Profile Picture</td>
+					</tr>
+					<tr>
+						<td id="td">{{this.user}} </td>
+						<td id="td">{{this.data.location}} </td>
+						<td id="td">{{this.data.address}} </td>
+						<td id="td">{{this.data.postcode}} </td>
+					</tr>
+				</table>
+			</nav>    
 		</article>
 </html>

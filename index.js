@@ -75,13 +75,34 @@ router.get('/', async ctx => {
 		if (ctx.cookies.get('user') !== undefined) { //they are logged in
 			loggedIn = true
 		} else { //they are not logged in
-			loggedIn = false
+			loggedIn = undefined
 		}
 		await ctx.render('index', {user: loggedIn})
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}
 })
+
+router.post('/', async ctx => {
+	try {
+		const body = ctx.request.body
+		console.log(body)
+		if (body.isLoggedIn) {
+			const currentUser = ctx.cookies.get('user')
+			const user = await new User(dbName)
+			const data = await user.getInfo(currentUser)
+			
+			// TODO Get the users profile from the db and give it to the render call
+			await ctx.render('profileInfo', {user: currentUser, data: data})
+		} else {
+			await ctx.render('index', {user: body.isLoggedIn})	
+		}
+	} catch(err) {
+		await ctx.render('error', {message: err.message})
+	}
+})
+
+
 /**
  * The user registration page.
  *
@@ -91,7 +112,6 @@ router.get('/', async ctx => {
 router.get('/register', async ctx => {
 	const tasks = await new Tasks()
 	const postcodes = await tasks.getPostcodes()
-	
 	await ctx.render('register', {postcode: postcodes})
 })
 /**
@@ -116,7 +136,7 @@ router.post('/register', koaBody, async ctx => {
 			}
 		} //successful staff registration
 		await user.register(body.user, body.pass, body.address, body.postcode, userLevel)
-		ctx.redirect(`/?msg=new user "${body.name}" added`)
+		ctx.redirect(`/?msg=new user "${body.user}" added`)
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}
@@ -282,8 +302,7 @@ router.post('/issues', async ctx => {
 		if (ctx.request.body.upvote === 'Upvote') {
 			//if they havent upvoted the problem within the last 5 minutes, the below won't throw an error
 			await tasks.upvote(body.id, ctx.cookies)
-			//if the above throws an error execution stops
-     		//sets a cookie thats 'key' is the id of the issue they upvoted, meaning they cant upvote the same issue within 5 minutes
+			//if the above throws an error execution stops, sets a cookie thats 'key' is the id of the issue they upvoted, meaning they cant upvote the same issue within 5 minutes
 			ctx.cookies.set(ctx.request.body.id, 'upvoted', {httpOnly: false, maxAge: 300000})
 			ctx.redirect('/issues')
 		} else if (ctx.request.body.details === 'Details') {
@@ -312,7 +331,6 @@ router.get('/issue_details/:num', async ctx => {
 		const issue = await db.getIssue(ctx.params.num)
 		const encoded = await db.encodeLocation(issue.location)
 		const dateDifference = await db.getDateDifference(ctx.params.num)
-		
 		const userName = ctx.cookies.get('user')
 		await ctx.render('issue_details', {issue: issue, user: userName, encodedLocation: encoded, dateDifference: dateDifference})
 	} catch(err) {
