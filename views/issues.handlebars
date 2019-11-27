@@ -40,7 +40,7 @@
                     </tr>
 
                     {{#each tasks}}
-                        <tr id="lol">
+                        <tr id="row">
                             <form action="/issues" method="post">
                             <td id = "td"><a href="/issue_details/{{this.id}}">{{this.id}}</a> </td>
                             <!--<input name ="id" value = {{this.id}} readonly type = "hidden">-->
@@ -74,7 +74,7 @@
                             <dd>    <input placeholder="Status" type="text">    </dd>
                             <dd>
                                 <form action="/issues" method="post">
-                                    <p><input type="submit" name="Filter" value="Filter"></p>
+                                    <p><input type="submit" name="filter" value="Filter"></p>
                                 </form>
                             </dd>
                         </dt>
