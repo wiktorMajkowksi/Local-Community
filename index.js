@@ -63,8 +63,7 @@ const mailOptions = {
 let user
 
 /**
- * The home page.
- *
+ * The home page. *
  * @name Home Page
  * @route {GET} /
  * @authentication None
@@ -83,6 +82,11 @@ router.get('/', async ctx => {
 	}
 })
 
+/**
+ *  Handling if the User wants to look at the profile page
+ * @name Home page 
+ * @route {POST} /   
+ */
 router.post('/', async ctx => {
 	try {
 		const body = ctx.request.body
@@ -104,8 +108,7 @@ router.post('/', async ctx => {
 
 
 /**
- * The user registration page.
- *
+ * The user registration page. *
  * @name Register Page
  * @route {GET} /register
  */
@@ -115,8 +118,7 @@ router.get('/register', async ctx => {
 	await ctx.render('register', {postcode: postcodes})
 })
 /**
- * The script to process new user registrations.
- *
+ * The script to process new user registrations. *
  * @name Register Script
  * @route {POST} /register
  */
@@ -186,7 +188,6 @@ router.post('/login', async ctx => {
  * @route {GET} /logout
  * Removes values from the ctx.cookies.user and ctx.cookies.accessLevel
  */
-
 router.get('/logout', async ctx => {
 	ctx.session.authorised = null
 	//destorys cookies set
@@ -196,6 +197,12 @@ router.get('/logout', async ctx => {
 
 })
 
+/**
+ * The Contacts page
+ * @name Contacts page
+ * @route {GET} /contacts
+ * Displays information of the on team working on the project
+ */
 router.get('/contacts', async ctx => {
 	const userName = ctx.cookies.get('user')
 	await ctx.render('contacts', {user: userName})
@@ -206,6 +213,7 @@ router.get('/contacts', async ctx => {
  * @name Staff page
  * @route {GET} /staff
  * @authentication requires cookie based authentication
+ * Displays a different view of the database with extra features for staff members to edit what is in the database
  */
 
 router.get('/staff', async ctx => {
