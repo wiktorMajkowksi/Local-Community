@@ -347,3 +347,39 @@ describe('customQuery()', () => {
 		done()
 	})
 })
+
+describe('getDateDifference()', () => {
+	test('date - the same date gives 0 / no difference', async done => {
+		//ARRANGE
+		expect.assertions(1)
+		const tasks = await new Tasks()
+		//ACT
+		await tasks.addIssue(await tasks.mockIssue(),cookies)
+
+		//will give the difference in date between this new task with todays date and todays date (no difference)
+		const difference = await tasks.getDateDifference(1)
+		//ASSERT
+		expect(difference).toEqual(0)
+		done()
+	})
+	test('test completed today also returns 0', async done => {
+		//ARRANGE
+		expect.assertions(1)
+		const tasks = await new Tasks()
+		//ACT
+		await tasks.addIssue(await tasks.mockIssue(),cookies)
+		await tasks.changeStatus(1, 'Complete')
+		//will give the difference in date between this new task with todays date and todays date (no difference)
+		const difference = await tasks.getDateDifference(1)
+		//ASSERT
+		expect(difference).toEqual(0)
+		done()
+
+	})
+
+})
+
+
+describe('filter()', () => {
+	test('')
+})
