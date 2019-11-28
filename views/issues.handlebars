@@ -71,7 +71,14 @@
                             <!--<dd>by Location</dd>-->
                             <dd>    <input placeholder="Location" type="text">  </dd>
                             <!--<dd>by Status</dd>-->
-                            <dd>    <input placeholder="Status" type="text">    </dd>
+                            <dd>    <input placeholder="Status" name = 'issueStatus' list = "status"> </td>   
+                                    <datalist id = "status">
+                                        <option value = "Incomplete">
+                                        <option value = "In Progress">
+                                        <option value = "complete">
+                                    </datalist>
+                            
+                            </dd>
                             <dd>
                                 <form action="/issues" method="post">
                                     <p><input type="submit" name="Filter" value="Filter"></p>

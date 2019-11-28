@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Issues_filterd_status</title>
+		<meta name="author" content="Fred Cook, Wiktor Majkowski">
+        <link href="../defaultStyle.css" type="text/css" rel="stylesheet" />
+        <link href="../issues.css" type="text/css" rel="stylesheet" />
+        <link href="../issue_details.css" type="text/css" rel="stylesheet" />
+	    </head>
+		<body>
+        <nav id = "navigation">
+			<table>
+				<tr> 
+					<td id="logo"> L</td>
+					<td id="button"><a href="/"> Home </a></td>
+				 	<td id="button"><a href="/staff"> Staff </a></td>
+					<td id="button"><a href="/contacts"> Contacts </a></td>
+					<td id="button"><a href="/issues"> Issues </a></td>
+                    {{#if user}}
+                        <a id="lr" href="/logout">Log out |</a>
+                    {{else}}   
+                    	<a id="lr" href="/register">| Register</a> 
+					    <a id="lr" href="/login">Login |</a>
+                    {{/if}}
+				</tr>
+			</table>
+		</nav>	
+       <h1> Issues </h1>
+        
+        <article>
+            <section>
+                <table id = "tableSubmitted">
+                    <tr>
+                        <th id = "th">ID</th>
+                        <th id = "th">Issue</th>
+                        <th id = "th">Location</th>
+                        <th id = "th">Status</th>
+                        <th id = "th">Priority</th>
+                    </tr>
+
+                    {{#each tasks}}
+                        <tr id="lol">
+                            <form action="/issues" method="post">
+                            <td id = "td"><a href="/issue_details/{{this.id}}">{{this.id}}</a> </td>
+                            <!--<input name ="id" value = {{this.id}} readonly type = "hidden">-->
+                            <!--<td id = "td">{{this.id}}</td>-->
+                            <td id = "td">{{this.issueType}}</td>
+                            <td id = "td">{{this.location}}</td>
+                            <td id = "td">{{this.status}}</td>
+                            <td id = "td">{{this.priority}}</td>
+                            <td><input name ="id" type="hidden" value = {{this.id}}></td>
+                            <td><input type = "submit" value = "Details" name = "details"></td>
+                            </form>
+                        </tr>
+                    {{/each}}
+                    <section id="filter">
+                        <dt>
+                            <dd>Fiilter</dd>
+                            <dd>
+                                <input placeholder="Issue" name ='issueTypeFilter' list="issueType"></td> 
+                                <datalist id="issueType">
+                                    <option value = "Vandalism">
+                                    <option value = "Noise pollution">
+                                    <option value = "Litter">
+                                    <option value = "Speeding">
+                                    <option value = "Potholes">
+                                    <option value = "Other">
+                                </datalist>
+                            </dd>
+                            <!--<dd>by Location</dd>-->
+                            <dd>    <input placeholder="Location" type="text">  </dd>
+                            <!--<dd>by Status</dd>-->
+                            <dd>    <input placeholder="Status" name = 'issueStatus' list = "status"> </td>   
+                                    <datalist id = "status">
+                                        <option value = "Incomplete">
+                                        <option value = "In Progress">
+                                        <option value = "complete">
+                                    </datalist>
+                            
+                            </dd>
+                            <dd>
+                                <form action="/issues" method="post">
+                                    <p><input type="submit" name="Filter" value="Filter"></p>
+                                </form>
+                            </dd>
+                        </dt>
+                    </section>
+                </table>
