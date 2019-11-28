@@ -12,7 +12,8 @@
         <nav id = "navigation">
 			<table>
 				<tr> 
-					<td id="logo"> L</td>
+					<td id="logo"> Local Community</td>
+                    <td id ="break">|</td>
 					<td id="button"><a href="/"> Home </a></td>
 				 	<td id="button"><a href="/staff"> Staff </a></td>
 					<td id="button"><a href="/contacts"> Contacts </a></td>
@@ -42,15 +43,16 @@
                     {{#each tasks}}
                         <tr id="lol">
                             <form action="/issues" method="post">
-                            <td id = "td"><a href="/issue_details/{{this.id}}">{{this.id}}</a> </td>
+                            <td id = "td"> <input name ="id" type="hidden" value = {{this.id}}> <a href="/issue_details/{{this.id}}">{{this.id}}</a> </td>
                             <!--<input name ="id" value = {{this.id}} readonly type = "hidden">-->
                             <!--<td id = "td">{{this.id}}</td>-->
                             <td id = "td">{{this.issueType}}</td>
                             <td id = "td">{{this.location}}</td>
                             <td id = "td">{{this.status}}</td>
                             <td id = "td">{{this.priority}}</td>
-                            <td><input name ="id" type="hidden" value = {{this.id}}></td>
+                    <!--        <td><input name ="id" type="hidden" value = {{this.id}}></td>  -->
                             <td><input type = "submit" value = "Details" name = "details"></td>
+                            <!--<td><input type = "submit" value = "Details" name = "details"></td>-->
                             </form>
                         </tr>
                     {{/each}}
