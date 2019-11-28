@@ -10,19 +10,19 @@
 	</head>
 	<body>
         <nav id = "navigation">
-			<table>
+			<table id = "menu">
 				<tr> 
 					<td id="logo"> Local Community</td>
-                    <td id ="break">|</td>
-					<td id="button"><a href="/"> Home </a></td>
-				 	<td id="button"><a href="/staff"> Staff </a></td>
-					<td id="button"><a href="/contacts"> Contacts </a></td>
-					<td id="button"><a href="/issues"> Issues </a></td>
-                    {{#if user}}
-                        <a id="lr" href="/logout">Log out |</a>
-                    {{else}}   
-                    	<a id="lr" href="/register">| Register</a> 
-					    <a id="lr" href="/login">Login |</a>                        
+					<td id ="break">|</td>
+					<td id="HomeButton"><a href="/"> Home </a></td>
+				 	<td id="StaffButton"><a href="/staff"> Staff </a></td>
+					<td id="ContactsButton"><a href="/contacts"> Contacts </a></td>
+					<td id="IssuesButton"><a href="/issues"> Issues </a></td>
+					{{#if user}}
+                        <a id="Logoutlr" href="/logout">Log out |</a>
+					{{else}}
+                    	<a id="Registerlr" href="/register">| Register</a> 
+					    <a id="Loginlr" href="/login">Login |</a>
                     {{/if}}
 				</tr>
 			</table>
@@ -33,25 +33,25 @@
             <section>
                 <table id = "tableSubmitted">
                     <tr>
-                        <th id = "th">ID</th>
-                        <th id = "th">Issue</th>
-                        <th id = "th">Location</th>
-                        <th id = "th">Status</th>
-                        <th id = "th">Priority</th>
+                        <th id = "IDth">ID</th>
+                        <th id = "Issueth">Issue</th>
+                        <th id = "Locationth">Location</th>
+                        <th id = "Statusth">Status</th>
+                        <th id = "Priorityth">Priority</th>
                     </tr>
 
                     {{#each tasks}}
                         <tr id="lol">
                             <form action="/issues" method="post">
-                            <td id = "td"> <input name ="id" type="hidden" value = {{this.id}}> <a href="/issue_details/{{this.id}}">{{this.id}}</a> </td>
+                            <td id = "IDtd"> <input name ="id" type="hidden" value = {{this.id}}> <a href="/issue_details/{{this.id}}">{{this.id}}</a> </td>
                             <!--<input name ="id" value = {{this.id}} readonly type = "hidden">-->
                             <!--<td id = "td">{{this.id}}</td>-->
-                            <td id = "td">{{this.issueType}}</td>
-                            <td id = "td">{{this.location}}</td>
-                            <td id = "td">{{this.status}}</td>
-                            <td id = "td">{{this.priority}}</td>
+                            <td id = "Issuetd">{{this.issueType}}</td>
+                            <td id = "Locationtd">{{this.location}}</td>
+                            <td id = "Statustd">{{this.status}}</td>
+                            <td id = "Prioritytd">{{this.priority}}</td>
                     <!--        <td><input name ="id" type="hidden" value = {{this.id}}></td>  -->
-                            <td><input type = "submit" value = "Details" name = "details"></td>
+                            <td id = "Detailstd"><input type = "submit" value = "Details" name = "details"></td>
                             <!--<td><input type = "submit" value = "Details" name = "details"></td>-->
                             </form>
                         </tr>
@@ -85,19 +85,19 @@
                 {{#if user}}    
                     <table id="SubmitNew">
                         <tr>
-                            <th id = "th">ID</th>
-                            <th id = "th">Issue</th>
-                            <th id = "th">Issue Description</th>
-                            <th id = "th">Raised by</th>
-                            <th id = "th">Date Set</th>
-                            <th id = "th">Date Completed</th>
-                            <th id = "th">Location</th>
-                            <th id = "th">Status</th>
-                            <th id = "th">Votes</th>
+                            <th id = "IDth">ID</th>
+                            <th id = "Issueth">Issue</th>
+                            <th id = "Descth">Issue Description</th>
+                            <th id = "Raisedth">Raised by</th>
+                            <th id = "Dateth">Date Set</th>
+                            <th id = "Completedth">Date Completed</th>
+                            <th id = "Locationth">Location</th>
+                            <th id = "Statusth">Status</th>
+                            <th id = "Votesth">Votes</th>
                         </tr>
                         <form action="/issues" method="post">
-                            <td id="td">ID</td>
-                            <td id="td"><input name ='issueType' list="issueType"></td> 
+                            <td id="IDtd">ID</td>
+                            <td id="Issuetd"><input name ='issueType' list="issueType"></td> 
                                 <datalist id="issueType">
                                     <option value = "Vandalism">
                                     <option value = "Noise pollution">
@@ -108,12 +108,12 @@
                                 </datalist>
                             </td>
 
-                            <td id="td"><input name = 'issueDesc' type="text"></td>
-                            <td id="td">User: <br><b>{{user}}</b></td>
+                            <td id="Desctd"><input name = 'issueDesc' type="text"></td>
+                            <td id="Usertd">User: <br><b>{{user}}</b></td>
                                 <!--<td id="td"><input type="text" placeholder="{{user}}" readonly></td>-->
-                            <td id="td"><input type="date" readonly></td>
-                            <td id="td"><input name = 'dateCompleted' type="date" placeholder="N/A" readonly></td>
-                            <td id="td"><input name ='location' list="location" value = {{this.currentLocation}}></td> 
+                            <td id="Datetd"><input type="date" readonly></td>
+                            <td id="Completedtd"><input name = 'dateCompleted' type="date" placeholder="N/A" readonly></td>
+                            <td id="Locationtd"><input name ='location' list="location" value = {{this.currentLocation}}></td> 
                                 <datalist id="location">
                                     <option value="Bablake">
                                     <option value="Binley and Willenhall">
@@ -135,9 +135,9 @@
                             <!--
                             <td id="td"><select name='status' list="status" placeholder="incomplete" readonly> Incomplete </td>
                             -->
-                            <td id="td"><input type='text' name = 'status' placeholder='incomplete' value='incomplete' readonly></td>
-                            <td id="td"><input name='votes' type='text' placeholder=0 readonly></td>
-                            <td><input type="submit" value="Submit" name = "submitIssueButton"></td>
+                            <td id="Statustd"><input type='text' name = 'status' placeholder='incomplete' value='incomplete' readonly></td>
+                            <td id="Votestd"><input name='votes' type='text' placeholder=0 readonly></td>
+                            <td id = "Submittd"><input type="submit" value="Submit" name = "submitIssueButton"></td>
                         </form>
                     </table>
                 {{else}}

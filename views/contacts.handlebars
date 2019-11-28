@@ -14,16 +14,16 @@
 				<tr> 
 					<td id="logo"> Local Community</td>
 					<td id ="break">|</td>
-					<td id="button"><a href="/"> Home </a></td>
-				 	<td id="button"><a href="/staff"> Staff </a></td>
-					<td id="button"><a href="/contacts"> Contacts </a></td>
-					<td id="button"><a href="/issues"> Issues </a></td>
-                    {{#if user}}
-                        <a id="lr" href="/logout">Log out |</a>
-                    {{else}}   
-					    <a id="lr" href="/register">| Register</a> 
-					    <a id="lr" href="/login">Login |</a>
-					{{/if}}
+					<td id="HomeButton"><a href="/"> Home </a></td>
+				 	<td id="StaffButton"><a href="/staff"> Staff </a></td>
+					<td id="ContactsButton"><a href="/contacts"> Contacts </a></td>
+					<td id="IssuesButton"><a href="/issues"> Issues </a></td>
+					{{#if user}}
+                        <a id="Logoutlr" href="/logout">Log out |</a>
+					{{else}}
+                    	<a id="Registerlr" href="/register">| Register</a> 
+					    <a id="Loginlr" href="/login">Login |</a>
+                    {{/if}}
 				</tr>
 			</table>
 		</nav>	

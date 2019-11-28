@@ -13,22 +13,22 @@
 			<table>
 				<tr> 
 					<td id="logo"> Local Community</td>
-                    <td id ="break">|</td>
-					<td id="button"><a href="/"> Home </a></td>
-				 	<td id="button"><a href="/staff"> Staff </a></td>
-					<td id="button"><a href="/contacts"> Contacts </a></td>
-					<td id="button"><a href="/issues"> Issues </a></td>
-                    {{#if user}}
-                        <a id="lr" href="/logout">Log out |</a>
-                    {{else}}   
-                    	<a id="lr" href="/register">| Register</a> 
-					    <a id="lr" href="/login">Login |</a>
+					<td id ="break">|</td>
+					<td id="HomeButton"><a href="/"> Home </a></td>
+				 	<td id="StaffButton"><a href="/staff"> Staff </a></td>
+					<td id="ContactsButton"><a href="/contacts"> Contacts </a></td>
+					<td id="IssuesButton"><a href="/issues"> Issues </a></td>
+					{{#if user}}
+                        <a id="Logoutlr" href="/logout">Log out |</a>
+					{{else}}
+                    	<a id="Registerlr" href="/register">| Register</a> 
+					    <a id="Loginlr" href="/login">Login |</a>
                     {{/if}}
 				</tr>
 			</table>
 		</nav>	
 
-        <h1> Issue Details: {{this.issueType}} </h1>
+        <h1> Issue Details:</h1>
 
         <!-- 
             The colums of the database are issueType, issueDesc,  raisedBy, dateSet, dateCompleted, location, status and votes
@@ -45,17 +45,17 @@
         </section>
             <table id = "table" width="100%">
                 <tr>
-                    <th id = "th">ID</th>
-                    <th id = "th">Issue</th>
-                    <th id = "th">Issue Description</th>
-                    <th id = "th">Raised by</th>
-                    <th id = "th">Date Set</th>
-                    <th id = "th">Date Completed</th>
-                    <th id = "th">Days since raised or completion</th>
-                    <th id = "th">Location</th>
-                    <th id = "th">Status</th>
-                    <th id = "th">Votes</th>
-                    <th id = "th">Priority</th>
+                    <th id = "IDth">ID</th>
+                    <th id = "Issueth">Issue</th>
+                    <th id = "Descth">Issue Description</th>
+                    <th id = "Raisedth">Raised by</th>
+                    <th id = "Dateth">Date Set</th>
+                    <th id = "Completedth">Date Completed</th>
+                    <th id = "Sinceth">Days since raised or completion</th>
+                    <th id = "Locationth">Location</th>
+                    <th id = "Statusth">Status</th>
+                    <th id = "Votesth">Votes</th>
+                    <th id = "Priorityth">Priority</th>
                 </tr>
 
                 

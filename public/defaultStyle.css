@@ -27,13 +27,13 @@ body {
     width: 170px;
     text-align: center;
 }
-#lr {
+#Logoutlr, #Registerlr, #Loginlr {
     float: right;
     padding-top: 12px;
     padding-right: 5px;
     font-weight: bold;
 }
-#button {
+#HomeButton, #StaffButton, #ContactsButton, #IssuesButton {
     height: 30px;
     width: 70px;
 
