@@ -6,10 +6,9 @@ body {
 }
 #navigation {
    /* background: linear-gradient(135deg ,yellow,purple, green,blue,yellow);*/
-    background: linear-gradient(135deg ,yellow,purple, green,blue,yellow);
+    background: linear-gradient(135deg ,yellow,darkorchid, seagreen,royalblue,yellow);
     background-size: 700% 700%;
     animation: AnimationName 20s ease infinite;
-
     margin: -9px;
     margin-top: -9px;
 }
