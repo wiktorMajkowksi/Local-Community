@@ -60,7 +60,7 @@
                         <dt>
                             <dd>Filter</dd>
                             <dd>
-                                <input placeholder="Issue" name ='issueTypeFilter' list="issueType"></td> 
+ <!--                               <input placeholder="Issue" name ='issueTypeFilter' list="issueType"></td> 
                                 <datalist id="issueType">
                                     <option value = "Vandalism">
                                     <option value = "Noise pollution">
@@ -69,9 +69,9 @@
                                     <option value = "Potholes">
                                     <option value = "Other">
                                 </datalist>
-                            </dd>
+                            </dd> -->
                             <!--<dd>by Location</dd>-->
-                            <dd>    <input placeholder="Location" type="text">  </dd>
+ <!--                           <dd>    <input placeholder="Location" type="text">  </dd> -->
                             <!--<dd>by Status</dd>-->
                             <dd>    <input placeholder="Status" name = 'issueStatus' list = "status"> </td>   
                                     <datalist id = "status">
@@ -83,6 +83,7 @@
                             </dd>
                             <dd>
                                 <form action="/issues" method="post">
+                                <form action="/issue_status" method="post">
                                     <p><input type="submit" name="Filter" value="Filter"></p>
                                 </form>
                             </dd>
