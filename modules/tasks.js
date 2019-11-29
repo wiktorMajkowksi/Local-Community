@@ -7,7 +7,9 @@ module.exports = class Tasks {
 		return (async() => {
 			this.db = await sqlite.open(dbName)
 			// we need this table to store the user accounts
-			const sql = 'CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, issueType VARCHAR, issueDesc VARCHAR, raisedBy VARCHAR, dateSet DATE, dateCompleted DATE, location VARCHAR, status VARCHAR, votes INTEGER, priority VARCHAR);'
+			const sql = `CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+						 issueType VARCHAR, issueDesc VARCHAR, raisedBy VARCHAR, dateSet DATE, dateCompleted DATE, 
+						 location VARCHAR, status VARCHAR, votes INTEGER, priority VARCHAR);`
 			await this.db.run(sql)
 			return this
 		})()
@@ -25,7 +27,7 @@ module.exports = class Tasks {
 		try{
 			const data = this.db.get(`SELECT * FROM tasks WHERE status = ${status};`)
 			return data
-		}  catch(err){
+		} catch(err) {
 			throw err
 		}
 	}
@@ -72,9 +74,9 @@ module.exports = class Tasks {
 				}
 			}
 			const sql = await `INSERT INTO tasks(
-				issueType, issueDesc, raisedBy, dateSet, dateCompleted, location, status, votes, priority)
-				VALUES ("${issue.issueType}", "${issue.issueDesc}", "${issue.raisedBy}", 
-				"${issue.dateSet}", "${issue.dateCompleted}", "${issue.location}", "${issue.status}", ${issue.votes}, "${issue.priority}");`
+				issueType, issueDesc, raisedBy, dateSet, dateCompleted, location, status, votes, priority) VALUES 
+				("${issue.issueType}", "${issue.issueDesc}", "${issue.raisedBy}","${issue.dateSet}", 
+				"${issue.dateCompleted}", "${issue.location}","${issue.status}", ${issue.votes}, "${issue.priority}");`
 			await this.db.run(sql)
        		return
 		} catch(err) {
@@ -102,14 +104,13 @@ module.exports = class Tasks {
 		} else {
 			dateResolved = issue.dateCompleted
 		}
-
-
 		dateSet = Date.parse(dateSet)
 		dateResolved = Date.parse(dateResolved)
 		let difference = dateResolved - dateSet
 
 		//number of milliseconds in a day = 86400000
-		difference = Math.floor(difference / 86400000)
+		const msInDay = 86400000
+		difference = Math.floor(difference / msInDay)
 
 		return difference
 	}

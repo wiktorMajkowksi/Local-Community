@@ -27,7 +27,7 @@ body {
     width: 170px;
     text-align: center;
 }
-#Logoutlr, #Registerlr, #Loginlr {
+#Logoutlr, #Registerlr, #Loginlr, #ProfileInfo{
     float: right;
     padding-top: 12px;
     padding-right: 5px;
