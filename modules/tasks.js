@@ -26,11 +26,10 @@ module.exports = class Tasks {
 	async filterstatus(status) {
 		try{
 			if (status !== undefined){
-				const data = await this.db.all(`SELECT * FROM tasks WHERE status = "${status}";`)
+				const data = await this.db.all(`SELECT *, COUNT(*) FROM tasks WHERE status = "${status}";`)
 					return data	
 			}	
 			else throw new Error('status not supplied')
-
 		}  catch(err){
 			throw err
 		}
@@ -252,7 +251,7 @@ module.exports = class Tasks {
 		return mockIssue
 	}
 	//just for testing
-	async mockIssue2(id = 3) {
+	async mockIssue2(id = 2) {
 		const mockIssue = {
 			id: id,
 			issueType: 'Litter',
@@ -268,7 +267,7 @@ module.exports = class Tasks {
 		return mockIssue
 	}
 	//just for testing
-	async mockIssue3(id = 4) {
+	async mockIssue3(id = 3) {
 		const mockIssue = {
 			id: id,
 			issueType: 'Litter',
@@ -284,7 +283,7 @@ module.exports = class Tasks {
 		return mockIssue
 	}
 	//just for testing
-	async mockIssue4(id = 5) {
+	async mockIssue4(id = 4) {
 		const mockIssue = {
 			id: id,
 			issueType: 'Potholes',

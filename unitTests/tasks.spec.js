@@ -378,7 +378,7 @@ describe('getDateDifference()', () => {
 
 })
 
-describe('filterIssueType(issueType)', () => {
+describe('filtering functions', () => {
 	test('returns no. of records for the issue type supplied', async done => {
 		//ARRNAGE
 		expect.assertions(2)
@@ -393,6 +393,31 @@ describe('filterIssueType(issueType)', () => {
 		//ASSERT
 		expect(queryOne[0]["COUNT(*)"]).toEqual(1)
 		expect(queryTwo[0]["COUNT(*)"]).toEqual(2)
+		
+		done()
+	})
+
+	test('returns only records for the status supplied', async done => {
+		//ARRANGE
+		expect.assertions(2)
+		const tasks = await new Tasks(test.db)
+
+		//ACT
+		await tasks.addIssue(await tasks.mockIssue(), cookies)
+		await tasks.addIssue(await tasks.mockIssue2(), cookies)	
+		await tasks.addIssue(await tasks.mockIssue3(), cookies)
+		await tasks.addIssue(await tasks.mockIssue4(), cookies)		
+		await tasks.changeStatus(1, "Complete")
+		await tasks.changeStatus(2, "Complete")
+		await tasks.changeStatus(3, "Complete")
+		await tasks.changeStatus(4, "Incomplete")
+		
+		const queryOne = await tasks.filterstatus('Complete')
+		const queryTwo = await tasks.filterstatus('Incomplete')
+		
+		//ASSERT
+		expect(queryOne[0]["COUNT(*)"]).toEqual(3)
+		expect(queryTwo[0]["COUNT(*)"]).toEqual(1)
 		
 		done()
 	})
