@@ -305,16 +305,50 @@ router.post('/issues', async ctx => {
 		} else if (body.details === 'Details') {
 			await ctx.redirect(`/issue_details/${body.id}`)
 		} else if (body.filter === 'Filter') {
-			await tasks.filter(body)
-			await ctx.redirect('/issues')
+			await ctx.redirect(`/issue_status/${body.issueStatus}`)
 		} else { //They are submitting an issue and not upvoting
 			await tasks.addIssue(body, ctx.cookies)
+			await console.log(body)
 			await ctx.redirect('/issues')
 		}
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}
 })
+
+router.get('/issue_status/:status', async ctx => {
+	try {
+		const filterrequest = await ctx.request.body.Filter === 'Filter'
+		const tasks = await new Tasks(dbName)
+		const data = await tasks.filterstatus(filterrequest)
+
+		const userName = ctx.cookies.get('user')
+		await ctx.render('issuestatusfilter', {tasks: data, query: '', user: userName,})
+
+	}
+	catch(err) {
+		await ctx.render('error', {message: err.message})
+	}
+})
+
+router.post('issue_status/:status', async ctx => {
+try{
+	const tasks = await new Tasks(dbName)
+	const body = await ctx.request.body
+
+	if (ctx.request.body.details === 'Details') {
+		await console.log(body)
+		await ctx.redirect(`/issue_details/${body.id}`)
+	} else if (ctx.request.body.Filter === 'Filter') {
+		await console.log(body)
+		await ctx.redirect(`/issue_status/${body.issueStatus}`)}
+
+}
+catch(err) {
+	await ctx.render('error', {message: err.message})
+}
+})
+
 
 /**
  * The Issue_details page
