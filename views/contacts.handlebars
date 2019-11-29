@@ -19,10 +19,11 @@
 					<td id="ContactsButton"><a href="/contacts"> Contacts </a></td>
 					<td id="IssuesButton"><a href="/issues"> Issues </a></td>
 					{{#if user}}
-                        <a id="Logoutlr" href="/logout">Log out |</a>
+                  <a id="ProfileButton" href="/profileInfo">Profile</a>
+                  <a id="Logoutlr" href="/logout">Log out |</a>
 					{{else}}
-                    	<a id="Registerlr" href="/register">| Register</a> 
-					    <a id="Loginlr" href="/login">Login |</a>
+                   <a id="Registerlr" href="/register">| Register</a> 
+					         <a id="Loginlr" href="/login">Login |</a>
                     {{/if}}
 				</tr>
 			</table>

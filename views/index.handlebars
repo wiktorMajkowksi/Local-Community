@@ -18,11 +18,13 @@
 				 	<td id="StaffButton"><a href="/staff"> Staff </a></td>
 					<td id="ContactsButton"><a href="/contacts"> Contacts </a></td>
 					<td id="IssuesButton"><a href="/issues"> Issues </a></td>
-					{{#if user}}
-                        <a id="Logoutlr" href="/logout">Log out |</a>
+					{{#if user}}               
+                  <a id="ProfileInfo" href="/profileInfo">Profile</a>
+                  <a id="Logoutlr" href="/logout">Log out |</a>
+
 					{{else}}
-                    	<a id="Registerlr" href="/register">| Register</a> 
-					    <a id="Loginlr" href="/login">Login |</a>
+                  <a id="Registerlr" href="/register">| Register</a> 
+					        <a id="Loginlr" href="/login">Login |</a>
                     {{/if}}
 				</tr>
 			</table>
@@ -32,5 +34,6 @@
 			<h1 style = "color: #3B96FF">Home</h1><h2 style = "color: #FFA74B"> Community</h2>
 			<p>Our purpose is to help and raise issues within Coventry by allowing the local council to engage with residents of this community.
 			<br>If you have any issues, you can let us know by submiting them in the <a style ="color:#FFA74B" href="/issues">issues</a> page.</p>
+
 		</article>
 </html>

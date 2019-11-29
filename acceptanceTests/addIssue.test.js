@@ -50,9 +50,11 @@ describe('Create an issue', () => {
 		await page.type('input[name=pass]', 'password')
 		await page.click('input[type=submit]')
 		await page.goto('http://localhost:8080/issues', { timeout: 30000, waitUntil: 'load' })
-		await page.type('input[name=issueType]', 'genericIssueType')
+
+		await page.select('select#issueType', 'Vandalism')
 		await page.type('input[name=issueDesc]', 'genericIssueDesc')
 		await page.click('input[name=submitIssueButton]')
+
 
 		//ASSERT
 		await page.waitForSelector('h1')
