@@ -304,9 +304,9 @@ router.post('/issues', async ctx => {
 
 router.get('/issue_status/:status', async ctx => {
 	try {
-		const filterrequest = await ctx.request.body.Filter === 'Filter'
-		const tasks = await new Tasks(dbName)
-		const data = await tasks.filterstatus(filterrequest)
+		const filterrequest = ctx.request.body.Filter === 'Filter'
+		const db = await new Tasks(dbName)
+		const data = await db.filterstatus(ctx.params.status)
 
 		const userName = ctx.cookies.get('user')
 		await ctx.render('issuestatusfilter', {tasks: data, query: '', user: userName,})
