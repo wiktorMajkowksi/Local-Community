@@ -2,26 +2,27 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>Issues_filterd_status</title>
+		<title>Issues</title>
 		<meta name="author" content="Fred Cook, Wiktor Majkowski">
         <link href="../defaultStyle.css" type="text/css" rel="stylesheet" />
         <link href="../issues.css" type="text/css" rel="stylesheet" />
-        <link href="../issue_details.css" type="text/css" rel="stylesheet" />
-	    </head>
-		<body>
+	</head>
+	<body>
         <nav id = "navigation">
-			<table>
+			<table id = "menu">
 				<tr> 
-					<td id="logo"> L</td>
-					<td id="button"><a href="/"> Home </a></td>
-				 	<td id="button"><a href="/staff"> Staff </a></td>
-					<td id="button"><a href="/contacts"> Contacts </a></td>
-					<td id="button"><a href="/issues"> Issues </a></td>
-                    {{#if user}}
-                        <a id="lr" href="/logout">Log out |</a>
-                    {{else}}   
-                    	<a id="lr" href="/register">| Register</a> 
-					    <a id="lr" href="/login">Login |</a>
+					<td id="logo"> Local Community</td>
+					<td id ="break">|</td>
+					<td id="HomeButton"><a href="/"> Home </a></td>
+				 	<td id="StaffButton"><a href="/staff"> Staff </a></td>
+					<td id="ContactsButton"><a href="/contacts"> Contacts </a></td>
+					<td id="IssuesButton"><a href="/issues"> Issues </a></td>
+					{{#if user}}
+                        <a id="ProfileInfo" href="/profileInfo">Profile</a>
+                        <a id="Logoutlr" href="/logout">Log out |</a>
+					{{else}}
+                        <a id="Registerlr" href="/register">| Register</a> 
+					    <a id="Loginlr" href="/login">Login |</a>
                     {{/if}}
 				</tr>
 			</table>
@@ -57,8 +58,8 @@
                     <section id="filter">
                         <dt>
                             <dd>Filter</dd>
-                        <dd>
-                            <input placeholder="Issue" type="hidden" name ='issueTypeFilter' list="issueType"></td> 
+                            <dd>
+                                <input placeholder="Issue" type="hidden" name ='issueTypeFilter' list="issueType"></td> 
                                 <select id="issueType">
                                     <option value="Vandalism"> Vandalism </option>
                                     <option value="Noise Pollution">Noise Pollution</option>
@@ -71,16 +72,18 @@
                             <!--<dd>by Location</dd>-->
  <!--                           <dd>    <input placeholder="Location" type="text">  </dd> -->
                             <!--<dd>by Status</dd>-->
-                            <dd>    <input placeholder="Status" name = 'issueStatus' list = "status"> </td>   
-                                    <datalist id = "status">
-                                        <option value = "Incomplete">
-                                        <option value = "In Progress">
-                                        <option value = "complete">
-                                    </datalist>
+                                    <form action="/issues" method="post">
+                                    <form action="/issue_status" method="post">
+                            <dd>    <input placeholder="Status" type="hidden" name = 'issueStatus' list = "status"> </td>   
+                                    <select id = "status">
+                                        <option value = "Incomplete"> Incomplete </option>
+                                        <option value = "In Progress"> In Progress </option>
+                                        <option value = "complete"> Complete </option>
+                                    </select>
                             
                             </dd>
                             <dd>
-                                <form action="/issues" method="post">
+                                
                                     <p><input type="submit" name="Filter" value="Filter"></p>
                                 </form>
                             </dd>
