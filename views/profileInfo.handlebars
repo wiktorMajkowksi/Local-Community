@@ -1,0 +1,52 @@
+
+<!doctype html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Home Page</title>
+		<meta name="author" content="Adam Gill">
+		<link href="defaultStyle.css" type="text/css" rel="stylesheet" />
+		<link href="issues.css" type="text/css" rel="stylesheet" />
+	</head>
+	<body>
+		<nav id = "navigation">
+			<table>
+				<tr> 
+					<td id="logo"> L</td>
+					<td id="button"><a href="/"> Home </a></td>
+				 	<td id="button"><a href="/staff"> Staff </a></td>
+					<td id="button"><a href="/contacts"> Contacts </a></td>
+					<td id="button"><a href="/issues"> Issues </a></td>
+					{{#if user}}
+                        <a id="lr" href="/logout">Log out |</a>
+					{{else}}
+                    	<a id="lr" href="/register">| Register</a> 
+					    <a id="lr" href="/login">Login |</a>
+                    {{/if}}
+				</tr>
+			</table>
+		</nav>	
+		<br>
+		<article>
+			<h1>Profile Page</h1>
+
+			<nav>
+				<table id="table" width="80%">
+					<tr id="lol">
+						<td id="th"> Username </td>
+						<td id="th"> Location </td>
+						<td id="th"> Address</td>
+						<td id="th"> Postcode</td>
+						<td id="th"> Profile Picture</td>
+					</tr>
+					<tr>
+						<td id="td">{{this.user}} </td>
+						<td id="td">{{this.data.location}} </td>
+						<td id="td">{{this.data.address}} </td>
+						<td id="td">{{this.data.postcode}} </td>
+					</tr>
+				</table>
+			</nav>    
+		</article>
+</html>

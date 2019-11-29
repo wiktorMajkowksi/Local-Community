@@ -52,7 +52,7 @@ const transporter = nodemailer.createTransport({
 		pass: 'koxmzvwnzhmhnope' // replace by your-password
 	}
 })
-//Configuring nodeMailer messages  
+//Configuring nodeMailer messages
 const mailOptions = {
 	from: 'fredcook789@gmail.com',
 	to: 'fredcook789@gmail.com',
@@ -63,8 +63,7 @@ const mailOptions = {
 let user
 
 /**
- * The home page.
- *
+ * The home page. *
  * @name Home Page
  * @route {GET} /
  * @authentication None
@@ -75,7 +74,7 @@ router.get('/', async ctx => {
 		if (ctx.cookies.get('user') !== undefined) { //they are logged in
 			loggedIn = true
 		} else { //they are not logged in
-			loggedIn = false
+			loggedIn = undefined
 		}
 		await ctx.render('index', {user: loggedIn})
 	} catch(err) {
@@ -83,20 +82,32 @@ router.get('/', async ctx => {
 	}
 })
 /**
- * The user registration page.
- *
+ *  Handling if the User wants to look at the profile page
+ * @name ProfileInfo page
+ * @route {GET} /profile_info
+ */
+router.get('/profileInfo', async ctx => {
+	try {
+		const currentUser = ctx.cookies.get('user')
+		const user = await new User(dbName)
+		const data = await user.getInfo(currentUser)
+		await ctx.render('profileInfo', {user: currentUser, data: data})
+	} catch(err) {
+		await ctx.render('error', {message: err.message})
+	}
+})
+/**
+ * The user registration page. *
  * @name Register Page
  * @route {GET} /register
  */
 router.get('/register', async ctx => {
 	const tasks = await new Tasks()
 	const postcodes = await tasks.getPostcodes()
-	
 	await ctx.render('register', {postcode: postcodes})
 })
 /**
- * The script to process new user registrations.
- *
+ * The script to process new user registrations. *
  * @name Register Script
  * @route {POST} /register
  */
@@ -116,7 +127,7 @@ router.post('/register', koaBody, async ctx => {
 			}
 		} //successful staff registration
 		await user.register(body.user, body.pass, body.address, body.postcode, userLevel)
-		ctx.redirect(`/?msg=new user "${body.name}" added`)
+		ctx.redirect(`/?msg=new user "${body.user}" added`)
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}
@@ -131,8 +142,6 @@ router.get('/login', async ctx => {
 	const data = {}
 	if(ctx.query.msg) data.msg = ctx.query.msg
 	if(ctx.query.user) data.user = ctx.query.user
-
-	
 	await ctx.render('login', data)
 })
 
@@ -166,7 +175,6 @@ router.post('/login', async ctx => {
  * @route {GET} /logout
  * Removes values from the ctx.cookies.user and ctx.cookies.accessLevel
  */
-
 router.get('/logout', async ctx => {
 	ctx.session.authorised = null
 	//destorys cookies set
@@ -176,6 +184,12 @@ router.get('/logout', async ctx => {
 
 })
 
+/**
+ * The Contacts page
+ * @name Contacts page
+ * @route {GET} /contacts
+ * Displays information of the on team working on the project
+ */
 router.get('/contacts', async ctx => {
 	const userName = ctx.cookies.get('user')
 	await ctx.render('contacts', {user: userName})
@@ -186,6 +200,7 @@ router.get('/contacts', async ctx => {
  * @name Staff page
  * @route {GET} /staff
  * @authentication requires cookie based authentication
+ * Displays a different view of the database with extra features for staff members to edit what is in the database
  */
 
 router.get('/staff', async ctx => {
@@ -225,7 +240,7 @@ router.post('/staff', async ctx => {
 				transporter.sendMail(mailOptions, (error, info) => {
 					if (error)
 						return console.log(error)
-					console.log(`Email sent: ${  info.response}`)
+					console.log(`Email sent: ${info.response}`)
 				})
 			}
 			await tasks.changeStatus(body.id, body.statusChange)
@@ -254,7 +269,6 @@ router.get('/issues', async ctx => {
 		//the db is opened here and the table is created if not present
 		const tasks = await new Tasks(dbName)
 		const data = await tasks.getAll()
-
 		const currentLocation = await request('http://ip-api.io/api/json?api_key=801bc4b6-a3e4-482b-b998-3a6915db11bb')
   			.then(response => JSON.parse(response))
 			.catch(err => console.log(err))
@@ -279,18 +293,16 @@ router.post('/issues', async ctx => {
 	try {
 		const tasks = await new Tasks(dbName)
 		const body = await ctx.request.body
-		if (ctx.request.body.upvote === 'Upvote') {
+		if (body.upvote === 'Upvote') {
 			//if they havent upvoted the problem within the last 5 minutes, the below won't throw an error
 			await tasks.upvote(body.id, ctx.cookies)
-			//if the above throws an error execution stops
-     		//sets a cookie thats 'key' is the id of the issue they upvoted, meaning they cant upvote the same issue within 5 minutes
-			ctx.cookies.set(ctx.request.body.id, 'upvoted', {httpOnly: false, maxAge: 300000})
+			//if the above throws an error execution stops, sets a cookie thats 'key'
+			//is the id of the issue they upvoted, meaning they cant upvote the same issue within 5 minutes
+			ctx.cookies.set(body.id, 'upvoted', {httpOnly: false, maxAge: 300000})
 			ctx.redirect('/issues')
-		} else if (ctx.request.body.details === 'Details') {
-			await console.log(body)
+		} else if (body.details === 'Details') {
 			await ctx.redirect(`/issue_details/${body.id}`)
-		} else if (ctx.request.body.Filter === 'Filter') {
-			await console.log(body)
+		} else if (body.filter === 'Filter') {
 			await ctx.redirect(`/issue_status/${body.issueStatus}`)
 		} else { //They are submitting an issue and not upvoting
 			await tasks.addIssue(body, ctx.cookies)
@@ -310,31 +322,26 @@ router.get('/issue_status/:status', async ctx => {
 
 		const userName = ctx.cookies.get('user')
 		await ctx.render('issuestatusfilter', {tasks: data, query: '', user: userName,})
-
-	}
-	catch(err) {
+	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}
 })
 
 router.post('issue_status/:status', async ctx => {
-try{
-	const tasks = await new Tasks(dbName)
-	const body = await ctx.request.body
-
-	if (ctx.request.body.details === 'Details') {
-		await console.log(body)
-		await ctx.redirect(`/issue_details/${body.id}`)
-	} else if (ctx.request.body.Filter === 'Filter') {
-		await console.log(body)
-		await ctx.redirect(`/issue_status/${body.issueStatus}`)}
-
-}
-catch(err) {
-	await ctx.render('error', {message: err.message})
-}
+	try{
+		//const tasks = await new Tasks(dbName)
+		const body = await ctx.request.body
+		if (ctx.request.body.details === 'Details') {
+			//await console.log(body)
+			await ctx.redirect(`/issue_details/${body.id}`)
+		} else if (ctx.request.body.Filter === 'Filter') {
+			//await console.log(body)
+			await ctx.redirect(`/issue_status/${body.issueStatus}`)
+		}
+	} catch(err) {
+		await ctx.render('error', {message: err.message})
+	}
 })
-
 
 /**
  * The Issue_details page
@@ -348,9 +355,9 @@ router.get('/issue_details/:num', async ctx => {
 		const issue = await db.getIssue(ctx.params.num)
 		const encoded = await db.encodeLocation(issue.location)
 		const dateDifference = await db.getDateDifference(ctx.params.num)
-		
 		const userName = ctx.cookies.get('user')
-		await ctx.render('issue_details', {issue: issue, user: userName, encodedLocation: encoded, dateDifference: dateDifference})
+		const obj = {issue: issue, user: userName, encodedLocation: encoded, dateDifference: dateDifference}
+		await ctx.render('issue_details', obj)
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}

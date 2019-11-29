@@ -7,19 +7,21 @@ module.exports = class Tasks {
 		return (async() => {
 			this.db = await sqlite.open(dbName)
 			// we need this table to store the user accounts
-			const sql = 'CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, issueType VARCHAR, issueDesc VARCHAR, raisedBy VARCHAR, dateSet DATE, dateCompleted DATE, location VARCHAR, status VARCHAR, votes INTEGER, priority VARCHAR);'
+			const sql = `CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+						 issueType VARCHAR, issueDesc VARCHAR, raisedBy VARCHAR, dateSet DATE, dateCompleted DATE, 
+						 location VARCHAR, status VARCHAR, votes INTEGER, priority VARCHAR);`
 			await this.db.run(sql)
 			return this
 		})()
 	}
-//	async filter(issueType) {
-//		try{
-//			const data = this.db.get(`SELECT * FROM tasks WHERE issueType = ${issueType};`)
-//			return data
-//		} catch(err) {
-//			throw err
-//		}
-//	}
+	async filterIssueType(issueType) {
+		try{
+			const data = await this.db.all(`SELECT *, COUNT(*) FROM tasks WHERE issueType == "${issueType}";`)
+			return data
+		} catch(err) {
+			throw err
+		}
+	}
 
 	async filterstatus(status) {
 		try{
@@ -76,9 +78,9 @@ module.exports = class Tasks {
 				}
 			}
 			const sql = await `INSERT INTO tasks(
-				issueType, issueDesc, raisedBy, dateSet, dateCompleted, location, status, votes, priority)
-				VALUES ("${issue.issueType}", "${issue.issueDesc}", "${issue.raisedBy}", 
-				"${issue.dateSet}", "${issue.dateCompleted}", "${issue.location}", "${issue.status}", ${issue.votes}, "${issue.priority}");`
+				issueType, issueDesc, raisedBy, dateSet, dateCompleted, location, status, votes, priority) VALUES 
+				("${issue.issueType}", "${issue.issueDesc}", "${issue.raisedBy}","${issue.dateSet}", 
+				"${issue.dateCompleted}", "${issue.location}","${issue.status}", ${issue.votes}, "${issue.priority}");`
 			await this.db.run(sql)
        		return
 		} catch(err) {
@@ -106,14 +108,13 @@ module.exports = class Tasks {
 		} else {
 			dateResolved = issue.dateCompleted
 		}
-
-
 		dateSet = Date.parse(dateSet)
 		dateResolved = Date.parse(dateResolved)
 		let difference = dateResolved - dateSet
 
 		//number of milliseconds in a day = 86400000
-		difference = Math.floor(difference / 86400000)
+		const msInDay = 86400000
+		difference = Math.floor(difference / msInDay)
 
 		return difference
 	}
@@ -241,6 +242,54 @@ module.exports = class Tasks {
 			issueType: 'issueType',
 			issueDesc: 'description',
 			raisedBy: 'fred',
+			dateSet: await this.getDate(),
+			dateCompleted: 'N/A',
+			location: 'location',
+			status: 'Incomplete',
+			votes: 0,
+			priority: 'Low'
+		  }
+		return mockIssue
+	}
+	//just for testing
+	async mockIssue2(id = 3) {
+		const mockIssue = {
+			id: id,
+			issueType: 'Litter',
+			issueDesc: 'description',
+			raisedBy: 'adam',
+			dateSet: await this.getDate(),
+			dateCompleted: 'N/A',
+			location: 'location',
+			status: 'Incomplete',
+			votes: 0,
+			priority: 'Low'
+		  }
+		return mockIssue
+	}
+	//just for testing
+	async mockIssue3(id = 4) {
+		const mockIssue = {
+			id: id,
+			issueType: 'Litter',
+			issueDesc: 'description',
+			raisedBy: 'adam',
+			dateSet: await this.getDate(),
+			dateCompleted: 'N/A',
+			location: 'location',
+			status: 'Incomplete',
+			votes: 0,
+			priority: 'Low'
+		  }
+		return mockIssue
+	}
+	//just for testing
+	async mockIssue4(id = 5) {
+		const mockIssue = {
+			id: id,
+			issueType: 'Potholes',
+			issueDesc: 'description',
+			raisedBy: 'adam',
 			dateSet: await this.getDate(),
 			dateCompleted: 'N/A',
 			location: 'location',

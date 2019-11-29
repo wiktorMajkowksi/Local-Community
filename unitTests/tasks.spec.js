@@ -145,7 +145,6 @@ describe('mockIssue()', () => {
 	})
 })
 
-
 describe('getAll()', () => {
 	test('getAll when empty', async done => {
 		//ARRANGE
@@ -379,3 +378,22 @@ describe('getDateDifference()', () => {
 
 })
 
+describe('filterIssueType(issueType)', () => {
+	test('returns no. of records for the issue type supplied', async done => {
+		//ARRNAGE
+		expect.assertions(2)
+		const tasks = await new Tasks(test.db)
+		//ACT
+		await tasks.addIssue(await tasks.mockIssue(1), cookies)
+		await tasks.addIssue(await tasks.mockIssue2(2), cookies)
+		await tasks.addIssue(await tasks.mockIssue3(3), cookies)
+		await tasks.addIssue(await tasks.mockIssue4(4), cookies)
+		const queryOne = await tasks.filterIssueType("Potholes")
+		const queryTwo = await tasks.filterIssueType("Litter")
+		//ASSERT
+		expect(queryOne[0]["COUNT(*)"]).toEqual(1)
+		expect(queryTwo[0]["COUNT(*)"]).toEqual(2)
+		
+		done()
+	})
+})

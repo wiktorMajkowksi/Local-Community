@@ -11,7 +11,6 @@ const delayMS = 5
 
 let browser
 let page
-let har
 
 // threshold is the difference in pixels before the snapshots dont match
 const toMatchImageSnapshot = configureToMatchImageSnapshot({
@@ -23,7 +22,7 @@ expect.extend({ toMatchImageSnapshot })
 beforeAll( async() => {
 	browser = await puppeteer.launch({ headless: true, slowMo: delayMS, args: [`--window-size=${width},${height}`] })
 	page = await browser.newPage()
-	har = new PuppeteerHar(page)
+	const har = new PuppeteerHar(page)
 	await page.setViewport({ width, height })
 	await shell.exec('acceptanceTests/scripts/beforeAll.sh')
 })
@@ -50,9 +49,11 @@ describe('Create an issue', () => {
 		await page.type('input[name=pass]', 'password')
 		await page.click('input[type=submit]')
 		await page.goto('http://localhost:8080/issues', { timeout: 30000, waitUntil: 'load' })
-		await page.type('input[name=issueType]', 'genericIssueType')
+
+		await page.select('select#issueType', 'Vandalism')
 		await page.type('input[name=issueDesc]', 'genericIssueDesc')
 		await page.click('input[name=submitIssueButton]')
+
 
 		//ASSERT
 		await page.waitForSelector('h1')

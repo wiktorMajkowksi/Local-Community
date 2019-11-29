@@ -19,9 +19,10 @@
 					<td id="ContactsButton"><a href="/contacts"> Contacts </a></td>
 					<td id="IssuesButton"><a href="/issues"> Issues </a></td>
 					{{#if user}}
+                        <a id="ProfileInfo" href="/profileInfo">Profile</a>
                         <a id="Logoutlr" href="/logout">Log out |</a>
 					{{else}}
-                    	<a id="Registerlr" href="/register">| Register</a> 
+                        <a id="Registerlr" href="/register">| Register</a> 
 					    <a id="Loginlr" href="/login">Login |</a>
                     {{/if}}
 				</tr>
@@ -41,7 +42,7 @@
                     </tr>
 
                     {{#each tasks}}
-                        <tr id="lol">
+                        <tr id="row">
                             <form action="/issues" method="post">
                             <td id = "IDtd"> <input name ="id" type="hidden" value = {{this.id}}> <a href="/issue_details/{{this.id}}">{{this.id}}</a> </td>
                             <!--<input name ="id" value = {{this.id}} readonly type = "hidden">-->
@@ -50,9 +51,8 @@
                             <td id = "Locationtd">{{this.location}}</td>
                             <td id = "Statustd">{{this.status}}</td>
                             <td id = "Prioritytd">{{this.priority}}</td>
-                    <!--        <td><input name ="id" type="hidden" value = {{this.id}}></td>  -->
-                            <td id = "Detailstd"><input type = "submit" value = "Details" name = "details"></td>
-                            <!--<td><input type = "submit" value = "Details" name = "details"></td>-->
+                       <!-- <td><input name ="id" type="hidden" value = {{this.id}}></td> -->
+                            <td id = "Detailstd" style="width:60px"><input style="float:left" type="submit" value="Details" name="details"></td>
                             </form>
                         </tr>
                     {{/each}}
@@ -60,16 +60,17 @@
                         <dt>
                             <dd>Filter</dd>
                             <dd>
- <!--                               <input placeholder="Issue" name ='issueTypeFilter' list="issueType"></td> 
-                                <datalist id="issueType">
-                                    <option value = "Vandalism">
-                                    <option value = "Noise pollution">
-                                    <option value = "Litter">
-                                    <option value = "Speeding">
-                                    <option value = "Potholes">
-                                    <option value = "Other">
-                                </datalist>
-                            </dd> -->
+                                <input placeholder="Issue" type="hidden" name ='issueTypeFilter' list="issueType"></td> 
+                                <select id="issueType">
+                                    <option value="Vandalism"> Vandalism </option>
+                                    <option value="Noise Pollution">Noise Pollution</option>
+                                    <option value="Litter">Litter</option>
+                                    <option value="Speeding">Speeding</option>
+                                    <option value="Potholes">Potholes</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </dd>
+
                             <!--<dd>by Location</dd>-->
  <!--                           <dd>    <input placeholder="Location" type="text">  </dd> -->
                             <!--<dd>by Status</dd>-->
@@ -106,19 +107,18 @@
                         </tr>
                         <form action="/issues" method="post">
                             <td id="IDtd">ID</td>
-                            <td id="Issuetd"><input name ='issueType' list="issueType"></td> 
-                                <datalist id="issueType">
-                                    <option value = "Vandalism">
-                                    <option value = "Noise pollution">
-                                    <option value = "Litter">
-                                    <option value = "Speeding">
-                                    <option value = "Potholes">
-                                    <option value = "Other">
-                                </datalist>
+                                <select id="issueType" name='issueType' list="issueType">
+                                    <option value="Vandalism">Vandalism </option>
+                                    <option value="Noise Pollution">Noise pollution </option>
+                                    <option value="Litter">Litter</option>
+                                    <option value="Speeding">Speeding</option>
+                                    <option value="Potholes">Potholes</option>
+                                    <option value="Other">Other</option>
+                                </select>
                             </td>
-
                             <td id="Desctd"><input name = 'issueDesc' type="text"></td>
                             <td id="Usertd">User: <br><b>{{user}}</b></td>
+
                                 <!--<td id="td"><input type="text" placeholder="{{user}}" readonly></td>-->
                             <td id="Datetd"><input type="date" readonly></td>
                             <td id="Completedtd"><input name = 'dateCompleted' type="date" placeholder="N/A" readonly></td>
