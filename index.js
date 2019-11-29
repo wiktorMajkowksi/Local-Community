@@ -302,7 +302,7 @@ router.post('/issues', async ctx => {
 			ctx.redirect('/issues')
 		} else if (body.details === 'Details') {
 			await ctx.redirect(`/issue_details/${body.id}`)
-		} else if (body.filter === 'Filter') {
+		} else if (body.Filter === 'Filter') {
 			await ctx.redirect(`/issue_status/${body.issueStatus}`)
 		} else { //They are submitting an issue and not upvoting
 			await tasks.addIssue(body, ctx.cookies)
@@ -334,8 +334,7 @@ router.post('issue_status/:status', async ctx => {
 		if (ctx.request.body.details === 'Details') {
 			//await console.log(body)
 			await ctx.redirect(`/issue_details/${body.id}`)
-		} else if (ctx.request.body.Filter === 'Filter') {
-			//await console.log(body)
+		} else if (body.Filter === 'Filter') {
 			await ctx.redirect(`/issue_status/${body.issueStatus}`)
 		}
 	} catch(err) {

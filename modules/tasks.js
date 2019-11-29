@@ -26,7 +26,7 @@ module.exports = class Tasks {
 	async filterstatus(status) {
 		try{
 			if (status !== undefined){
-				const data = this.db.get(`SELECT * FROM tasks WHERE status = ${status};`)
+				const data = await this.db.all(`SELECT * FROM tasks WHERE status = "${status}";`)
 					return data	
 			}	
 			else throw new Error('status not supplied')
