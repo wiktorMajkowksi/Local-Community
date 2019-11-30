@@ -13,16 +13,16 @@
 		<nav id = "navigation">
 			<table>
 				<tr> 
-					<td id="logo"> L</td>
-					<td id="button"><a href="/"> Home </a></td>
-				 	<td id="button"><a href="/staff"> Staff </a></td>
-					<td id="button"><a href="/contacts"> Contacts </a></td>
-					<td id="button"><a href="/issues"> Issues </a></td>
+					<td id="logo"> Local Community </td>
+					<td id="HomeButton"><a href="/"> Home </a></td>
+				 	<td id="StaffButton"><a href="/staff"> Staff </a></td>
+					<td id="ContactsButton"><a href="/contacts"> Contacts </a></td>
+					<td id="IssuesButton"><a href="/issues"> Issues </a></td>
 					{{#if user}}
-                        <a id="lr" href="/logout">Log out |</a>
+                        <a id="Logoutlr" href="/logout">Log out |</a>
 					{{else}}
-                    	<a id="lr" href="/register">| Register</a> 
-					    <a id="lr" href="/login">Login |</a>
+                    	<a id="Registerlr" href="/register">| Register</a> 
+					    <a id="Loginlr" href="/login">Login |</a>
                     {{/if}}
 				</tr>
 			</table>
@@ -34,17 +34,17 @@
 			<nav>
 				<table id="table" width="80%">
 					<tr id="lol">
-						<td id="th"> Username </td>
-						<td id="th"> Location </td>
-						<td id="th"> Address</td>
-						<td id="th"> Postcode</td>
-						<td id="th"> Profile Picture</td>
+						<td id="usernameTh"> Username </td>
+						<td id="locationTh"> Location </td>
+						<td id="addressTh"> Address</td>
+						<td id="postcodeTh"> Postcode</td>
+						<td id="pictureTh"> Profile Picture</td>
 					</tr>
 					<tr>
-						<td id="td">{{this.user}} </td>
-						<td id="td">{{this.data.location}} </td>
-						<td id="td">{{this.data.address}} </td>
-						<td id="td">{{this.data.postcode}} </td>
+						<td id="usernameTd">{{this.user}} </td>
+						<td id="locationTd">{{this.data.location}} </td>
+						<td id="addressTd">{{this.data.address}} </td>
+						<td id="postcodeTd">{{this.data.postcode}} </td>
 					</tr>
 				</table>
 			</nav>    

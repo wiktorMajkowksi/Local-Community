@@ -1,4 +1,7 @@
-#IDth, #Issueth, #Descth, #Raisedth, #Dateth, #Completedth, #Sinceth #Locationth, #Statusth, #Votesth, #Priorityth {
+#IDth, #Issueth, #Descth, #Raisedth, #Dateth, #Completedth, #Sinceth, #Locationth, 
+#Statusth, #Votesth, #Priorityth,
+/* Profile Page */
+#usernameTd, #locationTd, #addressTd, #postcodeTd, #pictureTd{
     font-size: 20px;
     padding:10px;
     border:1px black solid;
@@ -6,12 +9,20 @@
     background-color: rgba(24, 26, 54);
 }
 
-#IDtd, #Issuetd, #Desctd, #Usertd, #Datetd, #Completedtd, #Locationtd, #Statustd, #Votestd, #Prioritytd, #Detailstd, #Submittd #table {
+#IDtd, #Issuetd, #Desctd, #Usertd, #Datetd, #Completedtd, #Locationtd, 
+#Statustd, #Votestd, #Prioritytd, #Detailstd, #Submittd, #table, 
+/* Profile Page */
+#usernameTh, #locationTh, #addressTh, #postcodeTh, #pictureTh
+{
     font-size: 15px;
     color: white;
     border:1px black solid;
     padding:10px;
     background-color: rgba(40, 43, 94, 0.9);
+}
+select#status, select#issueType {
+    width: 115px;
+    float: right;
 }
 
 #tableSubmitted{

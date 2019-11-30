@@ -268,7 +268,7 @@ router.get('/issues', async ctx => {
 		//}
 		//the db is opened here and the table is created if not present
 		const tasks = await new Tasks(dbName)
-		const data = await tasks.getAll()
+		const data = await tasks.filterstatus("Incomplete")
 		const currentLocation = await request('http://ip-api.io/api/json?api_key=801bc4b6-a3e4-482b-b998-3a6915db11bb')
   			.then(response => JSON.parse(response))
 			.catch(err => console.log(err))

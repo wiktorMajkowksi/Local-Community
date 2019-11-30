@@ -3,7 +3,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>Issues</title>
+		<title>Currently Active Issues</title>
 		<meta name="author" content="Fred Cook, Wiktor Majkowski">
         <link href="defaultStyle.css" type="text/css" rel="stylesheet" />
         <link href="issues.css" type="text/css" rel="stylesheet" />
@@ -28,7 +28,7 @@
 				</tr>
 			</table>
 		</nav>	
-        <h1> Issues </h1>
+        <h1> Currently Active Issues </h1>
         
         <article>
             <section>
@@ -42,6 +42,7 @@
                     </tr>
 
                     {{#each tasks}}
+                        
                         <tr id="row">
                             <form action="/issues" method="post">
                             <td id = "IDtd"> <input name ="id" type="hidden" value = {{this.id}}> <a href="/issue_details/{{this.id}}">{{this.id}}</a> </td>
@@ -76,12 +77,12 @@
                             <!--<dd>by Status</dd>-->
                                     <form action="/issues" method="post">
                                     <form action="/issue_status" method="post">
-                            <dd>    <input placeholder="Status" name = 'issueStatus' list = "status"> </td>   
-                                    <datalist id = "status">
-                                        <option value = "Incomplete">
-                                        <option value = "In Progress">
-                                        <option value = "complete">
-                                    </datalist>
+                            <!-- <dd>    <input placeholder="Status" name = 'issueStatus' list = "status"> </td>   -->
+                                    <select id = "status" name = 'issueStatus' list = "status">
+                                        <option value = "Incomplete"> Incomplete </option>
+                                        <option value = "In Progress"> In Progress  </option>
+                                        <option value = "Complete"> Complete  </option>
+                                    </select>
                             
                             </dd>
                             <dd>
@@ -102,12 +103,12 @@
                             <th id = "Dateth">Date Set</th>
                             <th id = "Completedth">Date Completed</th>
                             <th id = "Locationth">Location</th>
-                            <th id = "Statusth">Status</th>
-                            <th id = "Votesth">Votes</th>
+                            <!-- <th id = "Statusth">Status</th>
+                            <th id = "Votesth">Votes</th> -->
                         </tr>
                         <form action="/issues" method="post">
                             <td id="IDtd">ID</td>
-                            <td>
+                            <td id="Issuetd">
                                 <select id="issueType" name='issueType' list="issueType">
                                     <option value="Vandalism">Vandalism </option>
                                     <option value="Noise Pollution">Noise pollution </option>
@@ -117,7 +118,7 @@
                                     <option value="Other">Other</option>
                                 </select>
                             </td>
-                            <td id="Desctd"><input name = 'issueDesc' type="text"></td>
+                            <td id="Desctd"><input name = 'issueDesc' type="text" required></td>
                             <td id="Usertd">User: <br><b>{{user}}</b></td>
 
                                 <!--<td id="td"><input type="text" placeholder="{{user}}" readonly></td>-->
@@ -145,8 +146,8 @@
                             <!--
                             <td id="td"><select name='status' list="status" placeholder="incomplete" readonly> Incomplete </td>
                             -->
-                            <td id="Statustd"><input type='text' name = 'status' placeholder='incomplete' value='incomplete' readonly></td>
-                            <td id="Votestd"><input name='votes' type='text' placeholder=0 readonly></td>
+                            <!-- <td id="Statustd"><input type='text' name = 'status' placeholder='incomplete' value='incomplete' readonly></td> -->
+                            <!-- <td id="Votestd"><input name='votes' type='text' placeholder=0 readonly></td> -->
                             <td id = "Submittd"><input type="submit" value="Submit" name = "submitIssueButton"></td>
                         </form>
                     </table>

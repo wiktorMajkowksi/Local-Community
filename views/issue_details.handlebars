@@ -19,11 +19,11 @@
 					<td id="ContactsButton"><a href="/contacts"> Contacts </a></td>
 					<td id="IssuesButton"><a href="/issues"> Issues </a></td>
 					{{#if user}}
-                  <a id="ProfileInfo" href="/profileInfo">Profile</a>
-                  <a id="Logoutlr" href="/logout">Log out |</a>
+                        <a id="ProfileInfo" href="/profileInfo">Profile</a>
+                        <a id="Logoutlr" href="/logout">Log out |</a>
 					{{else}}
-                  <a id="Registerlr" href="/register">| Register</a> 
-					        <a id="Loginlr" href="/login">Login |</a>
+                        <a id="Registerlr" href="/register">| Register</a> 
+					    <a id="Loginlr" href="/login">Login |</a>
           {{/if}}
 				</tr>
 			</table>
@@ -60,18 +60,18 @@
                 </tr>
 
                 
-                    <tr id="lol">
-                        <td id = "td">{{this.issue.id}}</td>
-                        <td id = "td">{{this.issue.issueType}}</td>
-                                <td id = "td">{{this.issue.issueDesc}}</td>
-                                <td id = "td">{{this.issue.raisedBy}}</td>
-                                <td id = "td">{{this.issue.dateSet}}</td>
-                                <td id = "td">{{this.issue.dateCompleted}}</td>
-                                <td id = "td">{{this.dateDifference}}</td>
-                        <td id = "td">{{this.issue.location}}</td>
-                        <td id = "td">{{this.issue.status}}</td>
-                                <td id = "td">{{this.issue.votes}}</td>
-                                <td id = "td">{{this.issue.priority}}</td>
+                    <tr id="row">
+                        <td id = "IDtd">{{this.issue.id}}</td>
+                        <td id = "Issuetd">{{this.issue.issueType}}</td>
+                                <td id = "Desctd">{{this.issue.issueDesc}}</td>
+                                <td id = "Usertd">{{this.issue.raisedBy}}</td>
+                                <td id = "Datetd">{{this.issue.dateSet}}</td>
+                                <td id = "Completedtd">{{this.issue.dateCompleted}}</td>
+                                <td id = "Datetd">{{this.dateDifference}}</td>
+                        <td id = "Locationtd">{{this.issue.location}}</td>
+                        <td id = "Statustd">{{this.issue.status}}</td>
+                                <td id = "Votestd">{{this.issue.votes}}</td>
+                                <td id = "Prioritytd">{{this.issue.priority}}</td>
                         <td><form action = '/issues' method = "post">
                             <input type = "submit" value = "Upvote" name = "upvote">
                             <input name ="id" type="hidden" value = {{this.issue.id}} readonly>
