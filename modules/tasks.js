@@ -25,12 +25,11 @@ module.exports = class Tasks {
 
 	async filterstatus(status) {
 		try{
-			if (status !== undefined){
+			if (status !== undefined) {
 				const data = await this.db.all(`SELECT *, COUNT(*) FROM tasks WHERE status = "${status}";`)
-					return data	
-			}	
-			else throw new Error('status not supplied')
-		}  catch(err){
+				return data
+			} else throw new Error('status not supplied')
+		} catch(err) {
 			throw err
 		}
 	}
