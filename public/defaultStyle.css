@@ -5,10 +5,10 @@ body {
     
 }
 #navigation {
-    background: linear-gradient(135deg ,yellow,purple, green,blue,yellow);
+   /* background: linear-gradient(135deg ,yellow,purple, green,blue,yellow);*/
+    background: linear-gradient(135deg ,yellow,darkorchid, seagreen,royalblue,yellow);
     background-size: 700% 700%;
     animation: AnimationName 20s ease infinite;
-
     margin: -9px;
     margin-top: -9px;
 }
@@ -18,27 +18,30 @@ body {
     100%{background-position:0% 50%}
 }
 #logo{
-    background-color: black;
-    color: white;
+    /*background-color: black;*/
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 540;
+    font-size: 120%;
+    color: black;
     height: 30px;
-    width: 40px;
+    width: 170px;
     text-align: center;
 }
-#lr {
+#Logoutlr, #Registerlr, #Loginlr, #ProfileInfo{
     float: right;
     padding-top: 12px;
     padding-right: 5px;
     font-weight: bold;
 }
-#button {
+#HomeButton, #StaffButton, #ContactsButton, #IssuesButton {
     height: 30px;
     width: 70px;
 
     text-align: center;
     font-weight: bold;
 
-    padding: 3px;
-    border: 1px solid black;
+    /*padding: 3px;*/
+    /*border: 1px solid black;*/
 }
 button:hover {
     background-color: rgb(20,20,20);

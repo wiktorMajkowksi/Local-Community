@@ -11,7 +11,6 @@ const delayMS = 5
 
 let browser
 let page
-let har
 
 // threshold is the difference in pixels before the snapshots dont match
 const toMatchImageSnapshot = configureToMatchImageSnapshot({
@@ -23,7 +22,7 @@ expect.extend({ toMatchImageSnapshot })
 beforeAll( async() => {
 	browser = await puppeteer.launch({ headless: true, slowMo: delayMS, args: [`--window-size=${width},${height}`] })
 	page = await browser.newPage()
-	har = new PuppeteerHar(page)
+	const har = new PuppeteerHar(page)
 	await page.setViewport({ width, height })
 	await shell.exec('acceptanceTests/scripts/beforeAll.sh')
 })

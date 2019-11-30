@@ -1,4 +1,4 @@
-#th {
+#IDth, #Issueth, #Descth, #Raisedth, #Dateth, #Completedth, #Sinceth #Locationth, #Statusth, #Votesth, #Priorityth {
     font-size: 20px;
     padding:10px;
     border:1px black solid;
@@ -6,7 +6,7 @@
     background-color: rgba(24, 26, 54);
 }
 
-#td, #table {
+#IDtd, #Issuetd, #Desctd, #Usertd, #Datetd, #Completedtd, #Locationtd, #Statustd, #Votestd, #Prioritytd, #Detailstd, #Submittd #table {
     font-size: 15px;
     color: white;
     border:1px black solid;
@@ -24,7 +24,7 @@
 
 #table1 {
     width: 100%;
-    float: right;
+    float: left;
     font-size: 15px;
     color: white;
     border:1px black solid;
@@ -32,13 +32,14 @@
     background-color: rgba(40, 43, 94, 0.3);
 }
 
-#row:hover{
+#lol:hover{
     background-color: rgba(62, 67, 150, 0.5)
 }
 
+
 input[type="submit"]{
     background-color:gray;
-    float: right;
+    float: left;
     padding: 10px;
     border: solid black 1px;
     cursor: pointer;

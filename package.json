@@ -11,7 +11,7 @@
     "dependency": "./node_modules/.bin/dependency-check -i bcrypt --unused --no-dev . && node_modules/.bin/dependency-check -i modules --missing .",
     "start": "node index.js",
     "jsdoc": "node_modules/.bin/jsdoc -c jsdoc.conf",
-    "linter": "node_modules/.bin/eslint .",
+    "linter": "node_modules/.bin/eslint --fix .",
     "test": "./node_modules/.bin/jest --coverage",
     "acceptance": "acceptanceTests/scripts/test.sh"
   },

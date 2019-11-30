@@ -145,7 +145,6 @@ describe('mockIssue()', () => {
 	})
 })
 
-
 describe('getAll()', () => {
 	test('getAll when empty', async done => {
 		//ARRANGE
@@ -344,6 +343,82 @@ describe('customQuery()', () => {
 		const data = await tasks.customQuery('SELECT * FROM tasks WHERE id = 2')
 		//ASSERT
 		expect(data[0]).toEqual(await tasks.mockIssue(2))
+		done()
+	})
+})
+
+describe('getDateDifference()', () => {
+	test('date - the same date gives 0 / no difference', async done => {
+		//ARRANGE
+		expect.assertions(1)
+		const tasks = await new Tasks()
+		//ACT
+		await tasks.addIssue(await tasks.mockIssue(),cookies)
+
+		//will give the difference in date between this new task with todays date and todays date (no difference)
+		const difference = await tasks.getDateDifference(1)
+		//ASSERT
+		expect(difference).toEqual(0)
+		done()
+	})
+	test('test completed today also returns 0', async done => {
+		//ARRANGE
+		expect.assertions(1)
+		const tasks = await new Tasks()
+		//ACT
+		await tasks.addIssue(await tasks.mockIssue(),cookies)
+		await tasks.changeStatus(1, 'Complete')
+		//will give the difference in date between this new task with todays date and todays date (no difference)
+		const difference = await tasks.getDateDifference(1)
+		//ASSERT
+		expect(difference).toEqual(0)
+		done()
+
+	})
+
+})
+
+describe('filtering functions', () => {
+	test('returns no. of records for the issue type supplied', async done => {
+		//ARRNAGE
+		expect.assertions(2)
+		const tasks = await new Tasks(test.db)
+		//ACT
+		await tasks.addIssue(await tasks.mockIssue(1), cookies)
+		await tasks.addIssue(await tasks.mockIssue2(2), cookies)
+		await tasks.addIssue(await tasks.mockIssue3(3), cookies)
+		await tasks.addIssue(await tasks.mockIssue4(4), cookies)
+		const queryOne = await tasks.filterIssueType('Potholes')
+		const queryTwo = await tasks.filterIssueType('Litter')
+		//ASSERT
+		expect(queryOne[0]['COUNT(*)']).toEqual(1)
+		expect(queryTwo[0]['COUNT(*)']).toEqual(2)
+
+		done()
+	})
+
+	test('returns only records for the status supplied', async done => {
+		//ARRANGE
+		expect.assertions(2)
+		const tasks = await new Tasks(test.db)
+
+		//ACT
+		await tasks.addIssue(await tasks.mockIssue(), cookies)
+		await tasks.addIssue(await tasks.mockIssue2(), cookies)
+		await tasks.addIssue(await tasks.mockIssue3(), cookies)
+		await tasks.addIssue(await tasks.mockIssue4(), cookies)
+		await tasks.changeStatus(1, 'Complete')
+		await tasks.changeStatus(2, 'Complete')
+		await tasks.changeStatus(3, 'Complete')
+		await tasks.changeStatus(4, 'Incomplete')
+
+		const queryOne = await tasks.filterstatus('Complete')
+		const queryTwo = await tasks.filterstatus('Incomplete')
+
+		//ASSERT
+		expect(queryOne[0]['COUNT(*)']).toEqual(3)
+		expect(queryTwo[0]['COUNT(*)']).toEqual(1)
+
 		done()
 	})
 })
