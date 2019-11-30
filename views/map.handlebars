@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Custom Markers</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      var map;
+      function initMap() {
+        map = new google.maps.Map(
+            document.getElementById('map'),
+            {center: new google.maps.LatLng(-33.91722, 151.23064), zoom: 16});
+
+        var iconBase =
+            'https://developers.google.com/maps/documentation/javascript/examples/full/images/';
+
+      }
+    </script>
+    <script async defer src="https://www.google.com/maps/api/js?key=AIzaSyAIl1QIAQMTrmZ44aKulJQgY2D_BbqRRcU&callback=initMap"> </script>
+  </body>
+<!-- 
+https://www.google.com/maps/embed/v1/place?key=AIzaSyAIl1QIAQMTrmZ44aKulJQgY2D_BbqRRcU&q=Gosford%20Street
+https://www.google.com/maps/embed/js?key=AIzaSyAIl1QIAQMTrmZ44aKulJQgY2D_BbqRRcU&callback=initMap
+-->
+</html>

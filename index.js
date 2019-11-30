@@ -147,6 +147,15 @@ router.get('/login', async ctx => {
 	await ctx.render('login', data)
 })
 
+router.get('/adam', async ctx => {
+	try {
+		await ctx.render('map')
+	} catch (err) {
+		await ctx.render("error", {message: err.message})
+	}
+})
+
+
 /**
  * The script to handle attempted login
  * @name Login Script
