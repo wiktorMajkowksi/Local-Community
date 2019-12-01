@@ -270,6 +270,7 @@ router.get('/issues', async ctx => {
 		const tasks = await new Tasks(dbName)
 		const data = await tasks.filterstatus('Incomplete', 'In Progress')
 		//const data = await tasks.getAll()
+
 		const currentLocation = await request('http://ip-api.io/api/json?api_key=801bc4b6-a3e4-482b-b998-3a6915db11bb')
   			.then(response => JSON.parse(response))
 			.catch(err => console.log(err))
@@ -315,6 +316,14 @@ router.post('/issues', async ctx => {
 		await ctx.render('error', {message: err.message})
 	}
 })
+
+
+/**
+ * The filtered issues page
+ * @name issue_status/:status page
+ * @route {GET} issue_status/:status
+ * Displays all issues filtered by selected status
+ */
 /* 
 router.get('/issue_status/:status', async ctx => {
 	try {
@@ -328,9 +337,15 @@ router.get('/issue_status/:status', async ctx => {
 	}
 })
 
+/**
+ * Handels Post requests on the Filtered issues page
+ * @name issue_status/:status page
+ * @route {POST} issue_status/:status
+ * Sends user to different status page dependeding on selected status
+ */
+/*
 router.post('issue_status/:status', async ctx => {
 	try{
-		//const tasks = await new Tasks(dbName)
 		const body = await ctx.request.body
 		if (body.details === 'Details') {
 			//await console.log(body)
