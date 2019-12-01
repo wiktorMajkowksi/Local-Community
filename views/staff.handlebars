@@ -32,36 +32,36 @@
         <article>
             <table id = "table" width="80%">
                 <tr>
-                    <th id = "th">ID</th>
-                    <th id = "th">Issue</th>
-                    <th id = "th">Issue Description</th>
-                    <th id = "th">Raised by</th>
-                    <th id = "th">Date Set</th>
-                    <th id = "th">Date Completed</th>
-                    <th id = "th">Location</th>
-                    <th id = "th">Status</th>
-                    <th id = "th">Votes</th>
-                    <th id = "th">Priority</th>
+                    <th id="IDth">ID</th>
+                    <th id="Issueth">Issue</th>
+                    <th id="Descth">Issue Description</th>
+                    <th id="Raisedth">Raised by</th>
+                    <th id="Dateth">Date Set</th>
+                    <th id="Completedth">Date Completed</th>
+                    <th id="Locationth">Location</th>
+                    <th id="Statusth">Status</th>
+                    <th id="Votesth">Votes</th>
+                    <th id="Priorityth">Priority</th>
                 </tr>
                 {{#each tasks}}
-                    <tr id="lol">
-                        <td id = "td">{{this.id}}</td>
-                        <td id = "td">{{this.issueType}}</td>
-                        <td id = "td">{{this.issueDesc}}</td>
-                        <td id = "td">{{this.raisedBy}}</td>
-                        <td id = "td">{{this.dateSet}}</td>
-                        <td id = "td">{{this.dateCompleted}}</td>
-                        <td id = "td">{{this.location}}</td>
-                        <td id = "td">{{this.status}}</td>
-                        <td id = "td">{{this.votes}}</td>
-                        <td id = "td">{{this.priority}}</td>
+                    <tr id="row">
+                        <td id="IDtd">{{this.id}}</td>
+                        <td id="Issuetd">{{this.issueType}}</td>
+                        <td id="Desctd">{{this.issueDesc}}</td>
+                        <td id="Usertd">{{this.raisedBy}}</td>
+                        <td id="Datetd">{{this.dateSet}}</td>
+                        <td id="Completedtd">{{this.dateCompleted}}</td>
+                        <td id="Locationtd">{{this.location}}</td>
+                        <td id="Statustd">{{this.status}}</td>
+                        <td id="Votestd">{{this.votes}}</td>
+                        <td id="Prioritytd">{{this.priority}}</td>
                     <form action="/staff" method="post">
-                        <td><input name = "statusChange" type="submit" value="In Progress"></td>
-                        <td><input name = "statusChange" type="submit" value="Complete"></td>
-                        <td><input name = "priorityChange" type = "submit" value=  "Low"></td>
-                        <td><input name = "priorityChange" type = "submit" value = "Medium"></td>
-                        <td><input name = "priorityChange" type = "submit" value = "High"></td>
-                        <input name = "id" type = "hidden" value ={{this.id}} readonly>
+                        <td><input name="statusChange" type="submit" value="In Progress"></td>
+                        <td><input name="statusChange" type="submit" value="Complete"></td>
+                        <td><input name="priorityChange" type="submit" value="Low"></td>
+                        <td><input name="priorityChange" type="submit" value="Medium"></td>
+                        <td><input name="priorityChange" type="submit" value="High"></td>
+                        <input name="id" type="hidden" value={{this.id}} readonly>
                     </tr>
                     </form>
                     {{/each}}

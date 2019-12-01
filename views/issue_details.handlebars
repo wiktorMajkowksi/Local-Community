@@ -29,7 +29,7 @@
 			</table>
 		</nav>	
 
-        <h1> Issue Details:</h1>
+        <h1> Issue Details: {{issue.issueType}}</h1>
 
         <!-- 
             The colums of the database are issueType, issueDesc,  raisedBy, dateSet, dateCompleted, location, status and votes
@@ -37,7 +37,6 @@
             access them by doing this {{issue.[what you need]}}
         -->
 
-		<h1>{{issue.issueType}}</h1>
 		<article>
     	<section id="map">
     	<iframe frameborder="0" style="border:0"

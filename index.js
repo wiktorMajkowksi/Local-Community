@@ -268,7 +268,8 @@ router.get('/issues', async ctx => {
 		//}
 		//the db is opened here and the table is created if not present
 		const tasks = await new Tasks(dbName)
-		const data = await tasks.filterstatus("Incomplete")
+		const data = await tasks.filterstatus('Incomplete', 'In Progress')
+		//const data = await tasks.getAll()
 		const currentLocation = await request('http://ip-api.io/api/json?api_key=801bc4b6-a3e4-482b-b998-3a6915db11bb')
   			.then(response => JSON.parse(response))
 			.catch(err => console.log(err))
@@ -291,21 +292,22 @@ router.get('/issues', async ctx => {
 
 router.post('/issues', async ctx => {
 	try {
-		const tasks = await new Tasks(dbName)
+		const tasksDb = await new Tasks(dbName)
 		const body = await ctx.request.body
-		if (body.upvote === 'Upvote') {
+		if (body.upvote) {
 			//if they havent upvoted the problem within the last 5 minutes, the below won't throw an error
-			await tasks.upvote(body.id, ctx.cookies)
+			await tasksDb.upvote(body.id, ctx.cookies)
 			//if the above throws an error execution stops, sets a cookie thats 'key'
 			//is the id of the issue they upvoted, meaning they cant upvote the same issue within 5 minutes
 			ctx.cookies.set(body.id, 'upvoted', {httpOnly: false, maxAge: 300000})
 			ctx.redirect('/issues')
-		} else if (body.details === 'Details') {
+		} else if (body.details) {
 			await ctx.redirect(`/issue_details/${body.id}`)
-		} else if (body.Filter === 'Filter') {
-			await ctx.redirect(`/issue_status/${body.issueStatus}`)
+		} else if (body.Filter) {
+			const data = await tasksDb.filterstatus(`${body.issueStatus}`)
+			await ctx.render('issues', {tasks: data, user: body.user})
 		} else { //They are submitting an issue and not upvoting
-			await tasks.addIssue(body, ctx.cookies)
+			await tasksDb.addIssue(body, ctx.cookies)
 			await console.log(body)
 			await ctx.redirect('/issues')
 		}
@@ -313,15 +315,14 @@ router.post('/issues', async ctx => {
 		await ctx.render('error', {message: err.message})
 	}
 })
-
+/* 
 router.get('/issue_status/:status', async ctx => {
 	try {
-		const filterrequest = ctx.request.body.Filter === 'Filter'
 		const db = await new Tasks(dbName)
 		const data = await db.filterstatus(ctx.params.status)
 
 		const userName = ctx.cookies.get('user')
-		await ctx.render('issuestatusfilter', {tasks: data, query: '', user: userName,})
+		await ctx.render('issuestatusfilter', {tasks: data, query: '', user: userName})
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}
@@ -331,7 +332,7 @@ router.post('issue_status/:status', async ctx => {
 	try{
 		//const tasks = await new Tasks(dbName)
 		const body = await ctx.request.body
-		if (ctx.request.body.details === 'Details') {
+		if (body.details === 'Details') {
 			//await console.log(body)
 			await ctx.redirect(`/issue_details/${body.id}`)
 		} else if (body.Filter === 'Filter') {
@@ -341,7 +342,7 @@ router.post('issue_status/:status', async ctx => {
 		await ctx.render('error', {message: err.message})
 	}
 })
-
+*/
 /**
  * The Issue_details page
  * @name issue_details/:num page

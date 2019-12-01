@@ -3,7 +3,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>Currently Active Issues</title>
+		<title> Issues</title>
 		<meta name="author" content="Fred Cook, Wiktor Majkowski">
         <link href="defaultStyle.css" type="text/css" rel="stylesheet" />
         <link href="issues.css" type="text/css" rel="stylesheet" />
@@ -28,7 +28,7 @@
 				</tr>
 			</table>
 		</nav>	
-        <h1> Currently Active Issues </h1>
+        <h1> Issues </h1>
         
         <article>
             <section>
@@ -42,7 +42,6 @@
                     </tr>
 
                     {{#each tasks}}
-                        
                         <tr id="row">
                             <form action="/issues" method="post">
                             <td id = "IDtd"> <input name ="id" type="hidden" value = {{this.id}}> <a href="/issue_details/{{this.id}}">{{this.id}}</a> </td>
@@ -75,8 +74,8 @@
                             <!--<dd>by Location</dd>-->
  <!--                           <dd>    <input placeholder="Location" type="text">  </dd> -->
                             <!--<dd>by Status</dd>-->
+                                    <!-- <form action="/issues" method="post"> -->
                                     <form action="/issues" method="post">
-                                    <form action="/issue_status" method="post">
                             <!-- <dd>    <input placeholder="Status" name = 'issueStatus' list = "status"> </td>   -->
                                     <select id = "status" name = 'issueStatus' list = "status">
                                         <option value = "Incomplete"> Incomplete </option>
@@ -86,7 +85,7 @@
                             
                             </dd>
                             <dd>
-                                
+                                    <input type="hidden" name="user" value={{this.user}}>
                                     <p><input type="submit" name="Filter" value="Filter"></p>
                                 </form>
                             </dd>

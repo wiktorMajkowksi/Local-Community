@@ -43,7 +43,7 @@ select#status, select#issueType {
     background-color: rgba(40, 43, 94, 0.3);
 }
 
-#lol:hover{
+#row:hover{
     background-color: rgba(62, 67, 150, 0.5)
 }
 

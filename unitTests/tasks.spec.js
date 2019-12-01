@@ -384,15 +384,28 @@ describe('filtering functions', () => {
 		expect.assertions(2)
 		const tasks = await new Tasks(test.db)
 		//ACT
-		await tasks.addIssue(await tasks.mockIssue(1), cookies)
-		await tasks.addIssue(await tasks.mockIssue2(2), cookies)
-		await tasks.addIssue(await tasks.mockIssue3(3), cookies)
-		await tasks.addIssue(await tasks.mockIssue4(4), cookies)
+		await tasks.addIssue(await tasks.mockIssue(), cookies)
+		await tasks.addIssue(await tasks.mockIssue2(), cookies)
+		await tasks.addIssue(await tasks.mockIssue3(), cookies)
+		await tasks.addIssue(await tasks.mockIssue4(), cookies)
 		const queryOne = await tasks.filterIssueType('Potholes')
 		const queryTwo = await tasks.filterIssueType('Litter')
-		//ASSERT
-		expect(queryOne[0]['COUNT(*)']).toEqual(1)
-		expect(queryTwo[0]['COUNT(*)']).toEqual(2)
+
+		let oneCounter = 0;
+		for (const query in queryOne) {
+			if (queryOne[query]['issueType'] === 'Potholes') {
+				oneCounter++
+			}
+		}
+		let twoCounter = 0;
+		for (const query in queryTwo) {
+			if (queryTwo[query]['issueType'] === 'Litter') {
+				twoCounter++
+			}
+		}
+		//ASSERT		
+		expect(oneCounter).toEqual(1)
+		expect(twoCounter).toEqual(2)
 
 		done()
 	})
@@ -415,9 +428,22 @@ describe('filtering functions', () => {
 		const queryOne = await tasks.filterstatus('Complete')
 		const queryTwo = await tasks.filterstatus('Incomplete')
 
+		let oneCounter = 0;
+		for (const query in queryOne) {
+			if (queryOne[query]['status'] === 'Complete') {
+				oneCounter++
+			}
+		}
+		let twoCounter = 0;
+		for (const query in queryTwo) {
+			if (queryTwo[query]['status'] === 'Incomplete') {
+				twoCounter++
+			}
+		}
+
 		//ASSERT
-		expect(queryOne[0]['COUNT(*)']).toEqual(3)
-		expect(queryTwo[0]['COUNT(*)']).toEqual(1)
+		expect(oneCounter).toEqual(3)
+		expect(twoCounter).toEqual(1)
 
 		done()
 	})
