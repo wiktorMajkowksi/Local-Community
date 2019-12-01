@@ -384,26 +384,58 @@ describe('filtering functions', () => {
 		expect.assertions(2)
 		const tasks = await new Tasks(test.db)
 		//ACT
-		await tasks.addIssue(await tasks.mockIssue(), cookies)
-		await tasks.addIssue(await tasks.mockIssue2(), cookies)
-		await tasks.addIssue(await tasks.mockIssue3(), cookies)
-		await tasks.addIssue(await tasks.mockIssue4(), cookies)
+		await tasks.addIssue( {
+			id: 3,
+			issueType: 'Litter',
+			issueDesc: 'description',
+			raisedBy: 'adam',
+			dateSet: await tasks.getDate(),
+			dateCompleted: 'N/A',
+			location: 'location',
+			status: 'Incomplete',
+			votes: 0,
+			priority: 'Low'
+		  }, cookies)
+		await tasks.addIssue( {
+			id: 4,
+			issueType: 'Potholes',
+			issueDesc: 'description',
+			raisedBy: 'adam',
+			dateSet: await tasks.getDate(),
+			dateCompleted: 'N/A',
+			location: 'location',
+			status: 'Incomplete',
+			votes: 0,
+			priority: 'Low'
+		  }, cookies)
+		await tasks.addIssue( {
+			id: 5,
+			issueType: 'Litter',
+			issueDesc: 'description',
+			raisedBy: 'adam',
+			dateSet: await tasks.getDate(),
+			dateCompleted: 'N/A',
+			location: 'location',
+			status: 'Incomplete',
+			votes: 0,
+			priority: 'Low'
+		  }, cookies)
 		const queryOne = await tasks.filterIssueType('Potholes')
 		const queryTwo = await tasks.filterIssueType('Litter')
 
-		let oneCounter = 0;
+		let oneCounter = 0
 		for (const query in queryOne) {
 			if (queryOne[query]['issueType'] === 'Potholes') {
 				oneCounter++
 			}
 		}
-		let twoCounter = 0;
+		let twoCounter = 0
 		for (const query in queryTwo) {
 			if (queryTwo[query]['issueType'] === 'Litter') {
 				twoCounter++
 			}
 		}
-		//ASSERT		
+		//ASSERT
 		expect(oneCounter).toEqual(1)
 		expect(twoCounter).toEqual(2)
 
@@ -416,10 +448,54 @@ describe('filtering functions', () => {
 		const tasks = await new Tasks(test.db)
 
 		//ACT
-		await tasks.addIssue(await tasks.mockIssue(), cookies)
-		await tasks.addIssue(await tasks.mockIssue2(), cookies)
-		await tasks.addIssue(await tasks.mockIssue3(), cookies)
-		await tasks.addIssue(await tasks.mockIssue4(), cookies)
+		await tasks.addIssue( {
+			id: 1,
+			issueType: 'Litter',
+			issueDesc: 'description',
+			raisedBy: 'adam',
+			dateSet: await tasks.getDate(),
+			dateCompleted: 'N/A',
+			location: 'location',
+			status: 'Incomplete',
+			votes: 0,
+			priority: 'Low'
+		  }, cookies)
+		await tasks.addIssue( {
+			id: 2,
+			issueType: 'Potholes',
+			issueDesc: 'description',
+			raisedBy: 'adam',
+			dateSet: await tasks.getDate(),
+			dateCompleted: 'N/A',
+			location: 'location',
+			status: 'Incomplete',
+			votes: 0,
+			priority: 'Low'
+		  }, cookies)
+		await tasks.addIssue( {
+			id: 3,
+			issueType: 'Litter',
+			issueDesc: 'description',
+			raisedBy: 'adam',
+			dateSet: await tasks.getDate(),
+			dateCompleted: 'N/A',
+			location: 'location',
+			status: 'Incomplete',
+			votes: 0,
+			priority: 'Low'
+		  }, cookies)
+		  await tasks.addIssue( {
+			id: 4,
+			issueType: 'Litter',
+			issueDesc: 'description',
+			raisedBy: 'adam',
+			dateSet: await tasks.getDate(),
+			dateCompleted: 'N/A',
+			location: 'location',
+			status: 'Incomplete',
+			votes: 0,
+			priority: 'Low'
+		  }, cookies)
 		await tasks.changeStatus(1, 'Complete')
 		await tasks.changeStatus(2, 'Complete')
 		await tasks.changeStatus(3, 'Complete')
@@ -428,13 +504,13 @@ describe('filtering functions', () => {
 		const queryOne = await tasks.filterstatus('Complete')
 		const queryTwo = await tasks.filterstatus('Incomplete')
 
-		let oneCounter = 0;
+		let oneCounter = 0
 		for (const query in queryOne) {
 			if (queryOne[query]['status'] === 'Complete') {
 				oneCounter++
 			}
 		}
-		let twoCounter = 0;
+		let twoCounter = 0
 		for (const query in queryTwo) {
 			if (queryTwo[query]['status'] === 'Incomplete') {
 				twoCounter++
