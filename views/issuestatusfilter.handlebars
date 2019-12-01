@@ -72,18 +72,20 @@
                             <!--<dd>by Location</dd>-->
  <!--                           <dd>    <input placeholder="Location" type="text">  </dd> -->
                             <!--<dd>by Status</dd>-->
+                                    <form action="/issues" method="post">
                                     <form action="/issue_status" method="post">
-                            <dd>    <input placeholder="Status" type="hidden" name = 'issueStatus' list = "status"> </td>   
-                                    <select id = "status">
+                            <!-- <dd>    <input placeholder="Status" name = 'issueStatus' list = "status"> </td>   -->
+                                    <select id = "status" name = 'issueStatus' list = "status">
                                         <option value = "Incomplete"> Incomplete </option>
-                                        <option value = "In Progress"> In Progress </option>
-                                        <option value = "complete"> Complete </option>
+                                        <option value = "In Progress"> In Progress  </option>
+                                        <option value = "Complete"> Complete  </option>
                                     </select>
                             
                             </dd>
                             <dd>
                                 
                                     <p><input type="submit" name="Filter" value="Filter"></p>
+
                                 </form>
                             </dd>
                         </dt>

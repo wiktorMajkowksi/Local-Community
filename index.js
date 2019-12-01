@@ -343,7 +343,6 @@ router.get('/issue_status/:status', async ctx => {
 router.post('issue_status/:status', async ctx => {
 	try{
 		const body = await ctx.request.body
-		
 		if (ctx.request.body.details === 'Details') {
 			await ctx.redirect(`/issue_details/${body.id}`)
 		} else if (body.Filter === 'Filter') {
