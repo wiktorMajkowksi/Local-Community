@@ -286,6 +286,20 @@ describe('getIssue()', () => {
 		done()
 	})
 
+	test('throws error if argument id undefined', async done => {
+		//ARRANGE
+		expect.assertions(1)
+		const tasks = await new Tasks()
+		//ACT
+		await tasks.addIssue(await tasks.mockIssue(), cookies)
+		//ASSERT
+		await expect(tasks.getIssue())
+		.rejects
+		.toThrow()
+	   
+		done()
+		})
+
 	//gets the correct one when there are many
 
 	//throws an error when the number is not available
@@ -378,73 +392,32 @@ describe('getDateDifference()', () => {
 
 })
 
-describe('filtering functions', () => {
-	test('returns no. of records for the issue type supplied', async done => {
-		//ARRNAGE
-		expect.assertions(2)
-		const tasks = await new Tasks(test.db)
-		//ACT
-		await tasks.addIssue(await tasks.mockIssue(), cookies)
-		await tasks.addIssue(await tasks.mockIssue2(), cookies)
-		await tasks.addIssue(await tasks.mockIssue3(), cookies)
-		await tasks.addIssue(await tasks.mockIssue4(), cookies)
-		const queryOne = await tasks.filterIssueType('Potholes')
-		const queryTwo = await tasks.filterIssueType('Litter')
-
-		let oneCounter = 0;
-		for (const query in queryOne) {
-			if (queryOne[query]['issueType'] === 'Potholes') {
-				oneCounter++
-			}
-		}
-		let twoCounter = 0;
-		for (const query in queryTwo) {
-			if (queryTwo[query]['issueType'] === 'Litter') {
-				twoCounter++
-			}
-		}
-		//ASSERT		
-		expect(oneCounter).toEqual(1)
-		expect(twoCounter).toEqual(2)
-
-		done()
+describe('filterStatus()', () => {
+	test('gives correct number of elements when there is one element', async done => {
+	//ARRANGE
+	expect.assertions(1)
+	const tasks = await new Tasks()
+	//ACT
+	await tasks.addIssue(await tasks.mockIssue(), cookies)
+	//ASSERT
+	const len = (await tasks.filterstatus('Incomplete')).length
+	expect(len).toEqual(1)
+   
+	done()
 	})
-
-	test('returns only records for the status supplied', async done => {
-		//ARRANGE
-		expect.assertions(2)
-		const tasks = await new Tasks(test.db)
-
-		//ACT
-		await tasks.addIssue(await tasks.mockIssue(), cookies)
-		await tasks.addIssue(await tasks.mockIssue2(), cookies)
-		await tasks.addIssue(await tasks.mockIssue3(), cookies)
-		await tasks.addIssue(await tasks.mockIssue4(), cookies)
-		await tasks.changeStatus(1, 'Complete')
-		await tasks.changeStatus(2, 'Complete')
-		await tasks.changeStatus(3, 'Complete')
-		await tasks.changeStatus(4, 'Incomplete')
-
-		const queryOne = await tasks.filterstatus('Complete')
-		const queryTwo = await tasks.filterstatus('Incomplete')
-
-		let oneCounter = 0;
-		for (const query in queryOne) {
-			if (queryOne[query]['status'] === 'Complete') {
-				oneCounter++
-			}
-		}
-		let twoCounter = 0;
-		for (const query in queryTwo) {
-			if (queryTwo[query]['status'] === 'Incomplete') {
-				twoCounter++
-			}
-		}
-
-		//ASSERT
-		expect(oneCounter).toEqual(3)
-		expect(twoCounter).toEqual(1)
-
-		done()
+   
+	test('throws error if argument is undefined', async done => {
+	//ARRANGE
+	expect.assertions(1)
+	const tasks = await new Tasks()
+	//ACT
+	await tasks.addIssue(await tasks.mockIssue(), cookies)
+	//ASSERT
+	await expect(tasks.filterstatus())
+	.rejects
+	.toThrow()
+   
+	done()
 	})
-})
+   
+   })

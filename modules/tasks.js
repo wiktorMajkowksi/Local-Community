@@ -14,14 +14,6 @@ module.exports = class Tasks {
 			return this
 		})()
 	}
-	async filterIssueType(issueType) {
-		try{
-			const data = await this.db.all(`SELECT * FROM tasks WHERE issueType == "${issueType}";`)
-			return data
-		} catch(err) {
-			throw err
-		}
-	}
 
 	async filterstatus(status) {
 		try{
@@ -240,54 +232,6 @@ module.exports = class Tasks {
 			issueType: 'issueType',
 			issueDesc: 'description',
 			raisedBy: 'fred',
-			dateSet: await this.getDate(),
-			dateCompleted: 'N/A',
-			location: 'location',
-			status: 'Incomplete',
-			votes: 0,
-			priority: 'Low'
-		  }
-		return mockIssue
-	}
-	//just for testing
-	async mockIssue2(id = 2) {
-		const mockIssue = {
-			id: id,
-			issueType: 'Litter',
-			issueDesc: 'description',
-			raisedBy: 'adam',
-			dateSet: await this.getDate(),
-			dateCompleted: 'N/A',
-			location: 'location',
-			status: 'Incomplete',
-			votes: 0,
-			priority: 'Low'
-		  }
-		return mockIssue
-	}
-	//just for testing
-	async mockIssue3(id = 3) {
-		const mockIssue = {
-			id: id,
-			issueType: 'Litter',
-			issueDesc: 'description',
-			raisedBy: 'adam',
-			dateSet: await this.getDate(),
-			dateCompleted: 'N/A',
-			location: 'location',
-			status: 'Incomplete',
-			votes: 0,
-			priority: 'Low'
-		  }
-		return mockIssue
-	}
-	//just for testing
-	async mockIssue4(id = 4) {
-		const mockIssue = {
-			id: id,
-			issueType: 'Potholes',
-			issueDesc: 'description',
-			raisedBy: 'adam',
 			dateSet: await this.getDate(),
 			dateCompleted: 'N/A',
 			location: 'location',
