@@ -41,6 +41,12 @@
                         <th id = "Priorityth">Priority</th>
                     </tr>
 
+                    
+                    {{#if tasks}}                    
+                    {{else}} <p style="font-size: 20pt"> Sorry, there are not tasks that fit that description </p>                      
+                    {{/if}}
+
+
                     {{#each tasks}}
                         <tr id="row">
                             <form action="/issues" method="post">
@@ -56,6 +62,8 @@
                             </form>
                         </tr>
                     {{/each}}
+                    
+
                     <section id="filter">
                         <dt>
                             <dd>Filter</dd>
@@ -91,6 +99,7 @@
                             </dd>
                         </dt>
                     </section>
+
                 </table>
                 {{#if user}}    
                     <table id="SubmitNew">

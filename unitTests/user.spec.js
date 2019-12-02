@@ -74,3 +74,34 @@ describe('login()', () => {
 	})
 
 })
+
+
+describe('getInfo()', () => {
+	test('gets correct userInfo from generic values', async done => {
+		//ARRANGE
+		expect.assertions(1)
+		const account = await new Accounts()
+		//ACT
+		await account.register('fred', 'pass', 'address', 'postcode', 'staff')
+		const data = await account.getInfo('fred')
+		//ASSERT
+		expect(data.user).toEqual('fred')
+		done()
+	})
+})
+
+
+describe('tearDown()', () => {
+	test('successfully closes', async done => {
+		//ARRANGE
+		expect.assertions(1)
+		const account = await new Accounts()
+		//ACT
+		account.tearDown()
+		//ASSERT
+		await expect(account.register('fred', 'pass'))
+			.rejects
+			.toThrow()
+		done()
+	})
+})

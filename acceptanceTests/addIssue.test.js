@@ -22,7 +22,7 @@ expect.extend({ toMatchImageSnapshot })
 beforeAll( async() => {
 	browser = await puppeteer.launch({ headless: true, slowMo: delayMS, args: [`--window-size=${width},${height}`] })
 	page = await browser.newPage()
-	const har = new PuppeteerHar(page)
+	//const har = new PuppeteerHar(page)
 	await page.setViewport({ width, height })
 	await shell.exec('acceptanceTests/scripts/beforeAll.sh')
 })
@@ -54,12 +54,12 @@ describe('Go to the details page of an issue', () => {
 		await page.click('input[name=submitIssueButton]')
 		await page.click('input[value=Details]')
 
-		//ASSERT 
+		//ASSERT
 		await page.waitForSelector('h1')
 		expect( await page.evaluate( () => document.querySelector('h1').innerText ) )
 			.toBe('Issue Details: Vandalism')
 
-			done()
+		done()
 	})
 
 })

@@ -294,11 +294,10 @@ describe('getIssue()', () => {
 		await tasks.addIssue(await tasks.mockIssue(), cookies)
 		//ASSERT
 		await expect(tasks.getIssue())
-		.rejects
-		.toThrow()
-	   
+			.rejects
+			.toThrow()
 		done()
-		})
+	})
 
 	//gets the correct one when there are many
 
@@ -394,30 +393,110 @@ describe('getDateDifference()', () => {
 
 describe('filterStatus()', () => {
 	test('gives correct number of elements when there is one element', async done => {
-	//ARRANGE
-	expect.assertions(1)
-	const tasks = await new Tasks()
-	//ACT
-	await tasks.addIssue(await tasks.mockIssue(), cookies)
-	//ASSERT
-	const len = (await tasks.filterstatus('Incomplete')).length
-	expect(len).toEqual(1)
-   
-	done()
+		//ARRANGE
+		expect.assertions(1)
+		const tasks = await new Tasks()
+		//ACT
+		await tasks.addIssue(await tasks.mockIssue(), cookies)
+		//ASSERT
+		const len = (await tasks.filterstatus('Incomplete')).length
+		expect(len).toEqual(1)
+		done()
 	})
-   
+
 	test('throws error if argument is undefined', async done => {
-	//ARRANGE
-	expect.assertions(1)
-	const tasks = await new Tasks()
-	//ACT
-	await tasks.addIssue(await tasks.mockIssue(), cookies)
-	//ASSERT
-	await expect(tasks.filterstatus())
-	.rejects
-	.toThrow()
-   
-	done()
+		//ARRANGE
+		expect.assertions(1)
+		const tasks = await new Tasks()
+		//ACT
+		await tasks.addIssue(await tasks.mockIssue(), cookies)
+		//ASSERT
+		await expect(tasks.filterstatus())
+			.rejects
+			.toThrow()
+		done()
 	})
-   
-   })
+})
+describe('filtering functions', () => {
+	test('returns only records for the status supplied', async done => {
+		//ARRANGE
+		expect.assertions(2)
+		const tasks = await new Tasks(test.db)
+
+		//ACT
+		await tasks.addIssue( {
+			id: 1,
+			issueType: 'Litter',
+			issueDesc: 'description',
+			raisedBy: 'adam',
+			dateSet: await tasks.getDate(),
+			dateCompleted: 'N/A',
+			location: 'location',
+			status: 'Incomplete',
+			votes: 0,
+			priority: 'Low'
+		  }, cookies)
+		await tasks.addIssue( {
+			id: 2,
+			issueType: 'Potholes',
+			issueDesc: 'description',
+			raisedBy: 'adam',
+			dateSet: await tasks.getDate(),
+			dateCompleted: 'N/A',
+			location: 'location',
+			status: 'Incomplete',
+			votes: 0,
+			priority: 'Low'
+		  }, cookies)
+		await tasks.addIssue( {
+			id: 3,
+			issueType: 'Litter',
+			issueDesc: 'description',
+			raisedBy: 'adam',
+			dateSet: await tasks.getDate(),
+			dateCompleted: 'N/A',
+			location: 'location',
+			status: 'Incomplete',
+			votes: 0,
+			priority: 'Low'
+		  }, cookies)
+		  await tasks.addIssue( {
+			id: 4,
+			issueType: 'Litter',
+			issueDesc: 'description',
+			raisedBy: 'adam',
+			dateSet: await tasks.getDate(),
+			dateCompleted: 'N/A',
+			location: 'location',
+			status: 'Incomplete',
+			votes: 0,
+			priority: 'Low'
+		  }, cookies)
+		await tasks.changeStatus(1, 'Complete')
+		await tasks.changeStatus(2, 'Complete')
+		await tasks.changeStatus(3, 'Complete')
+		await tasks.changeStatus(4, 'Incomplete')
+
+		const queryOne = await tasks.filterstatus('Complete')
+		const queryTwo = await tasks.filterstatus('Incomplete')
+
+		let oneCounter = 0
+		for (const query in queryOne) {
+			if (queryOne[query]['status'] === 'Complete') {
+				oneCounter++
+			}
+		}
+		let twoCounter = 0
+		for (const query in queryTwo) {
+			if (queryTwo[query]['status'] === 'Incomplete') {
+				twoCounter++
+			}
+		}
+
+		//ASSERT
+		expect(oneCounter).toEqual(3)
+		expect(twoCounter).toEqual(1)
+
+		done()
+	})
+})
